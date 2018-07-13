@@ -1,6 +1,8 @@
 buildscript {
 	ext {
 		springBootVersion = '2.0.3.RELEASE'
+		jjwtVersion = '0.9.0'
+		findbugsVersion='3.0.1'
 	}
 	repositories {
 		mavenCentral()
@@ -10,15 +12,30 @@ buildscript {
 	}
 }
 
+/*
+* 在這個段落中你可以聲明使用哪些外掛程式
+* apply plugin: 'java' 代表這是一個Java專案，需要使用java外掛程式
+* 如果想生成一個 `Intellij IDEA` 的工程，類似的如果要生成
+* eclipse工程，就寫 apply plugin: 'eclipse'
+* 同樣的我們要學的是Spring Boot，所以應用Spring Boot外掛程式
+*/
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-group = 'com.spring'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+// 在這個段落中你可以聲明編譯後的Jar檔資訊
+bootJar {
+	baseName = 'myspring'
+	group = 'com.polinwei'
+	version = '0.0.1-SNAPSHOT'
+}
 
+// 在這個段落中你可以聲明原始檔案和目標編譯後的Java版本相容性
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// 在這個段落中你可以聲明在哪裡可以找到你的項目依賴
 repositories {
 	mavenCentral()
 	maven { url "https://repo.spring.io/snapshot" }
@@ -33,5 +50,10 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	runtime('mysql:mysql-connector-java')
+	compileOnly('org.projectlombok:lombok')
+	compile("io.jsonwebtoken:jjwt:${jjwtVersion}")
+	compile("com.google.code.findbugs:findbugs:${findbugsVersion}")
+	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('org.springframework.security:spring-security-test')
 }
