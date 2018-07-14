@@ -55,7 +55,7 @@ public class Authority implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "authority")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "authority")
 	public Set<UserAuthority> getUserAuthorities() {
 		return this.userAuthorities;
 	}

@@ -43,7 +43,7 @@ public class UserAuthority implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "authority_id", nullable = false, insertable = false, updatable = false)
 	public Authority getAuthority() {
 		return this.authority;
@@ -53,7 +53,7 @@ public class UserAuthority implements java.io.Serializable {
 		this.authority = authority;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
 	public User getUser() {
 		return this.user;

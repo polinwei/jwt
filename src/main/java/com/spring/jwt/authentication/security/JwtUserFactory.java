@@ -24,8 +24,7 @@ public final class JwtUserFactory {
 	private final static Logger logger = LoggerFactory.getLogger(JwtUserFactory.class);
     private JwtUserFactory() {
     }
-
-    @Transactional(propagation=Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+   
     public static JwtUser create(User user) {
         return new JwtUser(
                 user.getId(),

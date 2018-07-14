@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.UserRequestPostProcessor;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.jwt.authentication.security.JwtUser;
 import com.spring.jwt.authentication.security.JwtUserFactory;
@@ -67,6 +68,7 @@ public class JwtApplicationTests {
 	}
 	
 	@Test
+	@Transactional
 	public void testUserAuthority() {
 		User user = userRepository.findById(1L).get();
 		JwtUser jwtUser = JwtUserFactory.create(user);

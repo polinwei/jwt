@@ -132,7 +132,7 @@ public class User implements java.io.Serializable {
 		this.lastpasswordresetdate = lastpasswordresetdate;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	public Set<UserAuthority> getUserAuthorities() {
 		return this.userAuthorities;
 	}
