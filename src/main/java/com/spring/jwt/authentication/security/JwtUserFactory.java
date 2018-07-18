@@ -33,23 +33,15 @@ public final class JwtUserFactory {
                 user.getLastname(),
                 user.getEmail(),
                 user.getPassword(),
-                mapToGrantedAuthorities(user.getUserAuthorities()),
+                mapToGrantedAuthorities(user.getAuthorities()),
                 user.getEnabled(),
                 user.getLastpasswordresetdate()
         );
     }
 
-    private static List<GrantedAuthority> mapToGrantedAuthorities(Set<UserAuthority> authorities) {
-    	List<GrantedAuthority> grantedAuthority = new ArrayList<>();
-    	
-    	for (UserAuthority userAuthority : authorities) {
-    		logger.info(userAuthority.getAuthority().getName());
-    		grantedAuthority.add(new SimpleGrantedAuthority(userAuthority.getAuthority().getName()));
-    		
-		}
-    	
+    private static List<GrantedAuthority> mapToGrantedAuthorities(Set<Authority> authorities) {  	
         return authorities.stream()
-                .map(UserAuthority -> new SimpleGrantedAuthority(UserAuthority.getAuthority().getName()))
+                .map(Authority -> new SimpleGrantedAuthority(Authority.getName()))
                 .collect(Collectors.toList());
     }
 }
