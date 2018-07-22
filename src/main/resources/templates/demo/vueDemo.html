@@ -10,6 +10,9 @@
 <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
 <!--Bootstrap JS-->
 <script src="/webjars/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<!--VUE JS -->
+<script src="/webjars/vue/2.5.13/vue.min.js"></script>
+
 </head>
 <body>
    <div class="container">
@@ -24,9 +27,22 @@
          <h3 class="text-muted">BORAJI.COM</h3>
       </div>
       <div class="jumbotron">
-         <h1>Using Webjars in Spring Boot application</h1>
-         <div class="alert alert-success" role="alert"><b>Server Time is</b> <th:text="${dateTime}"/></div>
+      	<div id="app">
+		  <p>{{ message }}</p>
+		</div>
+         <h1>This is Using Webjars in Spring Boot application</h1>
+         <div class="alert alert-success" role="alert"><b>Server Time is</b> <span th:text="${dateTime}"></span></div>
       </div>
    </div>
+   
+   
+<script>
+var app = new Vue({
+	  el: '#app',
+	  data: {
+	    message: 'Hello Vue! This is first program'
+	  }
+	})
+</script>   
 </body>
 </html>
