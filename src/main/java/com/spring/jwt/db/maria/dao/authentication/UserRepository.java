@@ -6,4 +6,5 @@ import com.spring.jwt.db.maria.model.authentication.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
+	User findByUsername(String username);
 }

@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 public final class JwtUserFactory {
 
-	private final static Logger logger = LoggerFactory.getLogger(JwtUserFactory.class);
     private JwtUserFactory() {
     }
    

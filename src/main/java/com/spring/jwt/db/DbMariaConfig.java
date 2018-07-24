@@ -24,7 +24,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManagerFactory",
-        basePackages = {"com.spring.jwt.db.maria.dao"}
+        basePackages = {"com.spring.jwt.db.maria.dao","com.spring.jwt.db.maria.service"}
 )
 public class DbMariaConfig {
     static final Logger logger = LoggerFactory.getLogger(DbMariaConfig.class);
