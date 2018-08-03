@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.jwt.authentication.security.JwtUserFactory;
 import com.spring.jwt.db.maria.dao.authentication.UserRepository;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
+@Transactional
 public class JwtUserDetailsService implements UserDetailsService {
 
     private final static Logger logger = LoggerFactory.getLogger(JwtUserDetailsService.class);

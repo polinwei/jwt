@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-
+@RequestMapping("/demo/vue")
 public class VueController {
 
     /**
      * vue js Test
      */
-	@GetMapping("/demo/vue")
+	@GetMapping("/dateTime")
     public String getTimeToVueDemoPage(Model model) {
     	model.addAttribute("dateTime", LocalDateTime.now());
     	return "/demo/vueDemo";

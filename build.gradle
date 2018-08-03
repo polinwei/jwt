@@ -3,10 +3,9 @@ buildscript {
 		springBootVersion = '2.0.3.RELEASE'
 		jjwtVersion = '0.9.0'
 		findbugsVersion='3.0.1'
-		bootstrapVersion = '4.1.1'
-		jqueryVersion = '3.3.1-1'
+		bootstrapVersion = '3.3.7'
+		jqueryVersion = '3.3.1'
 		vueVersion ='2.5.13'
-		
 	}
 	repositories {
 		mavenCentral()
@@ -52,6 +51,7 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile("org.springframework.boot:spring-boot-starter-freemarker")
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-security')
 	runtime('mysql:mysql-connector-java')

@@ -67,13 +67,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                // we don't need CSRF because our token is invulnerable
+                // we don't need CSRF (cross-site request forgery) because our token is invulnerable
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 
                 // don't create session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
+                
 
                 // Un-secure H2 Database
                 .antMatchers("/h2-console/**/**").permitAll()
@@ -81,7 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/auth/**","/register/**").permitAll()
 
                 // demo
-                .antMatchers("/", "/home","/demo/**").permitAll()
+                .antMatchers("/login", "/home","/demo/**", "/home/**").permitAll()
                 .anyRequest().authenticated();
 
         // Custom JWT based security filter
@@ -98,13 +99,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     public void configure(WebSecurity web) throws Exception {
         // AuthenticationTokenFilter will ignore the below paths
-        web
-            .ignoring()
+        web.ignoring()
             .antMatchers(
                     HttpMethod.POST,
                     authenticationPath
             )
-
             // allow anonymous resource requests
             .and()
             .ignoring()
@@ -115,9 +114,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                     "/favicon.ico",
                     "/**/*.html",
                     "/**/*.css",
-                    "/**/*.js"
+                    "/**/*.js",
+                    "/AdminLTE2/**"
             )
-
             // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
             .and()
             .ignoring()
