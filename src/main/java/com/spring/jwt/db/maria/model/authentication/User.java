@@ -1,5 +1,5 @@
 package com.spring.jwt.db.maria.model.authentication;
-// Generated Jul 18, 2018 5:23:47 PM by Hibernate Tools 5.2.11.Final
+// Generated Aug 6, 2018 2:21:08 PM by Hibernate Tools 5.2.11.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,6 +27,8 @@ import javax.persistence.TemporalType;
 public class User implements java.io.Serializable {
 
 	private Long id;
+	private User userByCreateUser;
+	private User userByUpdateUser;
 	private String username;
 	private String password;
 	private String firstname;
@@ -32,7 +36,13 @@ public class User implements java.io.Serializable {
 	private String email;
 	private Boolean enabled;
 	private Date lastpasswordresetdate;
+	private Date activeDate;
+	private Date inactiveDate;
+	private Date createDate;
+	private Date updateDate;
 	private Set<Authority> authorities = new HashSet<Authority>(0);
+	private Set<User> usersForCreateUser = new HashSet<User>(0);
+	private Set<User> usersForUpdateUser = new HashSet<User>(0);
 
 	public User() {
 	}
@@ -47,8 +57,12 @@ public class User implements java.io.Serializable {
 		this.lastpasswordresetdate = lastpasswordresetdate;
 	}
 
-	public User(String username, String password, String firstname, String lastname, String email, Boolean enabled,
-			Date lastpasswordresetdate, Set<Authority> authorities) {
+	public User(User userByCreateUser, User userByUpdateUser, String username, String password, String firstname,
+			String lastname, String email, Boolean enabled, Date lastpasswordresetdate, Date activeDate,
+			Date inactiveDate, Date createDate, Date updateDate, Set<Authority> authorities,
+			Set<User> usersForCreateUser, Set<User> usersForUpdateUser) {
+		this.userByCreateUser = userByCreateUser;
+		this.userByUpdateUser = userByUpdateUser;
 		this.username = username;
 		this.password = password;
 		this.firstname = firstname;
@@ -56,7 +70,13 @@ public class User implements java.io.Serializable {
 		this.email = email;
 		this.enabled = enabled;
 		this.lastpasswordresetdate = lastpasswordresetdate;
+		this.activeDate = activeDate;
+		this.inactiveDate = inactiveDate;
+		this.createDate = createDate;
+		this.updateDate = updateDate;
 		this.authorities = authorities;
+		this.usersForCreateUser = usersForCreateUser;
+		this.usersForUpdateUser = usersForUpdateUser;
 	}
 
 	@Id
@@ -69,6 +89,26 @@ public class User implements java.io.Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "create_user")
+	public User getUserByCreateUser() {
+		return this.userByCreateUser;
+	}
+
+	public void setUserByCreateUser(User userByCreateUser) {
+		this.userByCreateUser = userByCreateUser;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "update_user")
+	public User getUserByUpdateUser() {
+		return this.userByUpdateUser;
+	}
+
+	public void setUserByUpdateUser(User userByUpdateUser) {
+		this.userByUpdateUser = userByUpdateUser;
 	}
 
 	@Column(name = "username", nullable = false, length = 50)
@@ -135,6 +175,46 @@ public class User implements java.io.Serializable {
 		this.lastpasswordresetdate = lastpasswordresetdate;
 	}
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "active_date", length = 19)
+	public Date getActiveDate() {
+		return this.activeDate;
+	}
+
+	public void setActiveDate(Date activeDate) {
+		this.activeDate = activeDate;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "inactive_date", length = 19)
+	public Date getInactiveDate() {
+		return this.inactiveDate;
+	}
+
+	public void setInactiveDate(Date inactiveDate) {
+		this.inactiveDate = inactiveDate;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "create_date", length = 19)
+	public Date getCreateDate() {
+		return this.createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "update_date", length = 19)
+	public Date getUpdateDate() {
+		return this.updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_authority", catalog = "my_spring", joinColumns = {
 			@JoinColumn(name = "user_id", nullable = false, updatable = false) }, inverseJoinColumns = {
@@ -145,6 +225,24 @@ public class User implements java.io.Serializable {
 
 	public void setAuthorities(Set<Authority> authorities) {
 		this.authorities = authorities;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userByCreateUser")
+	public Set<User> getUsersForCreateUser() {
+		return this.usersForCreateUser;
+	}
+
+	public void setUsersForCreateUser(Set<User> usersForCreateUser) {
+		this.usersForCreateUser = usersForCreateUser;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userByUpdateUser")
+	public Set<User> getUsersForUpdateUser() {
+		return this.usersForUpdateUser;
+	}
+
+	public void setUsersForUpdateUser(Set<User> usersForUpdateUser) {
+		this.usersForUpdateUser = usersForUpdateUser;
 	}
 
 }

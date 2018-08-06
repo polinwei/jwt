@@ -1,5 +1,5 @@
 package com.spring.jwt.db.maria.model.authentication;
-// Generated Jul 18, 2018 5:23:47 PM by Hibernate Tools 5.2.11.Final
+// Generated Aug 6, 2018 2:21:08 PM by Hibernate Tools 5.2.11.Final
 
 import java.util.HashSet;
 import java.util.Set;

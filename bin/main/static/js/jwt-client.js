@@ -150,6 +150,9 @@ $(function () {
         $loggedInBody.append($table);
 
         $loggedIn.show();
+        if (decodedToken) {
+            $userInfo.show();
+        }
     }
 
     function appendKeyValue($table, key, value) {
