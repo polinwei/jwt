@@ -9,7 +9,8 @@
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="/AdminLTE2/bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="/AdminLTE2/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/webjars/font-awesome/5.2.0/css/all.css">
+  <link rel="stylesheet" href="/AdminLTE2/bower_components/font-awesome/css/font-awesome.min.css">  
   <!-- Ionicons -->
   <link rel="stylesheet" href="/AdminLTE2/bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
@@ -170,42 +171,24 @@
               <!-- Menu Toggle Button -->
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <!-- The user image in the navbar-->
-                <img src="/AdminLTE2/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                <i class="far fa-user"></i>
+                
                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs">Alexander Pierce</span>
+                <span class="hidden-xs">Login</span>
               </a>
               <ul class="dropdown-menu">
                 <!-- The user image in the menu -->
-                <li class="user-header">
-                  <img src="/AdminLTE2/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-
+                <li class="user-header">                  
+				  <i class="far fa-user fa-5x"></i>
                   <p>
-                    Alexander Pierce - Web Developer
-                    <small>Member since Nov. 2012</small>
+                   	您尚未登入
+                    <small>非本公司員工請離開</small>
                   </p>
-                </li>
-                <!-- Menu Body -->
-                <li class="user-body">
-                  <div class="row">
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Followers</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Sales</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Friends</a>
-                    </div>
-                  </div>
-                  <!-- /.row -->
                 </li>
                 <!-- Menu Footer-->
                 <li class="user-footer">
-                  <div class="pull-left">
-                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                  </div>
                   <div class="pull-right">
-                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                    <a href='/auth' class="btn btn-default btn-flat">Sign in</a>
                   </div>
                 </li>
               </ul>
@@ -217,3 +200,6 @@
       <!-- /.container-fluid -->
     </nav>
   </header>
+  <!-- Full Width Column -->
+  <div class="content-wrapper">
+    <div class="container">  

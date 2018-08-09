@@ -1,8 +1,6 @@
 <#include "layout/AdminLTE2/header.ftl">
 
-  <!-- Full Width Column -->
-  <div class="content-wrapper">
-    <div class="container">
+
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
@@ -43,9 +41,6 @@
         <!-- /.box -->
       </section>
       <!-- /.content -->
-    </div>
-    <!-- /.container -->
-  </div>
-  <!-- /.content-wrapper -->
+
 
 <#include "layout/AdminLTE2/footer.ftl">

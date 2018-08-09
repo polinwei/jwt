@@ -1,4 +1,8 @@
-  <footer class="main-footer">
+    </div>
+    <!-- /.container -->
+  </div>
+  <!-- /.content-wrapper -->
+    <footer class="main-footer">
     <div class="container">
       <div class="pull-right hidden-xs">
         <b>Version</b> 2.4.0

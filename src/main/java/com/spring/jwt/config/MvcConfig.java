@@ -1,6 +1,7 @@
 package com.spring.jwt.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -15,6 +16,6 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/home/auth").setViewName("home-auth");
         registry.addViewController("/hello").setViewName("hello");
         registry.addViewController("/login").setViewName("login");
-    }
+    }    
 
 }
