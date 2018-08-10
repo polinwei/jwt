@@ -75,6 +75,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 
+                // 首頁
+                .antMatchers("/login", "/home", "/home/**").permitAll()
 
                 // Un-secure H2 Database
                 .antMatchers("/h2-console/**/**").permitAll()
@@ -82,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/auth/**","/register/**").permitAll()
 
                 // demo
-                .antMatchers("/login", "/home","/demo/**", "/home/**").permitAll()
+                .antMatchers("/demo/**").permitAll()
                 .anyRequest().authenticated();
 
         // Custom JWT based security filter

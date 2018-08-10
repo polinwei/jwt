@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as spring/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,7 @@
   <link rel="stylesheet" href="/AdminLTE2/bower_components/font-awesome/css/font-awesome.min.css">  
   <!-- Ionicons -->
   <link rel="stylesheet" href="/AdminLTE2/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="/webjars/flag-icon-css/css/flag-icon.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/AdminLTE2/dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -70,7 +72,24 @@
         <!-- /.navbar-collapse -->
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
+          <!-- Language Change -->
           <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="flag-icon flag-icon-tw"></i>                
+              </a>
+              <ul class="dropdown-menu" role="menu">
+              	<!-- start language list -->
+                <li><a href="/home?lang=zh_TW"> <i class="flag-icon flag-icon-tw"></i> Chinese </a></li>
+                <li class="divider"></li>
+                <li><a href="/home?lang=en_US"><i class="flag-icon flag-icon-us"></i> 英文  </a></li>                    
+                <!-- end language list -->
+              </ul>
+            </li>
+          </ul>        
+          <!-- /.Language Change -->
+          
+          <ul class="nav navbar-nav">          	
             <!-- Messages: style can be found in dropdown.less-->
             <li class="dropdown messages-menu">
               <!-- Menu toggle button -->
@@ -174,7 +193,7 @@
                 <i class="far fa-user"></i>
                 
                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs">Login</span>
+                <span class="hidden-xs"><@spring.message "label.login"/></span>
               </a>
               <ul class="dropdown-menu">
                 <!-- The user image in the menu -->

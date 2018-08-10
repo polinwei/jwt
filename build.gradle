@@ -63,6 +63,7 @@ dependencies {
 	compile("org.webjars:jquery:${jqueryVersion}")
 	compile("org.webjars:vue:${vueVersion}")
 	compile("org.webjars:font-awesome:${fontawesomeVersion}")
+	compile("org.webjars.bowergithub.lipis:flag-icon-css:3.1.0")
 	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
