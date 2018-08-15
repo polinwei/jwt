@@ -1,4 +1,5 @@
-<#include "layout/AdminLTE2/header.ftl">
+<#include "layout/AdminLTE2/html-begin.ftl">
+<#include "layout/AdminLTE2/content-begin.ftl">
 
 
       <!-- Content Header (Page header) -->
@@ -43,4 +44,5 @@
       <!-- /.content -->
 
 
-<#include "layout/AdminLTE2/footer.ftl">
+<#include "layout/AdminLTE2/content-end.ftl">
+<#include "layout/AdminLTE2/html-end.ftl">

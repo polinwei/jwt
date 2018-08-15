@@ -30,7 +30,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean(name = "localeResolver")
     public LocaleResolver getLocaleResolver()  {
         CookieLocaleResolver resolver= new CookieLocaleResolver();   
-        resolver.setDefaultLocale(Locale.US);
+        //resolver.setDefaultLocale(Locale.US);
         resolver.setCookieDomain("jwtLocaleCookie");
         // 60 minutes 
         resolver.setCookieMaxAge(60*60); 
