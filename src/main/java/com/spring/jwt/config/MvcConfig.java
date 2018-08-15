@@ -26,23 +26,22 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login");
     }
     
-    //多語系設定
+    //多語系設定   
     @Bean(name = "localeResolver")
     public LocaleResolver getLocaleResolver()  {
         CookieLocaleResolver resolver= new CookieLocaleResolver();   
         //resolver.setDefaultLocale(Locale.US);
-        resolver.setCookieDomain("jwtLocaleCookie");
-        // 60 minutes 
+        resolver.setCookieName("myLocaleCookie");
         resolver.setCookieMaxAge(60*60); 
         return resolver;
-    } 
+    }
+     
     //多語系設定 語系切換偵測
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         LocaleChangeInterceptor localeInterceptor = new LocaleChangeInterceptor();
-        localeInterceptor.setParamName("lang");
-                  
-        registry.addInterceptor(localeInterceptor).addPathPatterns("/*");
+        localeInterceptor.setParamName("lang");                  
+        registry.addInterceptor(localeInterceptor).addPathPatterns("/*");        
     }
 
 }
