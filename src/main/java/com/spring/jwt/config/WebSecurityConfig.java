@@ -76,15 +76,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .authorizeRequests()
                 
                 // 首頁
-                .antMatchers("/login", "/home", "/home/**").permitAll()
+                .antMatchers("/login", "/home").permitAll()
 
                 // Un-secure H2 Database
                 .antMatchers("/h2-console/**/**").permitAll()
                 // JSON Web Token (JWT)認證用
-                .antMatchers("/auth/**","/register/**").permitAll()
+                .antMatchers("/register").permitAll()
 
                 // demo
-                .antMatchers("/demo/**").permitAll()
+                .antMatchers("/demo/**").permitAll()                
                 .anyRequest().authenticated();
 
         // Custom JWT based security filter

@@ -1,6 +1,8 @@
 package com.spring.jwt.authentication.security;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Objects;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -39,8 +41,8 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 		
 		logger.debug("processing authentication for '{}'", request.getRequestURL());
 
-        final String requestHeader = request.getHeader(this.tokenHeader);
-
+        final String requestHeader = Objects.isNull(request.getHeader(this.tokenHeader)) ? request.getParameter("Authorization"): request.getHeader(this.tokenHeader) ;
+        
         String username = null;
         String authToken = null;
         if (requestHeader != null && requestHeader.startsWith("Bearer ")) {

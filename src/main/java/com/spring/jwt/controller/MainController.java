@@ -9,7 +9,15 @@ public class MainController {
 	
 	@RequestMapping(value = { "/","/home" })
     public String staticResource(Model model) {
-        return "home";
+
+		return "home";
     }
+	
+	
+	@RequestMapping("/auth/home")
+	public String authHome(Model model) {
+		
+		return "home-auth";
+	}
 
 }

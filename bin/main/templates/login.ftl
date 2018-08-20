@@ -1,15 +1,15 @@
-<#include "layout/AdminLTE2/html-begin.ftl">
-<#include "layout/AdminLTE2/content-begin.ftl">
+<#include "layout/AdminLTE2/html-normal-begin.ftl">
+<body class="hold-transition login-page">
 
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>Globe Union</b></a>
+    <a href="/"><b>Globe Union</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
 
-    <form action="/auth" method="post">
+    <form id="loginForm" >
       <div class="form-group has-feedback">
         <input type="text" class="form-control" placeholder="<@spring.message "label.username"/>" required name="username">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -20,7 +20,7 @@
       </div>
       <div class="row">
         <div class="col-xs-4 pull-right">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat"><@spring.message "label.signIn"/></button>
         </div>
         <!-- /.col -->
       </div>
@@ -34,7 +34,5 @@
 </div>
 <!-- /.login-box -->
 
-
-
-<#include "layout/AdminLTE2/content-end.ftl">
-<#include "layout/AdminLTE2/html-end.ftl">
+</body>
+<#include "layout/AdminLTE2/html-normal-end.ftl">

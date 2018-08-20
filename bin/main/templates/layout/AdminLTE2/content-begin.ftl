@@ -170,21 +170,32 @@
               </a>
               <ul class="dropdown-menu">
                 <!-- The user image in the menu -->
-                <li class="user-header">                  
-				  <i class="far fa-user fa-5x"></i>
-                  <p>
-                   	您尚未登入
-                    <small>非本公司員工請離開</small>
-                  </p>
+                <li class="user-header">
+				    <form id="loginForm" >
+				      <div class="form-group has-feedback">
+				        <input type="text" class="form-control" placeholder="<@spring.message "label.username"/>" required name="username">
+				        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+				      </div>
+				      <div class="form-group has-feedback">
+				        <input type="password" class="form-control" placeholder="<@spring.message "label.password"/>" required name="password">
+				        <span class="glyphicon glyphicon-lock form-control-feedback" ></span>
+				      </div>
+				      <div class="user-body">   
+				        <div class="col-xs-4 pull-right">
+				          <button type="submit" class="btn btn-primary btn-block btn-flat"><@spring.message "label.signIn"/></button>
+				        </div>
+				        <!-- /.col -->
+				      </div>
+				    </form>				    
                 </li>
                 <!-- Menu Footer-->
                 <li class="user-footer">
                   <div class="pull-right">
-                    <a href='/auth' class="btn btn-default btn-flat">Sign in</a>
+                    <button type="submit" class="btn btn-primary btn-block btn-flat"><@spring.message "label.signIn"/></button>
                   </div>
                 </li>
               </ul>
-            </li>
+            </li><!-- /.User Account Menu -->
           </ul>
         </div>
         <!-- /.navbar-custom-menu -->
