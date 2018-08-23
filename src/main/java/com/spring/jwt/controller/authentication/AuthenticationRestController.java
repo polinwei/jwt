@@ -69,7 +69,7 @@ public class AuthenticationRestController {
         final String token = jwtTokenUtil.generateToken(userDetails);
         
         // save token in session
-        this.session.setAttribute("jwtToken", token);
+        this.session.setAttribute("jwtToken", "Bearer " + token);
         
         // Return the token
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));

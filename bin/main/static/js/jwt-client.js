@@ -36,7 +36,7 @@ $(function () {
             success: function (data, textStatus, jqXHR) {
                 console.log(data);
                 setJwtToken(data.token);
-                $.redirect('/auth/home',{ "Authorization": "Bearer " + data.token });                     
+                $.redirect('/auth/home');                     
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status === 401 || jqXHR.status === 403) {
