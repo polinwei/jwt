@@ -22,9 +22,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.session.FindByIndexNameSessionRepository;
+import org.springframework.session.Session;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +39,10 @@ public class AuthenticationRestController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+    @Autowired
+	HttpSession session;
+
+	
     @Value("${jwt.header}")
     private String tokenHeader;
 
@@ -42,7 +51,7 @@ public class AuthenticationRestController {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
+    
     @Autowired
     @Qualifier("jwtUserDetailsService")
     private UserDetailsService userDetailsService;
@@ -58,6 +67,9 @@ public class AuthenticationRestController {
         // Reload password post-security so we can generate the token
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
+        
+        // save token in session
+        this.session.setAttribute("jwtToken", token);
         
         // Return the token
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));
@@ -92,6 +104,7 @@ public class AuthenticationRestController {
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            this.session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, username);
         } catch (DisabledException e) {
             throw new AuthenticationException("User is disabled!", e);
         } catch (BadCredentialsException e) {

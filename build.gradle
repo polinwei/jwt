@@ -49,14 +49,17 @@ repositories {
 }
 
 
-dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+dependencies {	
+	compile("org.springframework.boot:spring-boot-starter-data-jpa")
+	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
 	compile("org.springframework.boot:spring-boot-starter-freemarker")
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.boot:spring-boot-starter-security')
-	runtime('mysql:mysql-connector-java')
-	compileOnly('org.projectlombok:lombok')
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile("org.springframework.boot:spring-boot-starter-security")
+	compile("org.springframework.session:spring-session-data-redis")
+	compile("org.springframework.boot:spring-boot-starter-data-redis")
+	runtime("mysql:mysql-connector-java")
+	compileOnly("org.projectlombok:lombok")
+	compile("com.maxmind.geoip2:geoip2:2.12.0")
 	compile("io.jsonwebtoken:jjwt:${jjwtVersion}")
 	compile("com.google.code.findbugs:findbugs:${findbugsVersion}")
 	compile("org.webjars:bootstrap:${bootstrapVersion}")
@@ -64,7 +67,7 @@ dependencies {
 	compile("org.webjars:vue:${vueVersion}")
 	compile("org.webjars:font-awesome:${fontawesomeVersion}")
 	compile("org.webjars.bowergithub.lipis:flag-icon-css:3.1.0")
-	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('org.springframework.security:spring-security-test')
+	compileOnly("org.springframework.boot:spring-boot-configuration-processor")
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+	testCompile("org.springframework.security:spring-security-test")
 }
