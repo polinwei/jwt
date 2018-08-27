@@ -41,7 +41,6 @@ public class AuthenticationRestController {
 	
     @Autowired
 	HttpSession session;
-
 	
     @Value("${jwt.header}")
     private String tokenHeader;
@@ -106,7 +105,7 @@ public class AuthenticationRestController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             this.session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, username);
         } catch (DisabledException e) {
-            throw new AuthenticationException("User is disabled!", e);
+            throw new AuthenticationException("User is disabled!", e);            
         } catch (BadCredentialsException e) {
             throw new AuthenticationException("Bad credentials!", e);
         }

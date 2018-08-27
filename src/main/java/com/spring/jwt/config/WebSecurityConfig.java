@@ -76,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .authorizeRequests()
                 
                 // 首頁
-                .antMatchers("/login", "/home").permitAll()
+                .antMatchers("/home").permitAll()
 
                 // Un-secure H2 Database
                 .antMatchers("/h2-console/**/**").permitAll()
@@ -85,12 +85,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
                 // demo
                 .antMatchers("/demo/**").permitAll()                
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and()
+    			.formLogin()
+    				.loginPage("/login")
+    				.permitAll()
+    				.and()
+    	        .logout()
+                    .permitAll();
 
         // Custom JWT based security filter
         JwtAuthorizationTokenFilter authenticationTokenFilter = new JwtAuthorizationTokenFilter(userDetailsService(), jwtTokenUtil, tokenHeader);
-        httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
+        //httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        //httpSecurity.addFilterAfter(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        
         // disable page caching
         httpSecurity
                 .headers()

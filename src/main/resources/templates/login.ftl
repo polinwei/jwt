@@ -1,5 +1,7 @@
 <#include "layout/AdminLTE2/html-normal-begin.ftl">
+
 <body class="hold-transition login-page">
+
 
 <div class="login-box">
   <div class="login-logo">
@@ -8,8 +10,11 @@
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
-
-    <form id="loginForm" >
+	<#if error.isPresent()>
+		<p class="alert alert-danger"><@spring.message "label.loginError"/></p>
+	</#if>
+    <form id="sloginForm" action="/login" method="post">
+      
       <div class="form-group has-feedback">
         <input type="text" class="form-control" placeholder="<@spring.message "label.username"/>" required name="username">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
