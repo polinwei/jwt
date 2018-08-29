@@ -10,11 +10,14 @@
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
-	<#if error.isPresent()>
+	<#if SPRING_SECURITY_LAST_EXCEPTION?? && SPRING_SECURITY_LAST_EXCEPTION.message?has_content>
 		<p class="alert alert-danger"><@spring.message "label.loginError"/></p>
+		${SPRING_SECURITY_LAST_EXCEPTION.message}
+		
 	</#if>
-    <form id="sloginForm" action="/login" method="post">
-      
+	
+
+    <form id="sloginForm" action="/login" method="post">      
       <div class="form-group has-feedback">
         <input type="text" class="form-control" placeholder="<@spring.message "label.username"/>" required name="username">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>

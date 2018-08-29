@@ -1,12 +1,13 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.3.RELEASE'
+		springBootVersion = '2.0.4.RELEASE'
 		jjwtVersion = '0.9.0'
 		findbugsVersion='3.0.1'
 		bootstrapVersion = '3.3.7'
 		jqueryVersion = '3.3.1'
 		vueVersion ='2.5.13'
 		fontawesomeVersion = '5.2.0'
+		jspapiVersion = '2.3.3'
 	}
 	repositories {
 		mavenCentral()
@@ -55,6 +56,8 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-freemarker")
 	compile("org.springframework.boot:spring-boot-starter-web")
 	compile("org.springframework.boot:spring-boot-starter-security")
+	compile("org.springframework.security:spring-security-taglibs")
+	compile("javax.servlet.jsp:javax.servlet.jsp-api:${jspapiVersion}")
 	compile("org.springframework.session:spring-session-data-redis")
 	compile("org.springframework.boot:spring-boot-starter-data-redis")
 	runtime("mysql:mysql-connector-java")

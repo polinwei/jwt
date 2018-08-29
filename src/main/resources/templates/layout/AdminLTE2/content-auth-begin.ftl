@@ -1,4 +1,4 @@
-
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 

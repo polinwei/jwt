@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.spring.jwt.authentication.security.AuthFailureHandler;
 import com.spring.jwt.authentication.security.JwtAuthenticationEntryPoint;
 import com.spring.jwt.authentication.security.JwtAuthorizationTokenFilter;
 import com.spring.jwt.authentication.security.JwtTokenUtil;
@@ -34,6 +35,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
+    
+    @Autowired
+    private AuthFailureHandler authFailureHandler;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -69,7 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         httpSecurity
                 // we don't need CSRF (cross-site request forgery) because our token is invulnerable
                 .csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                //.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and() // 若設定時, 則不會自動導向 login 的頁面
 
                 // don't create session
                 //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
@@ -77,18 +81,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 
                 // 首頁
                 .antMatchers("/home").permitAll()
-
                 // Un-secure H2 Database
                 .antMatchers("/h2-console/**/**").permitAll()
                 // JSON Web Token (JWT)認證用
                 .antMatchers("/register").permitAll()
-
                 // demo
-                .antMatchers("/demo/**").permitAll()                
-                .anyRequest().authenticated()
+                .antMatchers("/demo/**").permitAll()
+                
+                .anyRequest().authenticated()   // 除了以上的 URL 外, 都需要認證才可以訪問
                 .and()
     			.formLogin()
     				.loginPage("/login")
+    				//.failureHandler(authFailureHandler) // 使用 Spring 預設
+    				.successForwardUrl("/auth/home")
     				.permitAll()
     				.and()
     	        .logout()
@@ -105,6 +110,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
                 .cacheControl();
     }
+    
 
     @Override
     public void configure(WebSecurity web) throws Exception {

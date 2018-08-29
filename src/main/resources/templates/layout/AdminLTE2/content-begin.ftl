@@ -170,8 +170,9 @@
               </a>
               <ul class="dropdown-menu">
                 <!-- The user image in the menu -->
+                
                 <li class="user-header">
-				    <form id="loginForm" >
+				    <form id="sloginForm" action="/login" method="post" >
 				      <div class="form-group has-feedback">
 				        <input type="text" class="form-control" placeholder="<@spring.message "label.username"/>" required name="username">
 				        <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -180,20 +181,14 @@
 				        <input type="password" class="form-control" placeholder="<@spring.message "label.password"/>" required name="password">
 				        <span class="glyphicon glyphicon-lock form-control-feedback" ></span>
 				      </div>
-				      <div class="user-body">   
+				         
 				        <div class="col-xs-4 pull-right">
-				          <button type="submit" class="btn btn-primary btn-block btn-flat"><@spring.message "label.signIn"/></button>
+				          <button type="submit" class="btn btn-alert btn-block btn-flat"><@spring.message "label.signIn"/></button>
 				        </div>
 				        <!-- /.col -->
-				      </div>
-				    </form>				    
-                </li>
-                <!-- Menu Footer-->
-                <li class="user-footer">
-                  <div class="pull-right">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat"><@spring.message "label.signIn"/></button>
-                  </div>
-                </li>
+				      
+				   </form> 			    
+                </li>                	
               </ul>
             </li><!-- /.User Account Menu -->
           </ul>

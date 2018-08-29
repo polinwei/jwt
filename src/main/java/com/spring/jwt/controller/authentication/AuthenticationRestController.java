@@ -47,6 +47,9 @@ public class AuthenticationRestController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+    
+    @Autowired
+    HttpServletRequest request;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -104,9 +107,9 @@ public class AuthenticationRestController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             this.session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, username);
-        } catch (DisabledException e) {
+        } catch (DisabledException e) {        	
             throw new AuthenticationException("User is disabled!", e);            
-        } catch (BadCredentialsException e) {
+        } catch (BadCredentialsException e) {        	
             throw new AuthenticationException("Bad credentials!", e);
         }
     }
