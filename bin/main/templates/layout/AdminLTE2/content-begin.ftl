@@ -16,7 +16,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+          	<#if isAuthenticated?? && isAuthenticated>
+            	<li class="active"><a href="/auth/home"><@spring.message "label.staffZone"/><span class="sr-only">(current)</span></a></li>
+            </#if>
             <li><a href="#">Link</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
@@ -46,7 +48,11 @@
             <li class="dropdown notifications-menu">
               <!-- Menu toggle button -->
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="flag-icon flag-icon-tw"></i>                
+              	<#if Request.lang?? && Request.lang=="zh_TW">
+              		<i class="flag-icon flag-icon-tw"></i>
+              	<#else>
+              		<i class="flag-icon flag-icon-us"></i>
+              	</#if>                                
               </a>
               <ul class="dropdown-menu">                
                 <li>
@@ -160,18 +166,61 @@
             </li>
             <!-- User Account Menu -->
             <li class="dropdown user user-menu">
+        	<#if isAuthenticated?? && isAuthenticated>
+	          <!-- User:Authenticated Account Menu -->
+	          <li class="dropdown user user-menu">
+	            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+	              <img src="/AdminLTE2/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+	              <span class="hidden-xs">${principal.username}</span>
+	            </a>
+	            <ul class="dropdown-menu">
+	              <!-- User image -->
+	              <li class="user-header">
+	                <img src="/AdminLTE2/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+	
+	                <p>
+	                  ${principal.username} - ${principal.authorities[0]}
+	                  <small>Member since Nov. 2012</small>
+	                </p>
+	              </li>
+	              <!-- Menu Body -->
+	              <li class="user-body">
+	                <div class="row">
+	                  <div class="col-xs-4 text-center">
+	                    <a href="#">Followers</a>
+	                  </div>
+	                  <div class="col-xs-4 text-center">
+	                    <a href="#">Sales</a>
+	                  </div>
+	                  <div class="col-xs-4 text-center">
+	                    <a href="#">Friends</a>
+	                  </div>
+	                </div>
+	                <!-- /.row -->
+	              </li>
+	              <!-- Menu Footer-->
+	              <li class="user-footer">
+	                <div class="pull-left">
+	                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+	                </div>
+	                <div class="pull-right">
+	                  <a href="#" id="logoutButton" class="btn btn-default btn-flat"><@spring.message "label.singOut"/></a>
+	                </div>
+	              </li>
+	            </ul>
+	          </li> <!-- ./User:Authenticated Account Menu -->            	
+            <#else>
               <!-- Menu Toggle Button -->
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <!-- The user image in the navbar-->
                 <i class="far fa-user"></i>
                 
                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs"><@spring.message "label.login"/></span>
+                <span class="hidden-xs"><@spring.message "label.login"/></span> 
               </a>
               <ul class="dropdown-menu">
                 <!-- The user image in the menu -->
-                
-                <li class="user-header">
+                <li class="user-header">                
 				    <form id="sloginForm" action="/login" method="post" >
 				      <div class="form-group has-feedback">
 				        <input type="text" class="form-control" placeholder="<@spring.message "label.username"/>" required name="username">
@@ -182,15 +231,15 @@
 				        <span class="glyphicon glyphicon-lock form-control-feedback" ></span>
 				      </div>
 				         
-				        <div class="col-xs-4 pull-right">
+				      <div class="col-xs-4 pull-right">
 				          <button type="submit" class="btn btn-alert btn-block btn-flat"><@spring.message "label.signIn"/></button>
-				        </div>
-				        <!-- /.col -->
-				      
-				   </form> 			    
-                </li>                	
+				      </div>
+				      <!-- /.col -->				      
+				    </form>				
+                </li>
               </ul>
-            </li><!-- /.User Account Menu -->
+              </#if>
+            </li><!-- /.User Account Menu -->     
           </ul>
         </div>
         <!-- /.navbar-custom-menu -->

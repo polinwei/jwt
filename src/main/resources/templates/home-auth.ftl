@@ -14,6 +14,8 @@ This place put Main Content 放主要的程式
 <@security.authorize access="isAuthenticated()">
 <br/>    authenticated as <@security.authentication property="principal.username" /> 
 </@security.authorize>
+${Request.lang!"no Lang"}
+
 
 
 <#include "layout/AdminLTE2/controlSidebar.ftl">

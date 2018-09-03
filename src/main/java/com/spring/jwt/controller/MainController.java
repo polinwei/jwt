@@ -1,8 +1,12 @@
 package com.spring.jwt.controller;
 
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -10,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,15 +28,24 @@ public class MainController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());	
 	@Autowired
 	HttpSession session;
+	
+	private Authentication authentication;
 			
 	@RequestMapping(value = { "/","/home" })
-    public String staticResource(Model model) {
+    public String staticResource(Model model,HttpServletRequest request) {
+		SecurityContextImpl sci = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+		if ( !Objects.isNull(sci) ) {
+			authentication = sci.getAuthentication();
+			model.addAttribute("isAuthenticated", authentication.isAuthenticated());
+			model.addAttribute("principal", authentication.getPrincipal());
+		}
+
 		return "home";
     }
 	
 	@RequestMapping("/login")
     public String login(Model model){
-		Authentication authentication = null;
+		authentication=null;
 		authentication = SecurityContextHolder.getContext().getAuthentication();
 		
 		if (!authentication.getPrincipal().equals("anonymousUser")) {
@@ -42,7 +56,7 @@ public class MainController {
 	
 	@RequestMapping("/auth/home")
 	public String authHome(Model model) {
-		
+		authentication = SecurityContextHolder.getContext().getAuthentication();
 		return "home-auth";
 	}
 

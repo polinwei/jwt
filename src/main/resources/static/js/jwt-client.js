@@ -84,7 +84,7 @@ $(function () {
 
     function doLogout() {
         removeJwtToken();
-        window.location.href = "/";
+        window.location.href = "/logout";
     }
 
     function createAuthorizationTokenHeader() {

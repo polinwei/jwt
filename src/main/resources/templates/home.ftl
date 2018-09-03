@@ -1,6 +1,5 @@
 <#include "layout/AdminLTE2/html-begin.ftl">
-<#include "layout/AdminLTE2/content-begin.ftl">
-
+<#include "layout/AdminLTE2/content-begin.ftl">     
 
       <!-- Content Header (Page header) -->
       <section class="content-header">

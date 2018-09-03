@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +18,8 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
+import com.spring.jwt.interceptor.LangChangeInterceptor;
+
 import freemarker.ext.jsp.TaglibFactory;
 
 @Configuration
@@ -30,8 +31,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/demo/bank").setViewName("demo/accountsPage");
         registry.addViewController("/demo/vue").setViewName("demo/vueDemo");
         registry.addViewController("/home").setViewName("home");
-        registry.addViewController("/").setViewName("home");
-        //registry.addViewController("/auth/home").setViewName("home-auth");
+        registry.addViewController("/").setViewName("home");        
         registry.addViewController("/hello").setViewName("hello");
         registry.addViewController("/login").setViewName("login");
     }
@@ -50,8 +50,11 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         LocaleChangeInterceptor localeInterceptor = new LocaleChangeInterceptor();
-        localeInterceptor.setParamName("lang");                  
-        registry.addInterceptor(localeInterceptor).addPathPatterns("/*");        
+        LangChangeInterceptor langChangeInterceptor = new LangChangeInterceptor();
+        localeInterceptor.setParamName("lang");       
+        registry.addInterceptor(localeInterceptor).addPathPatterns("/**");
+        langChangeInterceptor.setParamName("lang");
+        registry.addInterceptor(langChangeInterceptor).addPathPatterns("/**");
     }
     
     /**

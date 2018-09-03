@@ -1,4 +1,3 @@
-<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -22,6 +21,29 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
+          <li class="dropdown notifications-menu">
+              <!-- Menu toggle button -->
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <#if Request.lang?? && Request.lang=="zh_TW">
+              		<i class="flag-icon flag-icon-tw"></i>
+              	<#else>
+              		<i class="flag-icon flag-icon-us"></i>
+              	</#if> 
+              </a>
+              <ul class="dropdown-menu">                
+                <li>
+                  <!-- Inner Menu: contains the notifications -->
+                  <ul class="menu">
+                    <li><!-- start language list -->
+                      <a href='${springMacroRequestContext.getRequestUri()}?lang=zh_TW'><i class="flag-icon flag-icon-tw text-aqua"></i> Chinese </a>
+                    </li>
+                    <li><a href="${springMacroRequestContext.getRequestUri()}?lang=en_US"><i class="flag-icon flag-icon-us text-aqua"></i> 英文  </a></li>
+                    <!-- end language list -->
+                  </ul>
+                </li>                
+              </ul>
+            </li> 
+          
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-envelope-o"></i>
@@ -219,10 +241,11 @@
             </ul>
           </li>
           <!-- User Account: style can be found in dropdown.less -->
+          <!-- User:Authenticated Account Menu -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="/AdminLTE2/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span class="hidden-xs"><@security.authentication property="principal.username" /></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -230,7 +253,7 @@
                 <img src="/AdminLTE2/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce - Web Developer
+                  <@security.authentication property="principal.username" /> - <@security.authentication property="principal.authorities[0]" />
                   <small>Member since Nov. 2012</small>
                 </p>
               </li>
@@ -255,11 +278,11 @@
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" id="logoutButton" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="#" id="logoutButton" class="btn btn-default btn-flat"><@spring.message "label.singOut"/></a>
                 </div>
               </li>
             </ul>
-          </li>
+          </li> <!-- ./User:Authenticated Account Menu -->
           <!-- Control Sidebar Toggle Button -->
           <li>
             <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
@@ -279,7 +302,7 @@
           <img src="/AdminLTE2/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p><@security.authentication property="principal.username" /></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -297,7 +320,15 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">MAIN NAVIGATION</li>
+        <li class="header"><@spring.message "label.mainMenu"/></li>
+        <li>
+          <a href="/home">
+            <i class="fa fa-th"></i> <span><@spring.message "label.publicZone"/></span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-green">new</small>
+            </span>
+          </a>
+        </li>        
         <li class="active treeview menu-open">
           <a href="#">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
@@ -324,14 +355,6 @@
             <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
             <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
           </ul>
-        </li>
-        <li>
-          <a href="pages/widgets.html">
-            <i class="fa fa-th"></i> <span>Widgets</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green">new</small>
-            </span>
-          </a>
         </li>
         <li class="treeview">
           <a href="#">
