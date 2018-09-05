@@ -1,8 +1,6 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-
   <header class="main-header">
-
     <!-- Logo -->
     <a href="/auth/home" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->

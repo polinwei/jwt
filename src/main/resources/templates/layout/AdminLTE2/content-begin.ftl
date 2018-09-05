@@ -221,7 +221,7 @@
               <ul class="dropdown-menu">
                 <!-- The user image in the menu -->
                 <li class="user-header">                
-				    <form id="sloginForm" action="/login" method="post" >
+				    <form id="loginForm" action="/login" method="post" >
 				      <div class="form-group has-feedback">
 				        <input type="text" class="form-control" placeholder="<@spring.message "label.username"/>" required name="username">
 				        <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -232,7 +232,7 @@
 				      </div>
 				         
 				      <div class="col-xs-4 pull-right">
-				          <button type="submit" class="btn btn-alert btn-block btn-flat"><@spring.message "label.signIn"/></button>
+				          <button id="btn-login" type="submit" class="btn btn-alert btn-block btn-flat"><@spring.message "label.signIn"/></button>
 				      </div>
 				      <!-- /.col -->				      
 				    </form>				

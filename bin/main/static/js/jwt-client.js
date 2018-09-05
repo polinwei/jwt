@@ -10,7 +10,6 @@ $(function () {
     var $loggedInBody = $("#loggedInBody");
     var $response = $("#response");
     var $login = $("#login");
-    var $register = $("#register")
     var $userInfo = $("#userInfo").hide();
 
     // FUNCTIONS =============================================================
@@ -26,7 +25,7 @@ $(function () {
         localStorage.removeItem(TOKEN_KEY);
     }
 
-    function doLogin(loginData) {
+    function doJWTLogin(loginData) {
         $.ajax({
             url: "/auth",
             type: "POST",
@@ -35,8 +34,7 @@ $(function () {
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
                 console.log(data);
-                setJwtToken(data.token);
-                $.redirect('/auth/home');                     
+                setJwtToken(data.token);                
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status === 401 || jqXHR.status === 403) {
@@ -52,21 +50,15 @@ $(function () {
         });
     }
 
-    function doRegister(registerData) {
+    function doGetAuthToken() {
         $.ajax({
-            url: "/register",
-            type: "POST",
-            data: JSON.stringify(registerData),
+            url: "/auth-token",
+            type: "POST",            
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
                 console.log(data);
-                setJwtToken(data.token);
-                $login.hide();
-                $register.hide();
-                $notLoggedIn.hide();
-                showTokenInformation();
-                showUserInformation();
+                setJwtToken(data.token);                
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status === 401 || jqXHR.status === 403) {
@@ -158,47 +150,19 @@ $(function () {
     }
 
     // REGISTER EVENT LISTENERS =============================================================
-    $("#loginForm").submit(function (event) {
+    
+    $("#jwtLoginForm").submit(function (event) {
         event.preventDefault();
 
         var $form = $(this);
         var formData = {
             username: $form.find('input[name="username"]').val(),
             password: $form.find('input[name="password"]').val()
-        };
-
-        doLogin(formData);
-    });
-
-    $("#registerForm").submit(function (event) {
-        event.preventDefault();
-
-        var $form = $(this);
-        var formData = {
-            username: $form.find('input[name="username"]').val(),
-            password: $form.find('input[name="password"]').val()
-        };
-
-        doRegister(formData);
+        };        
+        doJWTLogin(formData);        
     });
 
     $("#logoutButton").click(doLogout);
-
-    $("#exampleServiceBtn").click(function () {
-        $.ajax({
-            url: "/persons",
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            headers: createAuthorizationTokenHeader(),
-            success: function (data, textStatus, jqXHR) {
-                showResponse(jqXHR.status, JSON.stringify(data));
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                showResponse(jqXHR.status, errorThrown);
-            }
-        });
-    });
 
     $("#adminServiceBtn").click(function () {
         $.ajax({
@@ -215,15 +179,9 @@ $(function () {
         });
     });
 
-    $loggedIn.click(function () {
-        $loggedIn
-            .toggleClass("text-hidden")
-            .toggleClass("text-shown");
-    });
 
     // INITIAL CALLS =============================================================
-    if (getJwtToken()) {
-        //window.location.href = "/home/auth";
-        showUserInformation();
+    if (!getJwtToken()) {        
+    	doGetAuthToken();
     }
 });

@@ -23,9 +23,10 @@
 
 <!-- AdminLTE for demo purposes -->
 <script src="/AdminLTE2/dist/js/demo.js"></script>
-
+<script src="/js/jquery.redirect/jquery.redirect.js"></script>
+<@security.authorize access="isAuthenticated()">
 <script src="/js/jwt-client.js"></script>
 <script src="/js/jwt-decode.min.js"></script>
-<script src="/js/jquery.redirect/jquery.redirect.js"></script>
+</@security.authorize>
 </body>
 </html>

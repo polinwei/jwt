@@ -19,6 +19,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -76,6 +78,19 @@ public class AuthenticationRestController {
         // Return the token
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));
     }
+    
+    @RequestMapping(value = "${jwt.route.authentication.auth.token}", method = RequestMethod.POST)
+    public ResponseEntity<?> createAuthenticationToken() throws Exception {
+
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Reload Authentication post-security so we can generate the token
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
+        final String token = jwtTokenUtil.generateToken(userDetails); 
+        
+        // Return the token
+        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+    }    
 
     @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {

@@ -23,11 +23,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.jwt.controller.authentication.AuthenticationRestController;
+
 @Controller
 public class MainController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());	
 	@Autowired
 	HttpSession session;
+	@Autowired
+	AuthenticationRestController authenticationRC;
 	
 	private Authentication authentication;
 			
