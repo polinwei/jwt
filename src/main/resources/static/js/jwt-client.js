@@ -52,7 +52,7 @@ $(function () {
 
     function doGetAuthToken() {
         $.ajax({
-            url: "/auth-token",
+            url: "/get-auth-token",
             type: "POST",            
             contentType: "application/json; charset=utf-8",
             dataType: "json",
