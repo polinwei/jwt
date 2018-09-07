@@ -73,6 +73,31 @@ $(function () {
             }
         });
     }
+    
+    function doRefreshToken() {
+        $.ajax({
+            url: "/refresh-token",
+            type: "GET",            
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            headers: createAuthorizationTokenHeader(),
+            success: function (data, textStatus, jqXHR) {
+                console.log(data);
+                setJwtToken(data.token);                
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status === 401 || jqXHR.status === 403) {
+                    $('#loginErrorModal')
+                        .modal("show")
+                        .find(".modal-body")
+                        .empty()
+                        .html("<p>Message from server:<br>" + jqXHR.responseText + "</p>");
+                } else {
+                    throw new Error("an unexpected error occured: " + errorThrown);
+                }
+            }
+        });
+    }    
 
     function doLogout() {
         removeJwtToken();
@@ -117,22 +142,23 @@ $(function () {
     function showTokenInformation() {
         var jwtToken = getJwtToken();
         var decodedToken = jwt_decode(jwtToken);
-
+        
         $loggedInBody.append($("<h4>").text("Token"));
         $loggedInBody.append($("<div>").text(jwtToken).css("word-break", "break-all"));
         $loggedInBody.append($("<h4>").text("Token claims"));
 
         var $table = $("<table>")
             .addClass("table table-striped");
-        appendKeyValue($table, "sub", decodedToken.sub);
-        appendKeyValue($table, "iat", decodedToken.iat);
-        appendKeyValue($table, "exp", decodedToken.exp);
-
-        $loggedInBody.append($table);
-
-        $loggedIn.show();
-        if (decodedToken) {
-            $userInfo.show();
+        appendKeyValue($table, "User:", decodedToken.sub);
+        appendKeyValue($table, "Issued At:", moment.unix(decodedToken.iat));
+        appendKeyValue($table, "Expiration:", moment.unix(decodedToken.exp));
+        appendKeyValue($table, "Scopes:", decodedToken.scopes);
+	
+	    if (decodedToken) {    
+	        $.alert({
+	            title: 'JWT Token',
+	            content: $table,
+	        });
         }
     }
 
@@ -178,10 +204,14 @@ $(function () {
             }
         });
     });
+    
+    $("#tokenInfo").click(showTokenInformation);
 
 
     // INITIAL CALLS =============================================================
     if (!getJwtToken()) {        
     	doGetAuthToken();
+    } else {
+    	doRefreshToken();
     }
 });

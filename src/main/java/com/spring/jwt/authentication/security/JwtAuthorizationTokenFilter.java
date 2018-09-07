@@ -63,13 +63,11 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 			SessionDetails details = new SessionDetails();
 			details.setAccessType(request.getHeader("User-Agent"));
 			details.setLocation(remoteAddr + " " + geoLocation);
-			authToken = (String) session.getAttribute("jwtToken");
 			session.setAttribute("SESSION_DETAILS", details);
 		}
-		
-		
-        //final String requestHeader = Objects.isNull(request.getHeader(this.tokenHeader)) ? request.getParameter("Authorization"): request.getHeader(this.tokenHeader) ;
-		final String requestHeader = Objects.isNull(authToken)? request.getHeader(this.tokenHeader) : authToken;
+		        
+		//final String requestHeader = Objects.isNull(authToken)? request.getHeader(this.tokenHeader) : authToken;
+		final String requestHeader = request.getHeader(this.tokenHeader);
 		
         if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
             authToken = requestHeader.substring(7);

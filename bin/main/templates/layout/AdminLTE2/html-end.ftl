@@ -19,11 +19,16 @@
 <script src="/AdminLTE2/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- ChartJS -->
 <script src="/AdminLTE2/bower_components/chart.js/Chart.js"></script>
+<!-- date-range-picker -->
+<script src="/AdminLTE2/bower_components/moment/min/moment.min.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 
 <!-- AdminLTE for demo purposes -->
 <script src="/AdminLTE2/dist/js/demo.js"></script>
-<script src="/js/jquery.redirect/jquery.redirect.js"></script>
+
+<script src="/js/jquery-confirm/jquery-confirm.min.js"></script>
+<script src="/js/jquery-fancybox/jquery.fancybox.min.js"></script>
+<script src="/js/jquery-redirect/jquery.redirect.js"></script>
 <@security.authorize access="isAuthenticated()">
 <script src="/js/jwt-client.js"></script>
 <script src="/js/jwt-decode.min.js"></script>
