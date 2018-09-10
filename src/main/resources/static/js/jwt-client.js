@@ -92,6 +92,25 @@ $(function () {
                         .find(".modal-body")
                         .empty()
                         .html("<p>Message from server:<br>" + jqXHR.responseText + "</p>");
+                } else if (jqXHR.status === 500){
+                	console.log(jqXHR.responseText);
+                	var responseText = jQuery.parseJSON(jqXHR.responseText);
+                	$.confirm({
+                        icon: 'fa fa-warning',
+                        title: 'JWT Token expired',
+                        content: responseText.message ,
+                        buttons: {
+                            info: {
+                                btnClass: 'btn-blue',
+                                text: "Token will be renew",
+                                action: function () {
+                                	removeJwtToken();
+                                	doGetAuthToken();
+                                }
+                            }
+                        }
+                    });                    
+                    
                 } else {
                     throw new Error("an unexpected error occured: " + errorThrown);
                 }
@@ -142,11 +161,6 @@ $(function () {
     function showTokenInformation() {
         var jwtToken = getJwtToken();
         var decodedToken = jwt_decode(jwtToken);
-        
-        $loggedInBody.append($("<h4>").text("Token"));
-        $loggedInBody.append($("<div>").text(jwtToken).css("word-break", "break-all"));
-        $loggedInBody.append($("<h4>").text("Token claims"));
-
         var $table = $("<table>")
             .addClass("table table-striped");
         appendKeyValue($table, "User:", decodedToken.sub);
