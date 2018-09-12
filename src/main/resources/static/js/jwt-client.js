@@ -67,7 +67,7 @@ $(function () {
                         .find(".modal-body")
                         .empty()
                         .html("<p>Message from server:<br>" + jqXHR.responseText + "</p>");
-                } else {
+                } else if (jqXHR.status !== 200) {
                     throw new Error("an unexpected error occured: " + errorThrown);
                 }
             }

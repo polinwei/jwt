@@ -326,8 +326,21 @@
               <small class="label pull-right bg-green">new</small>
             </span>
           </a>
-        </li>        
+        </li>
         <li class="active treeview menu-open">
+          <a href="#">
+            <i class="fa fa-edit"></i> <span>Security</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="/security/authority"><i class="fa fa-circle-o"></i> Authorities </a></li>
+            <li><a href="/security/user"><i class="fa fa-circle-o"></i> Users </a></li>
+          </ul>
+        </li>        
+        
+        <li class="treeview">
           <a href="#">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
             <span class="pull-right-container">
@@ -336,7 +349,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-            <li class="active"><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+            <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -497,7 +510,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Dashboard
+        <#if programName??>${programName} <#else> <@spring.message "program.notDefine"/> </#if>
         <small>Version 2.0</small>
       </h1>
       <ol class="breadcrumb">
