@@ -76,7 +76,19 @@
 <script src="/js/jwt-client.js"></script>
 <script src="/js/jwt-decode.min.js"></script>
 </@security.authorize>
-
+<!-- pdfmake 中文字 -->
+<script>
+$(document).ready(function() {
+	pdfMake.fonts = {
+		Roboto: {
+            normal: 'kaiu.ttf',
+            bold: 'kaiu.ttf',
+            italics: 'kaiu.ttf',
+            bolditalics: 'kaiu.ttf'
+        }
+    };	
+  })
+</script>    
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>

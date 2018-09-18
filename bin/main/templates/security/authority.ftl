@@ -1,8 +1,6 @@
 <#include "/layout/AdminLTE2/html-begin.ftl">
 <#include "/layout/AdminLTE2/content-auth-begin.ftl">
 
-<button onclick="down('pdf文件中文顯示')">PDF下載</button>
-
       <!-- SELECT2 EXAMPLE -->
       <div class="box box-danger">
         <div class="box-header with-border">
@@ -86,86 +84,56 @@
 
 <!-- page script -->
 <script>
-function down(data) {
-    var dd = {
-        content: [
-            data,
-            'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines'
-        ],
-        defaultStyle: {
-            font: 'kaiu'
-        }
-    };
-    pdfMake.fonts = {
-    		kaiu: {
-            normal: 'kaiu.ttf',
-            bold: 'kaiu.ttf',
-            italics: 'kaiu.ttf',
-            bolditalics: 'kaiu.ttf'
-        }
-    };
-    pdfMake.createPdf(dd).download();
-}
-
 $(document).ready(function() {
 	
-	pdfMake.fonts = {
-		Roboto: {
-            normal: 'kaiu.ttf',
-            bold: 'kaiu.ttf',
-            italics: 'kaiu.ttf',
-            bolditalics: 'kaiu.ttf'
-        }
-    };	
-	
-	  $('#tblAuthority').DataTable({    	
-    	ajax: {url:"/authentication/authorities",dataSrc:""},
-    	columns: [
-    		{ data: "id", visible: false},
-            { data: "name" },
-            { data: "description" },
-            {
-              data: "id", render: function(data, type, row, meta) {                  
-                  return '<a href='+data+' class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i>Edit</a> <a href='+data+' class="btn btn-xs btn-danger"><i class="fa fa-trash-o">Delete</a>'
-              },
-              className: "center",              
-            }
-        ],
-        dom: 'lrBtip',        
-        buttons: [
-        	'copy','excel', 
-        	{
-        		extend: 'pdf',
-        		text: 'PDF',
-        		className: "btn btn-xs btn-primary",
-        		'title': 'Authority List',                 
-                'download': 'open',//直接在視窗開啟 
-        	},
-        	{
-                extend: 'csv',
-                text: 'CSV',
-                className: "btn btn-xs btn-primary",
-                bom : true
-            }, 
-            {
-                text: 'My button',
-                className: "btn btn-xs btn-primary",
-                action: function ( e, dt, node, config ) {
-                    alert( 'Button activated' );
-                }
-            },
-            {
-                text: 'Reload',
-                className: "btn btn-xs btn-primary",
-                action: function ( e, dt, node, config ) {
-                    dt.ajax.reload();
-                }
-            }            
-        ]
-        
-    });	  
+  $('#tblAuthority').DataTable({    	
+   	ajax: {url:"/authentication/authorities",dataSrc:""},
+   	columns: [
+   		{ data: "id", visible: false},
+           { data: "name" },
+           { data: "description" },
+           {
+             data: "id", render: function(data, type, row, meta) {                  
+                 return '<a href='+data+' class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i>Edit</a> <a href='+data+' class="btn btn-xs btn-danger"><i class="fa fa-trash-o">Delete</a>'
+             },
+             className: "center",              
+           }
+       ],
+       dom: 'lrBtip',        
+       buttons: [
+       	'copy','excel', 
+       	{
+       		extend: 'pdf',
+       		text: 'PDF',
+       		className: "btn btn-xs btn-primary",
+       		'title': 'Authority List',                 
+               'download': 'open',//直接在視窗開啟 
+       	},
+       	{
+               extend: 'csv',
+               text: 'CSV',
+               className: "btn btn-xs btn-primary",
+               bom : true
+           }, 
+           {
+               text: 'My button',
+               className: "btn btn-xs btn-primary",
+               action: function ( e, dt, node, config ) {
+                   alert( 'Button activated' );
+               }
+           },
+           {
+               text: 'Reload',
+               className: "btn btn-xs btn-primary",
+               action: function ( e, dt, node, config ) {
+                   dt.ajax.reload();
+               }
+           }            
+       ]
+       
+   });	  
 
-  })
+})
 </script>
 
 <#include "/layout/AdminLTE2/controlSidebar.ftl">
