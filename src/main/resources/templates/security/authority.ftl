@@ -20,12 +20,19 @@
               <div class="form-group">
                 <label for="authorityName"><@spring.message "program.authority.name" /></label>
                 <input type="text" class="form-control" id="authorityName" placeholder="<@spring.message "program.authority.name" />" name="name" value='${authority.name!""}' required>
-                
+                <#if authority??>  
+                	<@spring.bind "authority.name" />
+    				<@spring.showErrors "<br />" "bg-red"/>
+                </#if>                
               </div>
               <!-- /.form-group -->
               <div class="form-group">                
                 <label for="authorityDescription"><@spring.message "program.authority.description" /></label>
                 <input type="text" class="form-control" id="authorityDescription" placeholder="<@spring.message "program.authority.description" />" name="description" value='${authority.description!""}' required>
+                <#if authority??>  
+                	<@spring.bind "authority.description" />
+    				<@spring.showErrors "<br />" "bg-red"/>
+                </#if>
               </div>
               <!-- /.form-group -->
             </div><!-- /.col -->

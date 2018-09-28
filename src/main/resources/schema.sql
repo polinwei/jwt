@@ -40,6 +40,7 @@ update_date datetime,
 create_user bigint,
 update_user bigint,
 CONSTRAINT user_pkey PRIMARY KEY (id),
+CONSTRAINT uk_user_username UNIQUE KEY(username),
 CONSTRAINT fk_user_create_user FOREIGN KEY (create_user) REFERENCES user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
 CONSTRAINT fk_user_update_user FOREIGN KEY (update_user) REFERENCES user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
 );
@@ -51,7 +52,8 @@ CREATE TABLE authority
 id bigint NOT NULL AUTO_INCREMENT,
 name VARCHAR(50) NOT NULL,
 description VARCHAR(100) NOT NULL,
-CONSTRAINT authority_pkey PRIMARY KEY (id)
+CONSTRAINT authority_pkey PRIMARY KEY (id),
+CONSTRAINT uk_authority_name UNIQUE KEY(name)
 );
 
 CREATE TABLE user_authority
