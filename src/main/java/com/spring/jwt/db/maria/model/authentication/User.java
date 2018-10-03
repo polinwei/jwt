@@ -222,7 +222,7 @@ public class User implements java.io.Serializable {
 	@JoinTable(name = "user_authority", joinColumns = {
 			@JoinColumn(name = "user_id", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "authority_id", nullable = false, updatable = false) })
-	@JsonManagedReference
+	//@JsonManagedReference
 	public Set<Authority> getAuthorities() {
 		return this.authorities;
 	}

@@ -32,8 +32,8 @@
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <script src="/js/oss-maxcdn-com/html5shiv.min.js"></script>
+  <script src="/js/oss-maxcdn-com/respond.min.js"></script> 
   <![endif]-->
 
 <!-- jQuery 3 -->
@@ -76,8 +76,9 @@
 <script src="/js/jwt-client.js"></script>
 <script src="/js/jwt-decode.min.js"></script>
 </@security.authorize>
-<!-- pdfmake 中文字 -->
+
 <script>
+<!-- pdfmake 中文字 -->
 $(document).ready(function() {
 	pdfMake.fonts = {
 		Roboto: {
@@ -87,7 +88,25 @@ $(document).ready(function() {
             bolditalics: 'kaiu.ttf'
         }
     };	
-  })
+})
+
+<!-- serialize Form into an object, data = JSON.stringify( $('#myForm').serializeObject() ); -->  
+$.fn.serializeObject = function(){
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
 </script>    
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">

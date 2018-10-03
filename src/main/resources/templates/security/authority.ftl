@@ -40,7 +40,7 @@
           </div><!-- /.row -->
           <div class="row">
 		      <div class="col-xs-6">
-		          <button id="btn-login" type="submit" class="btn btn-alert "><@spring.message "label.submit"/></button>
+		          <button type="submit" class="btn btn-primary "><@spring.message "label.submit"/></button>
 		      </div>          
           </div> <!-- /.row -->
         </div>
@@ -50,6 +50,7 @@
         </div>
       </div>
       <!-- /.box -->
+      </form>
 <!-- /.form id="authorityForm" -->
 
       <!-- Default box -->
@@ -74,6 +75,7 @@
               <th><@spring.message "program.authority.name" /></th>
               <th><@spring.message "program.authority.description" /></th>
               <th>Submit Options</th>
+              <th>Ajax Options</th>
             </tr>
             </thead>
             
@@ -95,6 +97,56 @@
         <!-- /.box-footer-->
       </div>
       <!-- /.box -->
+
+        <div class="modal fade" id="modal-authority" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><@spring.message "program.block.manipulate" /></h4>
+              </div>
+              <div class="modal-body">
+                
+				<!-- ajax-form id="authorityAjaxForm" -->
+				<form id="authorityAjaxForm" action="/authentication/authority" method="post">
+			      
+			      <div class="box box-danger">
+			        <!-- /.box-header -->
+			        <div class="box-body">
+			          <div class="row">
+			            <div class="col-md-6">
+			              <div class="form-group">
+			                <label for="authorityName"><@spring.message "program.authority.name" /></label>
+			                <input type="text" class="form-control" id="authorityAjaxName" placeholder="<@spring.message "program.authority.name" />" name="name" value='${authority.name!""}' required>             
+			              </div>
+			              <!-- /.form-group -->
+			              <div class="form-group">                
+			                <label for="authorityDescription"><@spring.message "program.authority.description" /></label>
+			                <input type="text" class="form-control" id="authorityAjaxDescription" placeholder="<@spring.message "program.authority.description" />" name="description" value='${authority.description!""}' required>
+			              </div>
+			              <!-- /.form-group -->
+			            </div><!-- /.col -->
+			            
+			          </div><!-- /.row -->
+			          <div class="row">
+					      <div class="col-xs-6">
+					          <button type="submit" class="btn btn-primary "><@spring.message "label.submit"/></button>
+					          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					      </div>          
+			          </div> <!-- /.row -->
+			        </div><!-- /.box-body -->
+			      </div><!-- /.box -->
+			      </form>
+				<!-- /.ajax-form id="authorityAjaxForm" --> 
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
 
 <!-- page script -->
 <script>
@@ -127,7 +179,7 @@ function deleteClick (obj) {
 $('#tblAuthority').DataTable({    	
  	ajax: {url:"/authentication/authorities",dataSrc:"",
   		'beforeSend': function (request) {
-			        request.setRequestHeader("Authorization", "Bearer "+localStorage.getItem("jwtToken"));
+			        request.setRequestHeader("Authorization", "Bearer "+localStorage.getItem("jwtToken") );
 			    }
 		},
  	columns: [
@@ -137,9 +189,15 @@ $('#tblAuthority').DataTable({
       {
         data: "id", render: function(data, type, row, meta) {                  
                return '<a href=/security/authorityEdit/'+data+' class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i>Edit</a>'+
-               		  '<a href="#" '+'data-url=/security/authorityDelete/'+data+' class="btn btn-xs btn-danger" onclick="deleteClick(this)"><i class="fa fa-trash-o">Delete</a>'                 		
+               		  '<a href="#" data-url=/security/authorityDelete/'+data+' class="btn btn-xs btn-danger" onclick="deleteClick(this)"><i class="fa fa-trash-o">Delete</a>'                 		
         },
            className: "center",              
+      },
+      {
+    	data: "id", render: function(data, type, row, meta) {                  
+              return '<a href="#" data-url=/authentication/authority/'+data+' class="btn btn-xs btn-primary btnDTView" ><i class="fa fa-pencil"></i>Edit</a>'+
+              		 '<a href="#" data-url=/security/authorityDelete/'+data+' class="btn btn-xs btn-danger" onclick="deleteClick(this)"><i class="fa fa-trash-o">Delete</a>'                 		
+       	}  
       }],
   dom: 'lrBtip',        
   buttons: [
@@ -158,10 +216,11 @@ $('#tblAuthority').DataTable({
              bom : true
          }, 
          {
-             text: 'My button',
+             text: 'Add Role (Ajax)',
              className: "btn btn-xs btn-primary",
              action: function ( e, dt, node, config ) {
-                 alert( 'Button activated' );
+                 //alert( 'Button activated' );
+                 $('#modal-authority').modal('show');
              }
          },
          {
@@ -173,6 +232,68 @@ $('#tblAuthority').DataTable({
          }            
      ]
 });	  
+
+// 表單以 Ajax 方式執行 CRUD 
+$("#authorityAjaxForm").submit(function(event){	
+    event.preventDefault(); //prevent default action
+    var post_url = $(this).attr("action"); //get form action url
+    var request_method = $(this).attr("method"); //get form GET/POST method
+    var form_data = JSON.stringify( $(this).serializeObject() ); //$(this).serialize(); //Encode form elements for submission
+   
+    $.ajax({
+        url : post_url,
+        type: request_method,
+        contentType: "application/json; charset=utf-8",
+        data : form_data,
+        headers:{"Authorization": "Bearer " + localStorage.getItem("jwtToken") },
+		success:function(data, textStatus, jqXHR){//返回json结果			
+			$('#tblAuthority').DataTable().ajax.reload();
+			$('#modal-authority').modal('toggle');
+			
+		},
+		statusCode: {
+			201: function() {
+				$.alert({
+                    title: 'Congratulations!',
+                    content: 'Created A New Role',
+                    type: 'green'                    
+                });
+			},
+			202: function() {
+				$.alert({
+                    title: 'Congratulations!',
+                    content: 'Update succeeded',
+                    type: 'green'
+                });
+			},
+		    405: function() {		      
+		      $.alert({
+                  title: 'Alert!',
+                  content: 'METHOD_NOT_ALLOWED',
+                  icon: 'fa fa-warning',
+                  type: 'red'
+              });
+		    }
+		  }
+    })
+});
+
+$('#tblAuthority tbody').on('click', '.btnDTView', function (){
+	   
+	   var $row = $(this).closest('tr');
+	   var data =  $('#tblAuthority').DataTable().row($row).data();
+	   var url = $(this).attr('data-url');
+
+	   console.log('data', data);
+	   console.log('Record ID is', data['id']);
+
+	   $("#authorityAjaxForm").attr("action",url);
+	   $("#authorityAjaxForm").attr("method","put");
+	   $("#authorityAjaxName").val(data.name);
+	   $("#authorityAjaxDescription").val(data.description);
+	   $('#modal-authority').modal('show');
+
+	});
 
 
 </script>
