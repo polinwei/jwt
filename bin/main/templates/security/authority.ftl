@@ -40,7 +40,7 @@
           </div><!-- /.row -->
           <div class="row">
 		      <div class="col-xs-6">
-		          <button type="submit" class="btn btn-primary "><@spring.message "label.submit"/></button>
+		          <button type="submit" class="btn btn-primary"><@spring.message "label.submit"/></button>
 		      </div>          
           </div> <!-- /.row -->
         </div>
@@ -118,12 +118,12 @@
 			            <div class="col-md-6">
 			              <div class="form-group">
 			                <label for="authorityName"><@spring.message "program.authority.name" /></label>
-			                <input type="text" class="form-control" id="authorityAjaxName" placeholder="<@spring.message "program.authority.name" />" name="name" value='${authority.name!""}' required>             
+			                <input type="text" class="form-control" id="authorityAjaxName" placeholder="<@spring.message "program.authority.name" />" name="name" required>             
 			              </div>
 			              <!-- /.form-group -->
 			              <div class="form-group">                
 			                <label for="authorityDescription"><@spring.message "program.authority.description" /></label>
-			                <input type="text" class="form-control" id="authorityAjaxDescription" placeholder="<@spring.message "program.authority.description" />" name="description" value='${authority.description!""}' required>
+			                <input type="text" class="form-control" id="authorityAjaxDescription" placeholder="<@spring.message "program.authority.description" />" name="description" required>
 			              </div>
 			              <!-- /.form-group -->
 			            </div><!-- /.col -->
@@ -131,7 +131,8 @@
 			          </div><!-- /.row -->
 			          <div class="row">
 					      <div class="col-xs-6">
-					          <button type="submit" class="btn btn-primary "><@spring.message "label.submit"/></button>
+					          <button type="submit" class="btn btn-primary"><@spring.message "label.submit"/></button>
+					          <button type="reset" class="btn btn-danger"><@spring.message "label.reset"/></button>
 					          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					      </div>          
 			          </div> <!-- /.row -->
@@ -150,7 +151,7 @@
 
 <!-- page script -->
 <script>
-function deleteClick (obj) {
+function deleteClick (obj, isAjax) {
     var url = $(obj).attr('data-url');    
     $.confirm({
         title: '<@spring.message "modal.confirm.del.title"/>',
@@ -169,7 +170,39 @@ function deleteClick (obj) {
                 btnClass: 'btn-danger',
                 keys: ['enter'],
                 action: function(){
-                	location.href = url;
+                	if (isAjax){
+                		// 表單以 Ajax 方式執行 CRUD
+               		    $.ajax({
+               		        url : url,
+               		        type: "delete",
+               		        contentType: "application/json; charset=utf-8",               		        
+               		        headers:{"Authorization": "Bearer " + localStorage.getItem("jwtToken") },
+               				success:function(data, textStatus, jqXHR){//返回json结果			
+               					$('#tblAuthority').DataTable().ajax.reload();
+               				},
+               				complete: function(jqXHR, textStatus) {
+               				    switch (jqXHR.status) {
+               				        case 200:
+               				        	$.alert({
+               			                    title: 'Congratulations!',
+               			                    content: 'Manipulation succeeded',
+               			                    type: 'green'                    
+               			                });
+               				            break;
+               				        default:
+               				        	$.alert({
+               			                    title: 'Alert!',
+               			                    content: 'Manipulation failed',
+               			                    icon: 'fa fa-warning',
+               			                    type: 'red'
+               			                });
+               				    }
+               				}
+               		    });
+                		
+                	} else {
+                		location.href = url;
+                	}                	
                 }
             }
         }
@@ -188,15 +221,15 @@ $('#tblAuthority').DataTable({
       { data: "description" },
       {
         data: "id", render: function(data, type, row, meta) {                  
-               return '<a href=/security/authorityEdit/'+data+' class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i>Edit</a>'+
-               		  '<a href="#" data-url=/security/authorityDelete/'+data+' class="btn btn-xs btn-danger" onclick="deleteClick(this)"><i class="fa fa-trash-o">Delete</a>'                 		
+               return '<a href=/security/authorityEdit/'+data+' class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i>Edit</a>'<@security.authorize access="hasRole('ADMIN')">+
+               		  '<a href="#" data-url=/security/authorityDelete/'+data+' class="btn btn-xs btn-danger" onclick="deleteClick(this,false)"><i class="fa fa-trash-o"></i>Delete</a>' </@security.authorize>                		
         },
            className: "center",              
       },
       {
     	data: "id", render: function(data, type, row, meta) {                  
-              return '<a href="#" data-url=/authentication/authority/'+data+' class="btn btn-xs btn-primary btnDTView" ><i class="fa fa-pencil"></i>Edit</a>'+
-              		 '<a href="#" data-url=/security/authorityDelete/'+data+' class="btn btn-xs btn-danger" onclick="deleteClick(this)"><i class="fa fa-trash-o">Delete</a>'                 		
+              return '<a href="#" data-url=/authentication/authority/'+data+' class="btn btn-xs btn-primary btnDTView"><i class="fa fa-pencil"></i>Edit</a>'<@security.authorize access="hasRole('ADMIN')">+
+              		 '<a href="#" data-url=/authentication/authority/'+data+' class="btn btn-xs btn-danger" onclick="deleteClick(this,true)"><i class="fa fa-trash-o"></i>Delete</a>' </@security.authorize>
        	}  
       }],
   dom: 'lrBtip',        
@@ -214,15 +247,19 @@ $('#tblAuthority').DataTable({
              text: 'CSV',
              className: "btn btn-xs btn-primary",
              bom : true
-         }, 
+         },
+         <@security.authorize access="hasRole('ADMIN')">
          {
              text: 'Add Role (Ajax)',
              className: "btn btn-xs btn-primary",
              action: function ( e, dt, node, config ) {
                  //alert( 'Button activated' );
+                 $("#authorityAjaxForm").attr("action","/authentication/authority");
+                 $("#authorityAjaxForm").attr("method","post");
                  $('#modal-authority').modal('show');
              }
          },
+         </@security.authorize>
          {
              text: 'Reload',
              className: "btn btn-xs btn-primary",
@@ -251,30 +288,47 @@ $("#authorityAjaxForm").submit(function(event){
 			$('#modal-authority').modal('toggle');
 			
 		},
-		statusCode: {
-			201: function() {
-				$.alert({
-                    title: 'Congratulations!',
-                    content: 'Created A New Role',
-                    type: 'green'                    
-                });
-			},
-			202: function() {
-				$.alert({
-                    title: 'Congratulations!',
-                    content: 'Update succeeded',
-                    type: 'green'
-                });
-			},
-		    405: function() {		      
-		      $.alert({
-                  title: 'Alert!',
-                  content: 'METHOD_NOT_ALLOWED',
-                  icon: 'fa fa-warning',
-                  type: 'red'
-              });
+		complete: function(jqXHR, textStatus) {
+		    switch (jqXHR.status) {
+		        case 200:
+		        	$.alert({
+	                    title: 'Congratulations!',
+	                    content: 'Manipulation succeeded',
+	                    type: 'green'                    
+	                });
+		            break;
+		        case 201:
+		        	$.alert({
+	                    title: 'Congratulations!',
+	                    content: 'Created A New Role',
+	                    type: 'green'                    
+	                });
+		        	break;
+		        case 404:
+		        	$.alert({
+		                  title: 'Alert!',
+		                  content: 'This record is not found',
+		                  icon: 'fa fa-warning',
+		                  type: 'red'
+		              });
+		            break;
+		        case 409:
+		        	$.alert({
+	                    title: 'Alert!',
+	                    content: 'This record is conflct',
+	                    icon: 'fa fa-warning',
+	                    type: 'red'
+	                });
+		        	break;
+		        default:
+		        	$.alert({
+	                    title: 'Alert!',
+	                    content: 'Manipulation failed',
+	                    icon: 'fa fa-warning',
+	                    type: 'red'
+	                });
 		    }
-		  }
+		}
     })
 });
 
@@ -293,8 +347,7 @@ $('#tblAuthority tbody').on('click', '.btnDTView', function (){
 	   $("#authorityAjaxDescription").val(data.description);
 	   $('#modal-authority').modal('show');
 
-	});
-
+});
 
 </script>
 

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,21 +51,34 @@ public class AuthorityRestController {
 	 * @return
 	 */
 	@GetMapping("authority/{id}")
-	public Authority retreveAuthority(@PathVariable long id) {
+	public ResponseEntity<?> retreveAuthority(@PathVariable long id) {
 		Optional<Authority> authority = authorityRepository.findById(id);
-		return authority.get();
+		if (authority.isPresent()) {
+			return new ResponseEntity<Authority>(authority.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity(ResponseEntity.notFound().build(), HttpStatus.NOT_FOUND);
+		}
 	}
 	
+	/**
+	 * 更新某一筆資料
+	 * @param authority
+	 * @param id
+	 * @param bindingResult
+	 * @return
+	 */
 	@PutMapping("/authority/{id}")
 	public ResponseEntity<?> updateAuthority(@RequestBody @Valid Authority authority, @PathVariable long id, BindingResult bindingResult){
+		
 		Optional<Authority> editAuthority = authorityRepository.findById(id);
 		
-		if (!editAuthority.isPresent()) {
-			return new ResponseEntity( ResponseEntity.notFound().build(), HttpStatus.NOT_MODIFIED);
+		if (editAuthority.isPresent()) {
+			authority.setId(id);
+			authorityRepository.save(authority);
+			return new ResponseEntity( ResponseEntity.noContent().build(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity( ResponseEntity.notFound().build(), HttpStatus.NOT_FOUND);
 		}
-		authority.setId(id);
-		authorityRepository.save(authority);
-		return new ResponseEntity( ResponseEntity.noContent().build(), HttpStatus.ACCEPTED);
 		
 	}
 	
@@ -90,11 +104,17 @@ public class AuthorityRestController {
 					.buildAndExpand(newAuthority.getId()).toUri();
 		} catch (DataIntegrityViolationException e) {
 			// TODO Auto-generated catch block
-			return new ResponseEntity(bindingResult.getFieldErrors(),HttpStatus.METHOD_NOT_ALLOWED);
+			return new ResponseEntity(bindingResult.getFieldErrors(),HttpStatus.CONFLICT);
 		}
 
 		//return new ResponseEntity<Authority>(authority, HttpStatus.OK);
 		return new ResponseEntity(ResponseEntity.created(location).build(),HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping("authority/{id}")
+	public void deleteAuthority(@PathVariable long id){
+		authorityRepository.deleteById(id);
+		
 	}
 	
 }
