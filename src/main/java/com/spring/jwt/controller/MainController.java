@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import com.spring.jwt.controller.authentication.AuthenticationRestController;
 
@@ -36,7 +37,7 @@ public class MainController {
 	private Authentication authentication;
 			
 	@RequestMapping(value = { "/","/home" })
-    public String staticResource(Model model,HttpServletRequest request) {
+    public String staticResource(Model model,HttpServletRequest request) {		
 		SecurityContextImpl sci = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
 		if ( !Objects.isNull(sci) ) {
 			authentication = sci.getAuthentication();

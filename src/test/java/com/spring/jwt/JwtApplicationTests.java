@@ -105,7 +105,7 @@ public class JwtApplicationTests {
 			Authority authority = authorityRepository.findById(1L).get();
 			
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();			
-			User user = new User("polin", encoder.encode("password"), "Polin", "WEI", "polin.wei@gmail.com", new Date());
+			User user = new User("polin.wei", encoder.encode("password"), "polin.jpg","Polin", "WEI", "polin.wei@gmail.com", new Date());
 			user.setEnabled(true);
 			// 要先存檔, 不然 userAuthority 找不到新建的 userid 時則會 rollback
 			userRepository.save(user);

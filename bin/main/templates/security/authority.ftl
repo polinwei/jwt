@@ -209,7 +209,10 @@ function deleteClick (obj, isAjax) {
     });
 }
 	
-$('#tblAuthority').DataTable({    	
+$('#tblAuthority').DataTable({
+	language: {
+        "url": "/AdminLTE2/bower_components/datatables.net/i18n/${.locale}.json"
+    },
  	ajax: {url:"/authentication/authorities",dataSrc:"",
   		'beforeSend': function (request) {
 			        request.setRequestHeader("Authorization", "Bearer "+localStorage.getItem("jwtToken") );
@@ -233,8 +236,17 @@ $('#tblAuthority').DataTable({
        	}  
       }],
   dom: 'lrBtip',        
-  buttons: [
-     	'copy','excel', 
+  buttons: [     	
+     	{
+     		extend: 'copy',
+     		text: 'copy',
+     		className: "btn btn-xs btn-primary",
+     	},
+     	{
+     		extend: 'excel',
+     		text: 'excel',
+     		className: "btn btn-xs btn-primary",
+     	},     	
      	{
      		extend: 'pdf',
      		text: 'PDF',

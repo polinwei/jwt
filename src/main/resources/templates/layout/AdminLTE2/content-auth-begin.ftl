@@ -336,7 +336,7 @@
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="/security/authority"><i class="fa fa-circle-o"></i> Authorities </a></li>
-            <li><a href="/security/user"><i class="fa fa-circle-o"></i> Users </a></li>
+            <li><a href="/security/configSet"><i class="fa fa-circle-o"></i> configSet </a></li>
           </ul>
         </li>        
         

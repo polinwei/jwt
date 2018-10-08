@@ -16,7 +16,7 @@ This place put Main Content 放主要的程式
 </@security.authorize>
 ${Request.lang!"no Lang"}
 
-
+locale:${.locale}
 
 <#include "layout/AdminLTE2/controlSidebar.ftl">
 <#include "layout/AdminLTE2/content-auth-end.ftl">

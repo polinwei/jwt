@@ -1,5 +1,6 @@
 package com.spring.jwt.controller.security;
 
+import java.util.Locale;
 import java.util.Objects;
 
 import javax.validation.Valid;
@@ -7,6 +8,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +18,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.spring.jwt.authentication.security.JwtUser;
 import com.spring.jwt.db.maria.dao.authentication.AuthorityRepository;
 import com.spring.jwt.db.maria.model.authentication.Authority;
+import com.spring.jwt.service.UserService;
 
 @Controller
 @RequestMapping(path = "/security")
@@ -25,10 +30,17 @@ public class AuthorityController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
+    private MessageSource messageSource;
+
+	@Autowired
 	private AuthorityRepository authorityRepository;
+	@Autowired 
+	UserService userService;
 	
 	public void init(Model model) {
-		model.addAttribute("programName", "Authority");
+		Locale locale = LocaleContextHolder.getLocale();
+		String programName = messageSource.getMessage("program.authority.programName", null, locale);
+		model.addAttribute("programName", programName);
 	}
 	
 	@RequestMapping("authority")
