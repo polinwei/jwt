@@ -19,6 +19,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.spring.jwt.interceptor.LangChangeInterceptor;
+import com.spring.jwt.interceptor.SecurityInterceptor;
 
 import freemarker.ext.jsp.TaglibFactory;
 
@@ -46,15 +47,21 @@ public class MvcConfig implements WebMvcConfigurer {
         return resolver;
     }
      
-    //多語系設定 語系切換偵測
+    //加入 Interceptors
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+    	//多語系設定 語系切換偵測
         LocaleChangeInterceptor localeInterceptor = new LocaleChangeInterceptor();
         LangChangeInterceptor langChangeInterceptor = new LangChangeInterceptor();
         localeInterceptor.setParamName("lang");       
         registry.addInterceptor(localeInterceptor).addPathPatterns("/**");
         langChangeInterceptor.setParamName("lang");
         registry.addInterceptor(langChangeInterceptor).addPathPatterns("/**");
+        
+        // 程式權限偵測
+        SecurityInterceptor securityInterceptor = new SecurityInterceptor();
+        registry.addInterceptor(securityInterceptor).addPathPatterns("/auth/**").excludePathPatterns("/auth/home");
+        
     }
     
     /**

@@ -11,7 +11,7 @@ import com.spring.jwt.db.maria.model.security.UserProfile;
 import com.spring.jwt.service.UserService;
 
 @Controller
-@RequestMapping(path = "/security")
+@RequestMapping(path = "/auth/security")
 public class ConfigSetController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

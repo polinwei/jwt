@@ -335,8 +335,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="/security/authority"><i class="fa fa-circle-o"></i> Authorities </a></li>
-            <li><a href="/security/configSet"><i class="fa fa-circle-o"></i> configSet </a></li>
+            <li class="active"><a href="/auth/security/authority"><i class="fa fa-circle-o"></i> Authorities </a></li>
+            <li><a href="/auth/security/configSet"><i class="fa fa-circle-o"></i> configSet </a></li>
           </ul>
         </li>        
         
@@ -510,7 +510,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <#if programName??>${programName} <#else> <@spring.message "program.notDefine"/> </#if>
+        <#if Request.progPermits??>${Request.progPermits["programName"]} <#else> <@spring.message "program.notDefine"/> </#if>
         <small>Version 2.0</small>
       </h1>
       <ol class="breadcrumb">

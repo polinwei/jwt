@@ -28,7 +28,7 @@ import com.spring.jwt.db.maria.dao.authentication.AuthorityRepository;
 import com.spring.jwt.db.maria.model.authentication.Authority;
 
 @RestController
-@RequestMapping(path = "/authentication")
+@RequestMapping(path = "/auth/authentication")
 public class AuthorityRestController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

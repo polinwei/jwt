@@ -1,8 +1,10 @@
 <#include "/layout/AdminLTE2/html-begin.ftl">
 <#include "/layout/AdminLTE2/content-auth-begin.ftl">
 
+isAdd:${Request.progPermits["isAdd"]?c!""}
+
 <!-- form id="authorityForm" -->
-	<form id="authorityForm" action="/security/authorityEdit" method="post" >
+	<form id="authorityForm" action="/auth/security/authorityEdit" method="post" >
       <input type="hidden" id="authorityId" name="id" value='${authority.id!""}' >
       <div class="box box-danger">
         <div class="box-header with-border">
@@ -18,8 +20,8 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="authorityName"><@spring.message "program.authority.name" /></label>
-                <input type="text" class="form-control" id="authorityName" placeholder="<@spring.message "program.authority.name" />" name="name" value='${authority.name!""}' required>
+                <label for="authorityName"><@spring.message "program.authorityController.name" /></label>
+                <input type="text" class="form-control" id="authorityName" placeholder="<@spring.message "program.authorityController.name" />" name="name" value='${authority.name!""}' required>
                 <#if authority??>  
                 	<@spring.bind "authority.name" />
     				<@spring.showErrors "<br />" "bg-red"/>
@@ -27,8 +29,8 @@
               </div>
               <!-- /.form-group -->
               <div class="form-group">                
-                <label for="authorityDescription"><@spring.message "program.authority.description" /></label>
-                <input type="text" class="form-control" id="authorityDescription" placeholder="<@spring.message "program.authority.description" />" name="description" value='${authority.description!""}' required>
+                <label for="authorityDescription"><@spring.message "program.authorityController.description" /></label>
+                <input type="text" class="form-control" id="authorityDescription" placeholder="<@spring.message "program.authorityController.description" />" name="description" value='${authority.description!""}' required>
                 <#if authority??>  
                 	<@spring.bind "authority.description" />
     				<@spring.showErrors "<br />" "bg-red"/>
@@ -40,7 +42,7 @@
           </div><!-- /.row -->
           <div class="row">
 		      <div class="col-xs-6">
-		          <button type="submit" class="btn btn-primary"><@spring.message "label.submit"/></button>
+		          <button type="submit" class="btn btn-primary btnAdd"><@spring.message "label.submit"/></button>
 		      </div>          
           </div> <!-- /.row -->
         </div>
@@ -72,8 +74,8 @@
             <thead>
             <tr>
               <th>id</th>
-              <th><@spring.message "program.authority.name" /></th>
-              <th><@spring.message "program.authority.description" /></th>
+              <th><@spring.message "program.authorityController.name" /></th>
+              <th><@spring.message "program.authorityController.description" /></th>
               <th>Submit Options</th>
               <th>Ajax Options</th>
             </tr>
@@ -82,8 +84,8 @@
             <tfoot>
             <tr>
               <th>id</th>
-              <th><@spring.message "program.authority.name" /></th>
-              <th><@spring.message "program.authority.description" /></th>
+              <th><@spring.message "program.authorityController.name" /></th>
+              <th><@spring.message "program.authorityController.description" /></th>
               <th>Submit Options</th>
             </tr>
             </tfoot>
@@ -109,7 +111,7 @@
               <div class="modal-body">
                 
 				<!-- ajax-form id="authorityAjaxForm" -->
-				<form id="authorityAjaxForm" action="/authentication/authority" method="post">
+				<form id="authorityAjaxForm" action="/auth/authentication/authority" method="post">
 			      
 			      <div class="box box-danger">
 			        <!-- /.box-header -->
@@ -117,13 +119,13 @@
 			          <div class="row">
 			            <div class="col-md-6">
 			              <div class="form-group">
-			                <label for="authorityName"><@spring.message "program.authority.name" /></label>
-			                <input type="text" class="form-control" id="authorityAjaxName" placeholder="<@spring.message "program.authority.name" />" name="name" required>             
+			                <label for="authorityName"><@spring.message "program.authorityController.name" /></label>
+			                <input type="text" class="form-control" id="authorityAjaxName" placeholder="<@spring.message "program.authorityController.name" />" name="name" required>             
 			              </div>
 			              <!-- /.form-group -->
 			              <div class="form-group">                
-			                <label for="authorityDescription"><@spring.message "program.authority.description" /></label>
-			                <input type="text" class="form-control" id="authorityAjaxDescription" placeholder="<@spring.message "program.authority.description" />" name="description" required>
+			                <label for="authorityDescription"><@spring.message "program.authorityController.description" /></label>
+			                <input type="text" class="form-control" id="authorityAjaxDescription" placeholder="<@spring.message "program.authorityController.description" />" name="description" required>
 			              </div>
 			              <!-- /.form-group -->
 			            </div><!-- /.col -->
@@ -131,7 +133,7 @@
 			          </div><!-- /.row -->
 			          <div class="row">
 					      <div class="col-xs-6">
-					          <button type="submit" class="btn btn-primary"><@spring.message "label.submit"/></button>
+					          <button type="submit" class="btn btn-primary btnAdd"><@spring.message "label.submit"/></button>
 					          <button type="reset" class="btn btn-danger"><@spring.message "label.reset"/></button>
 					          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					      </div>          
@@ -151,8 +153,11 @@
 
 <!-- page script -->
 <script>
-function deleteClick (obj, isAjax) {
-    var url = $(obj).attr('data-url');    
+
+$(document).on('click', '.btnDel', function () {         	          
+    var url = $(this).attr('data-url');
+    var isAjax = $(this).attr('data-ajax');
+    
     $.confirm({
         title: '<@spring.message "modal.confirm.del.title"/>',
         content: '<@spring.message "modal.confirm.del.content"/>',
@@ -206,14 +211,15 @@ function deleteClick (obj, isAjax) {
                 }
             }
         }
-    });
-}
-	
+    });    
+    
+});
+
 $('#tblAuthority').DataTable({
 	language: {
         "url": "/AdminLTE2/bower_components/datatables.net/i18n/${.locale}.json"
     },
- 	ajax: {url:"/authentication/authorities",dataSrc:"",
+ 	ajax: {url:"/auth/authentication/authorities",dataSrc:"",
   		'beforeSend': function (request) {
 			        request.setRequestHeader("Authorization", "Bearer "+localStorage.getItem("jwtToken") );
 			    }
@@ -224,15 +230,15 @@ $('#tblAuthority').DataTable({
       { data: "description" },
       {
         data: "id", render: function(data, type, row, meta) {                  
-               return '<a href=/security/authorityEdit/'+data+' class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i>Edit</a>'<@security.authorize access="hasRole('ADMIN')">+
-               		  '<a href="#" data-url=/security/authorityDelete/'+data+' class="btn btn-xs btn-danger" onclick="deleteClick(this,false)"><i class="fa fa-trash-o"></i>Delete</a>' </@security.authorize>                		
+               return '<a href=/auth/security/authorityEdit/'+data+' class="btn btn-xs btn-primary btnEdit"><i class="fa fa-pencil"></i>Edit</a>'<@security.authorize access="hasRole('ADMIN')">+
+               		  '<a href="#" data-url=/auth/security/authorityDelete/'+data+' class="btn btn-xs btn-danger btnDel"><i class="fa fa-trash-o"></i>Delete</a>' </@security.authorize>                		
         },
            className: "center",              
       },
       {
     	data: "id", render: function(data, type, row, meta) {                  
-              return '<a href="#" data-url=/authentication/authority/'+data+' class="btn btn-xs btn-primary btnDTView"><i class="fa fa-pencil"></i>Edit</a>'<@security.authorize access="hasRole('ADMIN')">+
-              		 '<a href="#" data-url=/authentication/authority/'+data+' class="btn btn-xs btn-danger" onclick="deleteClick(this,true)"><i class="fa fa-trash-o"></i>Delete</a>' </@security.authorize>
+              return '<a href="#" data-url=/auth/authentication/authority/'+data+' class="btn btn-xs btn-primary btnDTView btnEdit"><i class="fa fa-pencil"></i>Edit</a>'<@security.authorize access="hasRole('ADMIN')">+
+              		 '<a href="#" data-url=/auth/authentication/authority/'+data+' data-ajax="true" class="btn btn-xs btn-danger btnDel"><i class="fa fa-trash-o"></i>Delete</a>' </@security.authorize>
        	}  
       }],
   dom: 'lrBtip',        
@@ -263,10 +269,10 @@ $('#tblAuthority').DataTable({
          <@security.authorize access="hasRole('ADMIN')">
          {
              text: 'Add Role (Ajax)',
-             className: "btn btn-xs btn-primary",
+             className: "btn btn-xs btn-primary btnAdd",
              action: function ( e, dt, node, config ) {
                  //alert( 'Button activated' );
-                 $("#authorityAjaxForm").attr("action","/authentication/authority");
+                 $("#authorityAjaxForm").attr("action","/auth/authentication/authority");
                  $("#authorityAjaxForm").attr("method","post");
                  $('#modal-authority').modal('show');
              }

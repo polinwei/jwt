@@ -24,7 +24,7 @@ import com.spring.jwt.db.maria.model.authentication.Authority;
 import com.spring.jwt.service.UserService;
 
 @Controller
-@RequestMapping(path = "/security")
+@RequestMapping(path = "/auth/security")
 public class AuthorityController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -37,18 +37,12 @@ public class AuthorityController {
 	@Autowired 
 	UserService userService;
 	
-	public void init(Model model) {
-		Locale locale = LocaleContextHolder.getLocale();
-		String programName = messageSource.getMessage("program.authority.programName", null, locale);
-		model.addAttribute("programName", programName);
-	}
-	
 	@RequestMapping("authority")
 	public String crudAuthority(Model model) {
-		init(model);
+		
 		model.addAttribute("authority", new Authority());
 		model.addAttribute("authorityList",authorityRepository.findAll());		
-		return "/security/authority";
+		return "/auth/security/authority";
 	}
 	
 	/**
@@ -59,13 +53,13 @@ public class AuthorityController {
 	 */
 	@RequestMapping(value= {"authorityEdit","authorityEdit/{id}"} , method = RequestMethod.GET)
 	public String crudAuthority(Model model, @PathVariable( required = false , name="id") Long id) {
-		init(model);
+		
 		if (Objects.isNull(id)) {
 			model.addAttribute("authority", new Authority());
 		} else {
 			model.addAttribute("authority", authorityRepository.findById(id).get());
 		}		
-		return "/security/authority";
+		return "/auth/security/authority";
 	}
 	
 	/**
@@ -76,9 +70,9 @@ public class AuthorityController {
 	 */
 	@RequestMapping(value="authorityEdit" , method = RequestMethod.POST)
 	public String crudAuthority(Model model, @Valid Authority authority, BindingResult bindingResult) {
-		init(model);
+		
 		if (bindingResult.hasErrors()) {
-			return "/security/authority";
+			return "/auth/security/authority";
 		}
 		
 		try {
@@ -87,11 +81,11 @@ public class AuthorityController {
 		} catch ( DataIntegrityViolationException e) {
 			// e.printStackTrace();
 			bindingResult.rejectValue("name", "validation.db.duplicate");
-			return "/security/authority";
+			return "/auth/security/authority";
 		}
 		
 		
-		return "/security/authority";
+		return "/auth/security/authority";
 	}
 	
 	/**
@@ -102,10 +96,10 @@ public class AuthorityController {
 	 */
 	@RequestMapping(value="authorityDelete/{id}" , method = RequestMethod.GET)
 	public String authorityDelete(Model model, @PathVariable( required = true, name = "id") Long id) {
-		init(model);
+		
 		authorityRepository.deleteById(id);
 		model.addAttribute("authority", new Authority());
-		return "/security/authority";
+		return "/auth/security/authority";
 	}
 	
 }
