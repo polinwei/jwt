@@ -1,5 +1,6 @@
 package com.spring.jwt.interceptor;
 
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -34,7 +35,6 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 		String controllerName = ((HandlerMethod)handler).getResolvedFromHandlerMethod().getBean().toString();
 		authentication = SecurityContextHolder.getContext().getAuthentication();
 		JwtUser jwtUser = (JwtUser)authentication.getPrincipal();
-		System.out.println("preHandle Control: " + controllerName);
 		
 		return true;
 	}
@@ -66,10 +66,8 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 		progPermits.put("isDel", false);
 		progPermits.put("isQuery", true);
 		progPermits.put("isPrint", true);
-		request.setAttribute("progPermits", progPermits);
-		
-		System.out.println("postHandle Control: " + controllerName);
-		
-	}	
+		request.setAttribute("progPermits", progPermits);		
+	}
+	
 	
 }

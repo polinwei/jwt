@@ -1,8 +1,6 @@
 <#include "/layout/AdminLTE2/html-begin.ftl">
 <#include "/layout/AdminLTE2/content-auth-begin.ftl">
 
-isAdd:${Request.progPermits["isAdd"]?c!""}
-
 <!-- form id="authorityForm" -->
 	<form id="authorityForm" action="/auth/security/authorityEdit" method="post" >
       <input type="hidden" id="authorityId" name="id" value='${authority.id!""}' >
@@ -153,7 +151,7 @@ isAdd:${Request.progPermits["isAdd"]?c!""}
 
 <!-- page script -->
 <script>
-
+<#if Request.progPermits?? && Request.progPermits["isDel"] >
 $(document).on('click', '.btnDel', function () {         	          
     var url = $(this).attr('data-url');
     var isAjax = $(this).attr('data-ajax');
@@ -214,6 +212,7 @@ $(document).on('click', '.btnDel', function () {
     });    
     
 });
+</#if>
 
 $('#tblAuthority').DataTable({
 	language: {
@@ -225,20 +224,33 @@ $('#tblAuthority').DataTable({
 			    }
 		},
  	columns: [
- 		{ data: "id", visible: false},
+ 	  { data: "id", visible: false},
       { data: "name" },
       { data: "description" },
       {
-        data: "id", render: function(data, type, row, meta) {                  
-               return '<a href=/auth/security/authorityEdit/'+data+' class="btn btn-xs btn-primary btnEdit"><i class="fa fa-pencil"></i>Edit</a>'<@security.authorize access="hasRole('ADMIN')">+
-               		  '<a href="#" data-url=/auth/security/authorityDelete/'+data+' class="btn btn-xs btn-danger btnDel"><i class="fa fa-trash-o"></i>Delete</a>' </@security.authorize>                		
+        data: "id", render: function(data, type, row, meta) {
+        	<#if Request.progPermits?? && !Request.progPermits["isEdit"] >
+				<#assign isEditDisable = 'disabled="disabled" '>
+			</#if>
+			<#if Request.progPermits?? && !Request.progPermits["isDel"] >
+				<#assign isDelDisable = 'disabled="disabled" '>				
+			</#if>
+            return '<a href=/auth/security/authorityEdit/'+data+' class="btn btn-xs btn-primary btnEdit" ${isEditDisable!""}><i class="fa fa-pencil"></i>Edit</a>'<@security.authorize access="hasRole('ADMIN')">+
+                   '<a href="#" data-url=/auth/security/authorityDelete/'+data+' class="btn btn-xs btn-danger btnDel" ${isDelDisable!""}><i class="fa fa-trash-o"></i>Delete</a>' </@security.authorize>                		
         },
            className: "center",              
       },
       {
-    	data: "id", render: function(data, type, row, meta) {                  
-              return '<a href="#" data-url=/auth/authentication/authority/'+data+' class="btn btn-xs btn-primary btnDTView btnEdit"><i class="fa fa-pencil"></i>Edit</a>'<@security.authorize access="hasRole('ADMIN')">+
-              		 '<a href="#" data-url=/auth/authentication/authority/'+data+' data-ajax="true" class="btn btn-xs btn-danger btnDel"><i class="fa fa-trash-o"></i>Delete</a>' </@security.authorize>
+    	data: "id", render: function(data, type, row, meta) {
+    		<#if Request.progPermits?? && !Request.progPermits["isEdit"] >
+    			<#assign isEditDisable = 'disabled="disabled" '>
+    		</#if>
+    		<#if Request.progPermits?? && !Request.progPermits["isDel"] >
+				<#assign isDelDisable = 'disabled="disabled" '>				
+			</#if>
+			
+            return '<a href="#" data-url=/auth/authentication/authority/'+data+' class="btn btn-xs btn-primary btnDTView btnEdit" ${isEditDisable!""}><i class="fa fa-pencil"></i>Edit</a>'<@security.authorize access="hasRole('ADMIN')">+
+                   '<a href="#" data-url=/auth/authentication/authority/'+data+' data-ajax="true" class="btn btn-xs btn-danger btnDel" ${isDelDisable!""}><i class="fa fa-trash-o"></i>Delete</a>' </@security.authorize>
        	}  
       }],
   dom: 'lrBtip',        
