@@ -63,7 +63,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 		progPermits.put("programName", messageSource.getMessage("program."+controllerName+".programName", null, "PROGNAME_NOT_DEFINE", currentLocale) );
 		progPermits.put("isAdd", true);
 		progPermits.put("isEdit", true);
-		progPermits.put("isDel", false);
+		progPermits.put("isDel", true);
 		progPermits.put("isQuery", true);
 		progPermits.put("isPrint", true);
 		request.setAttribute("progPermits", progPermits);		

@@ -81,15 +81,14 @@
 <!-- pdfmake 中文字 -->
 $(document).ready(function() {
 	pdfMake.fonts = {
-		Roboto: {
-            normal: 'kaiu.ttf',
-            bold: 'kaiu.ttf',
-            italics: 'kaiu.ttf',
-            bolditalics: 'kaiu.ttf'
-        }
-    };	
+			Roboto: {
+	            normal: 'kaiu.ttf',
+	            bold: 'kaiu.ttf',
+	            italics: 'kaiu.ttf',
+	            bolditalics: 'kaiu.ttf'
+	        }
+	    };
 })
-
 <!-- serialize Form into an object, data = JSON.stringify( $('#myForm').serializeObject() ); -->  
 $.fn.serializeObject = function(){
     var o = {};

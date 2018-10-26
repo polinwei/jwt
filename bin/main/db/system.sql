@@ -36,7 +36,7 @@ update_date datetime,
 create_user bigint,
 update_user bigint,
 CONSTRAINT pk_user_profile PRIMARY KEY (id),
-CONSTRAINT uk_user_profile_param_name UNIQUE KEY(param_name),
+CONSTRAINT uk_user_profile_param_name UNIQUE KEY(user_id,param_name),
 CONSTRAINT fk_user_profile_user_id FOREIGN KEY (user_id) REFERENCES user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
 CONSTRAINT fk_user_profile_create_user FOREIGN KEY (create_user) REFERENCES user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
 CONSTRAINT fk_user_profile_update_user FOREIGN KEY (update_user) REFERENCES user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION

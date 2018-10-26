@@ -2,7 +2,51 @@
  * Created by Polin on 2018-08-16
  */
 
-$(function () {
+/**
+ * 建立 jwtClient 的全域函數
+ */
+var jwtClient = function(){
+	// VARIABLES =============================================================
+    var TOKEN_KEY = "jwtToken";
+ 	// FUNCTIONS =============================================================
+    var getJwtToken = function() {
+        return localStorage.getItem(TOKEN_KEY);
+    }
+
+    var setJwtToken = function(token) {
+        localStorage.setItem(TOKEN_KEY, token);
+    }
+
+    var removeJwtToken = function() {
+        localStorage.removeItem(TOKEN_KEY);
+    }
+    var setAuthorizationTokenHeader = function () {
+        var token = getJwtToken();
+        if (token) {
+            return {"Authorization": "Bearer " + token};
+        } else {
+            return {};
+        }
+    }
+    // INITIAL
+    return {
+    	getJwtToken: function () {
+            return getJwtToken();
+        },
+        setJwtToken: function (token) {
+            return setJwtToken(token);
+        },
+        removeJwtToken: function() {
+        	return removeJwtToken();
+        },
+        setAuthorizationTokenHeader: function () {
+        	return setAuthorizationTokenHeader();
+        }
+    }
+	
+}();
+	
+$(function () {	
     // VARIABLES =============================================================
     var TOKEN_KEY = "jwtToken"
     var $notLoggedIn = $("#notLoggedIn");
@@ -37,7 +81,7 @@ $(function () {
                 setJwtToken(data.token);                
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                if (jqXHR.status === 401 || jqXHR.status === 403) {
+                if (jqXHR.status === 401 || jqXHR.status === 403) {
                     $('#loginErrorModal')
                         .modal("show")
                         .find(".modal-body")

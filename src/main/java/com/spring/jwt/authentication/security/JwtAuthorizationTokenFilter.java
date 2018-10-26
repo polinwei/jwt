@@ -1,6 +1,7 @@
 package com.spring.jwt.authentication.security;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.util.Enumeration;
 import java.util.Objects;
@@ -21,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.google.gson.Gson;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.model.CityResponse;
 
@@ -55,6 +57,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
 		logger.debug("processing authentication for '{}'", request.getRequestURL());
         String username = null;
         String authToken = null;
+        
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			String remoteAddr  = getRemoteAddress(request);
@@ -75,10 +78,10 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
                 username = jwtTokenUtil.getUsernameFromToken(authToken);
             } catch (IllegalArgumentException e) {
                 logger.error("an error occured during getting username from token", e);
-            } catch (ExpiredJwtException e) {
+            } catch (ExpiredJwtException e) {            	
                 logger.warn("the token is expired and not valid anymore", e);
             }
-        } else {
+        } else {        	
             logger.warn("couldn't find bearer string, will ignore the header");
         }
 
@@ -99,7 +102,7 @@ public class JwtAuthorizationTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
-
+       
         filterChain.doFilter(request, response);
 
 	}

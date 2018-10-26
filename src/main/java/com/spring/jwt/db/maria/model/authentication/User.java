@@ -20,6 +20,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.spring.jwt.db.maria.model.security.UserProfile;
 
 /**
@@ -43,8 +46,7 @@ public class User implements java.io.Serializable {
 	private Date activeDate;
 	private Date inactiveDate;
 	private Date createDate;
-	private Date updateDate;
-	private Set<UserProfile> userProfilesForUserId = new HashSet<UserProfile>(0);
+	private Date updateDate;	
 	private Set<Authority> authorities = new HashSet<Authority>(0);
 	private Set<User> usersForCreateUser = new HashSet<User>(0);
 	private Set<User> usersForUpdateUser = new HashSet<User>(0);
@@ -65,7 +67,7 @@ public class User implements java.io.Serializable {
 
 	public User(User userByCreateUser, User userByUpdateUser, String username, String password, String avatar,
 			String firstname, String lastname, String email, Boolean enabled, Date lastpasswordresetdate,
-			Date activeDate, Date inactiveDate, Date createDate, Date updateDate, Set<UserProfile> userProfilesForUserId, Set<Authority> authorities,
+			Date activeDate, Date inactiveDate, Date createDate, Date updateDate, Set<Authority> authorities,
 			Set<User> usersForCreateUser, Set<User> usersForUpdateUser) {
 		this.userByCreateUser = userByCreateUser;
 		this.userByUpdateUser = userByUpdateUser;
@@ -80,8 +82,7 @@ public class User implements java.io.Serializable {
 		this.activeDate = activeDate;
 		this.inactiveDate = inactiveDate;
 		this.createDate = createDate;
-		this.updateDate = updateDate;
-		this.userProfilesForUserId = userProfilesForUserId;
+		this.updateDate = updateDate;		
 		this.authorities = authorities;
 		this.usersForCreateUser = usersForCreateUser;
 		this.usersForUpdateUser = usersForUpdateUser;
@@ -101,6 +102,7 @@ public class User implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "create_user")
+	@JsonIgnore
 	public User getUserByCreateUser() {
 		return this.userByCreateUser;
 	}
@@ -111,6 +113,7 @@ public class User implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "update_user")
+	@JsonIgnore
 	public User getUserByUpdateUser() {
 		return this.userByUpdateUser;
 	}
@@ -232,15 +235,6 @@ public class User implements java.io.Serializable {
 		this.updateDate = updateDate;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userByUserId")
-	public Set<UserProfile> getUserProfilesForUserId() {
-		return this.userProfilesForUserId;
-	}
-
-	public void setUserProfilesForUserId(Set<UserProfile> userProfilesForUserId) {
-		this.userProfilesForUserId = userProfilesForUserId;
-	}
-	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_authority", catalog = "my_spring", joinColumns = {
 			@JoinColumn(name = "user_id", nullable = false, updatable = false) }, inverseJoinColumns = {
@@ -255,6 +249,7 @@ public class User implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userByCreateUser")
+	@JsonIgnore
 	public Set<User> getUsersForCreateUser() {
 		return this.usersForCreateUser;
 	}
@@ -264,6 +259,7 @@ public class User implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userByUpdateUser")
+	@JsonIgnore
 	public Set<User> getUsersForUpdateUser() {
 		return this.usersForUpdateUser;
 	}

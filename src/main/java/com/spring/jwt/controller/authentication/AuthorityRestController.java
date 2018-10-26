@@ -67,7 +67,7 @@ public class AuthorityRestController {
 	 * @param bindingResult
 	 * @return
 	 */
-	@PutMapping("/authority/{id}")
+	@PutMapping("authority/{id}")
 	public ResponseEntity<?> updateAuthority(@RequestBody @Valid Authority authority, @PathVariable long id, BindingResult bindingResult){
 		
 		Optional<Authority> editAuthority = authorityRepository.findById(id);
@@ -91,7 +91,7 @@ public class AuthorityRestController {
 	@PostMapping("authority")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> createAuthority(@RequestBody @Valid Authority authority, BindingResult bindingResult){
-		Authority newAuthority = new Authority();
+		Authority newEntity = new Authority();
 		URI location = null;
 		if (bindingResult.hasErrors()) {
 			return new ResponseEntity(bindingResult.getFieldErrors(),HttpStatus.METHOD_NOT_ALLOWED);
@@ -99,12 +99,13 @@ public class AuthorityRestController {
 		
 		
 		try {
-			newAuthority = authorityRepository.save(authority);
+			newEntity = authorityRepository.save(authority);
 			location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-					.buildAndExpand(newAuthority.getId()).toUri();
-		} catch (DataIntegrityViolationException e) {
-			// TODO Auto-generated catch block
+					.buildAndExpand(newEntity.getId()).toUri();
+		} catch (DataIntegrityViolationException e) {			
 			return new ResponseEntity(bindingResult.getFieldErrors(),HttpStatus.CONFLICT);
+		} catch (Exception e) {
+			return new ResponseEntity(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
 		}
 
 		//return new ResponseEntity<Authority>(authority, HttpStatus.OK);

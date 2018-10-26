@@ -59,8 +59,7 @@
           <h3 class="box-title"><@spring.message "program.block.datatable" /></h3>
 
           <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                    title="Collapse">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
               <i class="fa fa-minus"></i></button>
             <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
               <i class="fa fa-times"></i></button>
@@ -74,8 +73,8 @@
               <th>id</th>
               <th><@spring.message "program.authorityController.name" /></th>
               <th><@spring.message "program.authorityController.description" /></th>
-              <th>Submit Options</th>
-              <th>Ajax Options</th>
+              <th><@spring.message "label.submitOptions" /></th>
+              <th><@spring.message "label.ajaxOptions" /></th>
             </tr>
             </thead>
             
@@ -84,7 +83,8 @@
               <th>id</th>
               <th><@spring.message "program.authorityController.name" /></th>
               <th><@spring.message "program.authorityController.description" /></th>
-              <th>Submit Options</th>
+              <th><@spring.message "label.submitOptions" /></th>
+              <th><@spring.message "label.ajaxOptions" /></th>
             </tr>
             </tfoot>
           </table>
@@ -218,11 +218,10 @@ $('#tblAuthority').DataTable({
 	language: {
         "url": "/AdminLTE2/bower_components/datatables.net/i18n/${.locale}.json"
     },
- 	ajax: {url:"/auth/authentication/authorities",dataSrc:"",
-  		'beforeSend': function (request) {
-			        request.setRequestHeader("Authorization", "Bearer "+localStorage.getItem("jwtToken") );
-			    }
-		},
+ 	ajax: {
+ 		url:"/auth/authentication/authorities",dataSrc:"",
+ 		headers: jwtClient.setAuthorizationTokenHeader()
+	},
  	columns: [
  	  { data: "id", visible: false},
       { data: "name" },
@@ -312,7 +311,7 @@ $("#authorityAjaxForm").submit(function(event){
         type: request_method,
         contentType: "application/json; charset=utf-8",
         data : form_data,
-        headers:{"Authorization": "Bearer " + localStorage.getItem("jwtToken") },
+        headers:jwtClient.setAuthorizationTokenHeader(),
 		success:function(data, textStatus, jqXHR){//返回json结果			
 			$('#tblAuthority').DataTable().ajax.reload();
 			$('#modal-authority').modal('toggle');

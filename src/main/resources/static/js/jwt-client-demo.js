@@ -109,7 +109,7 @@ $(function () {
 
     function showUserInformation() {
         $.ajax({
-            url: "/user",
+            url: "/auth/security/userToken",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -197,7 +197,7 @@ $(function () {
 
     $("#exampleServiceBtn").click(function () {
         $.ajax({
-            url: "/user",
+            url: "/auth/security/userToken",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             dataType: "json",

@@ -24,6 +24,6 @@ public class ConfigSetController {
 		
 		model.addAttribute("userProfile", new UserProfile());
 		
-		return "/security/configSet";
+		return "/auth/security/configSet";
 	}
 }

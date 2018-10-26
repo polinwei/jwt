@@ -8,6 +8,7 @@ buildscript {
 		vueVersion ='2.5.13'
 		fontawesomeVersion = '5.2.0'
 		jspapiVersion = '2.3.3'
+		gsonVersion = '2.8.5'
 	}
 	repositories {
 		mavenCentral()
@@ -71,6 +72,7 @@ dependencies {
 	compile("org.webjars:jquery:${jqueryVersion}")
 	compile("org.webjars:vue:${vueVersion}")
 	compile("org.webjars:font-awesome:${fontawesomeVersion}")
+	compile("com.google.code.gson:gson:${gsonVersion}")
 	compile("org.webjars.bowergithub.lipis:flag-icon-css:3.1.0")
 	compileOnly("org.springframework.boot:spring-boot-configuration-processor")
 	testCompile("org.springframework.boot:spring-boot-starter-test")
