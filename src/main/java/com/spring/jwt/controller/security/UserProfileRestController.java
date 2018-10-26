@@ -109,11 +109,17 @@ public class UserProfileRestController {
 		Optional<UserProfile> currentEntity = userProfileRepository.findById(id);
 		
 		if (currentEntity.isPresent()) {
-			userProfile.setId(id);
-			userProfile.setUpdateDate(new Date());
-			userProfile.setUpdateUser(userService.getCurrentUser().getId());
-			userProfileRepository.save(userProfile);
-			return new ResponseEntity( ResponseEntity.noContent().build(), HttpStatus.OK);
+			try {
+				userProfile.setId(id);
+				userProfile.setUpdateDate(new Date());
+				userProfile.setUpdateUser(userService.getCurrentUser().getId());
+				userProfileRepository.save(userProfile);
+				return new ResponseEntity( ResponseEntity.noContent().build(), HttpStatus.OK);
+			} catch (DataIntegrityViolationException e) {			
+				return new ResponseEntity(bindingResult.getFieldErrors(),HttpStatus.CONFLICT);
+			} catch (Exception e) {
+				return new ResponseEntity(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+			}
 		} else {
 			return new ResponseEntity( ResponseEntity.notFound().build(), HttpStatus.NOT_FOUND);
 		}

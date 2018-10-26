@@ -51,7 +51,7 @@
 			              <div class="form-group">
 			                <label for="userProfileAjaxUsername"><@spring.message "label.username" /></label>
 			                <div class="input-group">
-				                <input type="text" class="form-control" placeholder="<@spring.message "label.username" />" name="username" required>
+				                <input type="text" class="form-control" placeholder="<@spring.message "label.username" />" name="username" required readonly>
 				                <span class="input-group-addon"><i class="fa fa-list" id="userProfileUsernameList" style="cursor: pointer;"></i></span>
 				            </div>
 			              </div>
@@ -319,7 +319,10 @@ $('#tblUserList').DataTable({
 	            return row.firstname+" "+row.lastname;
 	       	}
 		  },
-	      { data: "avatar" },
+	      { data: "avatar" , render: function(data, type, row, meta) {	    		
+	            return '<img src=/auth/imgshow/'+data+' />';
+	       	}
+		  },
 
 	],
 	buttons: [
