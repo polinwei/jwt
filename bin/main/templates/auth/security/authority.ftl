@@ -344,7 +344,7 @@ $("#authorityAjaxForm").submit(function(event){
 		        case 409:
 		        	$.alert({
 	                    title: 'Alert!',
-	                    content: 'This record is conflct',
+	                    content: 'This record is conflict',
 	                    icon: 'fa fa-warning',
 	                    type: 'red'
 	                });

@@ -32,9 +32,13 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {		
 		
-		String controllerName = ((HandlerMethod)handler).getResolvedFromHandlerMethod().getBean().toString();
-		authentication = SecurityContextHolder.getContext().getAuthentication();
-		JwtUser jwtUser = (JwtUser)authentication.getPrincipal();
+		try {
+			String controllerName = ((HandlerMethod)handler).getResolvedFromHandlerMethod().getBean().toString();
+			authentication = SecurityContextHolder.getContext().getAuthentication();
+			JwtUser jwtUser = (JwtUser)authentication.getPrincipal();
+		} catch (Exception e) {
+			logger.warn("SecurityInterceptor - preHandle: HandlerMethod cannot be cast to controller name" );
+		}
 		
 		return true;
 	}
@@ -43,30 +47,34 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		
-		String controllerName = ((HandlerMethod)handler).getResolvedFromHandlerMethod().getBean().toString();
-		authentication = SecurityContextHolder.getContext().getAuthentication();
-		JwtUser jwtUser = (JwtUser)authentication.getPrincipal();
-		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-		messageSource.setBasenames("i18n/messages");
-		Locale currentLocale = null;
-		Cookie myLocaleCookie = WebUtils.getCookie(request, "myLocaleCookie");
-		
-		if (request.getAttribute("lang")!=null) {
-			currentLocale = LocaleUtils.toLocale(request.getAttribute("lang").toString());
-		} else if ( myLocaleCookie!=null && myLocaleCookie.getValue()!=null ) {
-			currentLocale = LocaleUtils.toLocale(myLocaleCookie.getValue());
-		} else {
-			currentLocale = request.getLocale();
-		}
-		
-		Map<String,Object> progPermits = new HashMap<>();
-		progPermits.put("programName", messageSource.getMessage("program."+controllerName+".programName", null, "PROGNAME_NOT_DEFINE", currentLocale) );
-		progPermits.put("isAdd", true);
-		progPermits.put("isEdit", true);
-		progPermits.put("isDel", true);
-		progPermits.put("isQuery", true);
-		progPermits.put("isPrint", true);
-		request.setAttribute("progPermits", progPermits);		
+		try {
+			String controllerName = ((HandlerMethod)handler).getResolvedFromHandlerMethod().getBean().toString();
+			authentication = SecurityContextHolder.getContext().getAuthentication();
+			JwtUser jwtUser = (JwtUser)authentication.getPrincipal();
+			ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+			messageSource.setBasenames("i18n/messages");
+			Locale currentLocale = null;
+			Cookie myLocaleCookie = WebUtils.getCookie(request, "myLocaleCookie");
+			
+			if (request.getAttribute("lang")!=null) {
+				currentLocale = LocaleUtils.toLocale(request.getAttribute("lang").toString());
+			} else if ( myLocaleCookie!=null && myLocaleCookie.getValue()!=null ) {
+				currentLocale = LocaleUtils.toLocale(myLocaleCookie.getValue());
+			} else {
+				currentLocale = request.getLocale();
+			}
+			
+			Map<String,Object> progPermits = new HashMap<>();
+			progPermits.put("programName", messageSource.getMessage("program."+controllerName+".programName", null, "PROGNAME_NOT_DEFINE", currentLocale) );
+			progPermits.put("isAdd", true);
+			progPermits.put("isEdit", true);
+			progPermits.put("isDel", true);
+			progPermits.put("isQuery", true);
+			progPermits.put("isPrint", true);
+			request.setAttribute("progPermits", progPermits);
+		} catch (Exception e) {
+			logger.warn("SecurityInterceptor - postHandle: HandlerMethod cannot be cast to controller name");
+		}		
 	}
 	
 	

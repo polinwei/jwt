@@ -232,7 +232,7 @@
 				      </div>
 				         
 				      <div class="col-xs-4 pull-right">
-				          <button id="btn-login" type="submit" class="btn btn-alert btn-block btn-flat"><@spring.message "label.signIn"/></button>
+				          <button id="btn-login" type="submit" class="btn bg-yellow btn-block btn-flat"><@spring.message "label.signIn"/></button>
 				      </div>
 				      <!-- /.col -->				      
 				    </form>				
