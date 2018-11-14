@@ -4,10 +4,11 @@
 		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory name="sf-maria">
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.connection.password">mysql</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/my_spring</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/my_spring?useUnicode=true;characterEncoding=UTF-8;serverTimezone=GMT%2B8</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+        <property name="hibernate.default_catalog">my_spring</property>      
     </session-factory>
 </hibernate-configuration>

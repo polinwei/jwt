@@ -68,10 +68,11 @@ public class MvcConfig implements WebMvcConfigurer {
      *  
      *	  加入 spring-security-taglibs 對 FreeMarker 的支援
      */
-    @PostConstruct
+    @PostConstruct    
     public void freeMarkerConfigurer() {
         List<String> tlds = new ArrayList<String>();
         tlds.add("/static/tags/security.tld");
+        tlds.add("/static/tags/polinwei.tld");
         TaglibFactory taglibFactory = freeMarkerConfigurer.getTaglibFactory();
         taglibFactory.setClasspathTlds(tlds);
         if(taglibFactory.getObjectWrapper() == null) {

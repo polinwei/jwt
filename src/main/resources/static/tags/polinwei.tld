@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ ~ Copyright 2002-2014 the original author or authors.
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~      http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ 
+ ~
+ ~ 
+-->
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+    <description>Polin WEI Tag Library</description>
+
+    <tlib-version>1.0</tlib-version>
+    <short-name>pw</short-name>
+    <uri>/polinwei/tags</uri>
+
+	<tag>
+		<description>Get the file name of freemarker template</description>
+		<name>FtlSampleTemplate</name>
+		<tag-class>com.spring.jwt.tablibs.FtlTemplateTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description> Freemarker Template 的檔案</description>
+			<name>fileName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>parmsStr</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>columnsStr</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description>利用 jquery.dataTables.js 產生資料表格 </description>
+		<name>dataTable</name>
+		<tag-class>com.spring.jwt.tablibs.FtlDataTableTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description> Freemarker Template 的檔案  </description>
+			<name>fileName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description> table's ID </description>
+			<name>tableId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description> 其它參數   </description>
+			<name>paramsStr</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description> Table 的欄位名    </description>
+			<name>columnsStr</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description> Data Table 讀取主機端的 Url    </description>
+			<name>ajaxUrl</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+
+	</tag>
+
+
+</taglib>

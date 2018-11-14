@@ -1,5 +1,6 @@
 <#import "/spring.ftl" as spring/>
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+<#assign pw=JspTaglibs["/polinwei/tags"] />
 <!DOCTYPE html>
 <html>
 <head>

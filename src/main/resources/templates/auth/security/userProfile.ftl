@@ -1,7 +1,7 @@
 
 
       <!-- Default box -->
-      <div class="box box-info">
+      <div class="box box-success">
         <div class="box-header">
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -320,7 +320,7 @@ $('#tblUserList').DataTable({
 	       	}
 		  },
 	      { data: "avatar" , render: function(data, type, row, meta) {	    		
-	            return '<img src=/auth/showphoto/'+data+' />';
+	            return '<img src=/auth/showphoto/avatar-folder/'+data+' />';
 	       	}
 		  },
 
