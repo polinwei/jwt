@@ -1,27 +1,30 @@
-# jwt
+#JWT (JSON Web Token)
 
-用 gradle 建置 Spring Boot
-===============================
 
-command file : spring_boot.bat 
+##Build up 
 --------------------------------
-<set JAVA_HOME=V:\Java64\jdk1.8.0_45>
-<set PATH=.;%JAVA_HOME%\jre\bin;%JAVA_HOME%\bin;V:\gradle\bin;>
 
-run the application
+### command line
+--------------------------------
+<pre><code>
+set JAVA_HOME=V:\Java64\jdk1.8.0_45
+set PATH=.;%JAVA_HOME%\jre\bin;%JAVA_HOME%\bin;V:\gradle\bin;
+</code></pre>
+
+### run the application
 -------------------------------
 V:myspringboot\> `gradlew bootRun`
 
 build the JAR file & Run JAR file
 -------------------------------
 <pre><code>
-V:myspringboot\> `gradlew build`
-Then you can run the JAR file: 
-V:myspringboot\> `java -jar build/libs/myspring.jar`
+V:myspringboot\> gradlew build
+Then you can run the JAR file:
+V:myspringboot\> java -jar build/libs/myspring.jar
 </code></pre>
 
 
-#Tomcat:
+##Tomcat:
 -------------------------------
 <p> The APR based Apache Tomcat Native library:</p>
 
