@@ -23,7 +23,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "entityManagerFactory",
+        entityManagerFactoryRef = "emfMaria",
         basePackages = {"com.spring.jwt.db.maria.dao","com.spring.jwt.db.maria.service"}
 )
 public class DbMariaConfig {
@@ -37,7 +37,7 @@ public class DbMariaConfig {
     }
 
     @Primary
-    @Bean(name = "entityManagerFactory") // Primary 一定要預設用 entityManagerFactory
+    @Bean(name = "emfMaria")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
@@ -67,7 +67,7 @@ public class DbMariaConfig {
     @Primary
     @Bean(name = "transactionManager") // Primary 一定要預設用 transactionManager
     public PlatformTransactionManager transactionManager(
-            @Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory) {
+            @Qualifier("emfMaria") EntityManagerFactory entityManagerFactory) {
 
         return new JpaTransactionManager(entityManagerFactory);
     }

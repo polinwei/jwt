@@ -1,5 +1,3 @@
-
-
       <!-- Default box -->
       <div class="box box-success">
         <div class="box-header">
@@ -88,7 +86,7 @@
 			              <!-- /.form-group -->
 			              <div class="form-group">
 			                <label for="userProfileAjaxNote"><@spring.message "program.common.note" /></label>			                             
-			              	<textarea id="userProfileAjaxNote" name="note" class="form-control"  rows="10" cols="80" ></textarea>
+			              	<textarea id="userProfileAjaxNote" name="note" class="form-control"  rows="5" cols="80" ></textarea>
 			              
 			              </div>
 			              <!-- /.form-group -->
@@ -146,6 +144,8 @@
 <!-- page script -->
 <!-- CK Editor -->
 <script src="/AdminLTE2/bower_components/ckeditor/ckeditor.js"></script>
+<!-- use jquery-ui drag function to drag Modal -->
+<script src="/AdminLTE2/bower_components/jquery-ui/jquery-ui.js"></script>
 <script>
 $(function () {
     // Replace the <textarea id="editor1"> with a CKEditor
@@ -153,9 +153,7 @@ $(function () {
     CKEDITOR.replace('userProfileAjaxNote');
     
 })
-
-
-
+$('.modal-dialog').draggable();
 $('#tblUserProfile').DataTable({
 	language: {
         "url": "/AdminLTE2/bower_components/datatables.net/i18n/${.locale}.json"
@@ -216,7 +214,7 @@ $('#tblUserProfile').DataTable({
              action: function ( e, dt, node, config ) {
                  //alert( 'Button activated' );
                  $("#userProfileAjaxForm").attr("action","/auth/security/userProfile");
-                 $("#userProfileAjaxForm").attr("method","post");
+                 $("#userProfileAjaxForm").attr("method","post");                 
                  $('#modal-userProfile').modal('show');
              }
          },
@@ -344,11 +342,11 @@ $('#tblUserList tbody').on('click', '.btnSelect', function (){
 	
 	console.log('data', data);
 	console.log('Record ID is', data['id']);
-		
+
 	$('#userProfileAjaxForm input[name="userId"] ').val(data['id']);
 	$('#userProfileAjaxForm input[name="username"] ').val(data['username']);
 	
-	$('#modal-userProfileUsernameList').modal('toggle');
+	$('#modal-userProfileUsernameList').modal('toggle');	
 
 });
 
