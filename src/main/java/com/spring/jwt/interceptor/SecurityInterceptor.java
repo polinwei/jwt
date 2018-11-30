@@ -47,13 +47,15 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		
+		String controllerName="";
+		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+		messageSource.setBasenames("i18n/messages");
+		Locale currentLocale = request.getLocale();
 		try {
-			String controllerName = ((HandlerMethod)handler).getResolvedFromHandlerMethod().getBean().toString();
+			controllerName = ((HandlerMethod)handler).getResolvedFromHandlerMethod().getBean().toString();
 			authentication = SecurityContextHolder.getContext().getAuthentication();
 			JwtUser jwtUser = (JwtUser)authentication.getPrincipal();
-			ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-			messageSource.setBasenames("i18n/messages");
-			Locale currentLocale = null;
+			
 			Cookie myLocaleCookie = WebUtils.getCookie(request, "myLocaleCookie");
 			
 			if (request.getAttribute("lang")!=null) {
@@ -64,6 +66,10 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 				currentLocale = request.getLocale();
 			}
 			
+		} catch (Exception e) {
+			logger.warn("SecurityInterceptor - postHandle: HandlerMethod cannot be cast to controller name");
+		} finally {
+			controllerName = controllerName.isEmpty() ? "PROGNAME_NOT_DEFINE" : controllerName;
 			Map<String,Object> progPermits = new HashMap<>();
 			progPermits.put("programName", messageSource.getMessage("program."+controllerName+".programName", null, "PROGNAME_NOT_DEFINE", currentLocale) );
 			progPermits.put("isAdd", true);
@@ -72,9 +78,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 			progPermits.put("isQuery", true);
 			progPermits.put("isPrint", true);
 			request.setAttribute("progPermits", progPermits);
-		} catch (Exception e) {
-			logger.warn("SecurityInterceptor - postHandle: HandlerMethod cannot be cast to controller name");
-		}		
+		} 
 	}
 	
 	

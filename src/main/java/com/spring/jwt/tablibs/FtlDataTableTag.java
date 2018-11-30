@@ -2,10 +2,12 @@ package com.spring.jwt.tablibs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
@@ -16,8 +18,10 @@ import javax.servlet.jsp.tagext.TagSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.web.servlet.support.RequestContext;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
 import freemarker.template.Configuration;
@@ -32,7 +36,8 @@ public class FtlDataTableTag extends TagSupport {
 	
 	private String fileName = "";
 	private String tableId  = "";
-    private String ajaxUrl  = "";
+    private String dtAjaxUrl  = "";
+    private String crudAjaxUrl  = "";
     private String columnsStr = "";
     private String paramsStr = "";
     private ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
@@ -52,14 +57,19 @@ public class FtlDataTableTag extends TagSupport {
 	 */
 	private Map<String, Object> setParams() {
 		Gson gson = new Gson();
-		Map<String, Object> params = gson.fromJson(paramsStr, new TypeToken<Map<String, Object>>() {}.getType());
+		Map<String, Object> params = gson.fromJson(paramsStr, new TypeToken<LinkedHashMap<String, Object>>() {}.getType());
+		
+		Map<String, Object> p = new HashMap<String, Object>();
 		params.forEach((k,v)->{
 			if (k.equals("isAjaxOptions") && v.equals(true)) {
-				params.put("ajaxOptions", messageSource.getMessage("label.ajaxOptions", null, "ajaxOptions", locale));
+				p.put("ajaxOptions", messageSource.getMessage("label.ajaxOptions", null, "ajaxOptions", locale));
+				p.put(k, v);
+			} else {
+				p.put(k, v);
 			}
 		});
 		
-		return params;
+		return p;
 	}
 	
 	private List<LinkedHashMap<String , String>> setColumns(){
@@ -84,10 +94,77 @@ public class FtlDataTableTag extends TagSupport {
 		return dataModel;
 	}
 	
+	private Map<String, String> setFormInputs(){
+		Gson gson = new Gson();
+		List<Map<String , String>> columns = gson.fromJson(columnsStr, new TypeToken< List<LinkedHashMap<String , String>> >() {}.getType() );
+		
+		//轉換成 input 
+		Map<String , String> formColumns = new LinkedHashMap<String, String>();	
+		int i = 0;
+		for (Map<String, String> column : columns) {
+			String tagValue = "";
+			boolean isHide = false;
+			boolean isTextarea = false;
+			String inputKey="";
+			String inputLabel="";
+			String inputValue="<";
+			i++;
+			
+			tagValue = getMapValueByKey(column,"type");
+			switch (tagValue) {
+			case "textarea":
+				inputKey = "textarea" + Integer.toString(i);
+				inputValue += "textarea class=\"form-control\"  rows=\"5\" cols=\"80\" ";
+				isTextarea = true;
+				break;
+			case "hidden":
+				inputKey = "hidden" + Integer.toString(i);
+				inputValue += "input type=\"hidden\" ";
+				isHide = true;
+				break;
+			case "text":
+				inputKey = "input" + Integer.toString(i);
+				inputValue +="input type=\"text\" class=\"form-control\" ";
+				break;
+			}
+			
+			tagValue = getMapValueByKey(column,"data");
+			inputValue += " name='" + tagValue + "' " ;
+			inputValue += " id='" + tableId + tagValue + "' ";
+			
+			tagValue = getMapValueByKey(column,"th");
+			if ( !isHide ) {
+				inputLabel="<label for=";
+				inputLabel += "\"" + tableId + getMapValueByKey(column,"data") + "\">" + messageSource.getMessage(tagValue, null, tagValue, locale);
+				inputLabel += "</label>";
+			}
+			
+			if (isTextarea) {
+				inputValue += "></textarea>";
+			} else {
+				inputValue += " \\>";
+			}
+			
+			formColumns.put(inputKey, inputLabel+inputValue);
+		}
+		
+		
+		return formColumns;
+	}
+	
+	private String getMapValueByKey(Map<String , String> map, String mapKey) {
+		String value = "";
+		for( Entry<String, String> entry : map.entrySet()) {
+			if (entry.getKey().equals(mapKey))
+				value = entry.getValue();
+		}
+		return value;		
+	}
 	
 	@Override
 	public int doStartTag() throws JspException {
 		JspWriter out = pageContext.getOut();
+		HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 		
 		Configuration conf = new Configuration();
 		conf.setClassForTemplateLoading(this.getClass(), "/templates/");
@@ -101,11 +178,15 @@ public class FtlDataTableTag extends TagSupport {
 			Map<String , Object> dataModel = new HashMap<String, Object>();
 			dataModel.put("progPermits", progPermits);
 			dataModel.put("tableId", tableId);
-			dataModel.put("ajaxUrl", ajaxUrl);
+			dataModel.put("dtAjaxUrl", dtAjaxUrl);
+			dataModel.put("crudAjaxUrl", crudAjaxUrl);
 			dataModel.put("columns", this.setColumns());
+			dataModel.put("formInputs", this.setFormInputs());
+			
 			if (!paramsStr.isEmpty()) {
 				dataModel.putAll(this.setParams());
 			}
+			dataModel.put("springMacroRequestContext", new RequestContext(request) );
 			tl.process(dataModel, out);
 		} catch (Exception e) {
 			e.printStackTrace();

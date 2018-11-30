@@ -142,10 +142,7 @@
         </div>       <!-- /.modal -->  
       
 <!-- page script -->
-<!-- CK Editor -->
-<script src="/AdminLTE2/bower_components/ckeditor/ckeditor.js"></script>
-<!-- use jquery-ui drag function to drag Modal -->
-<script src="/AdminLTE2/bower_components/jquery-ui/jquery-ui.js"></script>
+
 <script>
 $(function () {
     // Replace the <textarea id="editor1"> with a CKEditor
@@ -153,7 +150,6 @@ $(function () {
     CKEDITOR.replace('userProfileAjaxNote');
     
 })
-$('.modal-dialog').draggable();
 $('#tblUserProfile').DataTable({
 	language: {
         "url": "/AdminLTE2/bower_components/datatables.net/i18n/${.locale}.json"

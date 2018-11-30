@@ -46,7 +46,7 @@
 	</tag>
 
 	<tag>
-		<description>利用 jquery.dataTables.js 產生資料表格 </description>
+		<description>利用 jquery.dataTables.js 產生資料表格. 修改時, 轉換到 Form input 的 type 若為  textarea, 會以 CKEDITOR 方式產生, 但id 要為 note, 且只能有一個  </description>
 		<name>dataTable</name>
 		<tag-class>com.spring.jwt.tablibs.FtlDataTableTag</tag-class>
 		<body-content>empty</body-content>
@@ -80,7 +80,12 @@
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
-
+		<attribute>
+			<description> AjaxOption's Url    </description>
+			<name>crudAjaxUrl</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 
 
