@@ -22,7 +22,7 @@ public class BaseService {
 		return scRepository.findByParamName("avatar_folder").getParamValue();
 	}
 	
-	public String getImagePathByType(String ImageType) {
-		return scRepository.findByParamName(ImageType).getParamValue();
+	public String getImagePathByType(String uploadType) {
+		return scRepository.findByParamName(uploadType).getParamValue();
 	}
 }

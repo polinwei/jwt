@@ -1,8 +1,5 @@
-
-
-
 <#-- 單筆維護畫面 -->
-<div class="modal fade" id="modal${tableId}" tabindex="-1">
+<div class="modal fade" id="modal${tableId}" >
   <div class="modal-dialog modal-lg">
 	<div class="modal-content">
 	  <div class="modal-header">

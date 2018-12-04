@@ -24,4 +24,10 @@ public class DemoController {
         return "demo/hiFreemarker";
 	}
 	
+	@GetMapping("fileUpload/ajax")
+	public String ajaxFileUpload(Model model) {
+		
+        return "demo/uploadDemo";
+	}
+	
 }

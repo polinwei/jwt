@@ -28,7 +28,7 @@
       </div>
       <!-- /.box -->
       
-        <div class="modal fade" id="modal-userProfile" tabindex="-1">
+        <div class="modal fade" id="modal-userProfile" >
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -144,10 +144,11 @@
 <!-- page script -->
 
 <script>
+CKEDITOR.replace('userProfileAjaxNote');
 $(function () {
     // Replace the <textarea id="editor1"> with a CKEditor
     // instance, using default configuration.
-    CKEDITOR.replace('userProfileAjaxNote');
+    
     
 })
 $('#tblUserProfile').DataTable({

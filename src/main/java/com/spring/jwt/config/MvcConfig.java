@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -37,7 +38,13 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login");
     }
     
-    //多語系設定   
+    @Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {		
+		WebMvcConfigurer.super.addResourceHandlers(registry);
+		registry.addResourceHandler("/fileUpload/userfiles/").addResourceLocations("file:\\fileUpload\\CKFinderJava\\userfiles");
+	}
+
+	//多語系設定   
     @Bean(name = "localeResolver")
     public LocaleResolver getLocaleResolver()  {
         CookieLocaleResolver resolver= new CookieLocaleResolver();   

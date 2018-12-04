@@ -28,11 +28,20 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Remove some buttons provided by the standard plugins, which are
 	// not needed in the Standard(s) toolbar.
-	config.removeButtons = 'Underline,Subscript,Superscript';
+	config.removeButtons = 'Underline,Subscript,Superscript,Source';
 
 	// Set the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
+	
+	// Text color and BGColor
+	config.extraPlugins = 'colorbutton';
+	
+		
+	//開啟圖片上傳功能
+	config.filebrowserImageUploadUrl= '/auth/upload/ckeditorImage?Type=Images&uploadType=ckeditorStorageImagePath'  // /files/upload/image這個是後臺配置的@RequestMapping裡面的值
+	config.filebrowserBrowseUrl = '/AdminLTE2/bower_components/ckfinder/ckfinder.html';
+	config.filebrowserImageBrowseUrl = '/AdminLTE2/bower_components/ckfinder/ckfinder.html?Type=Images';
 };
