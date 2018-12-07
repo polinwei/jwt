@@ -7,7 +7,7 @@
 ### command line
 --------------------------------
 <pre><code>
-set JAVA_HOME=V:\Java64\jdk1.8.0_45
+set JAVA_HOME=V:\java-1.8.0-openjdk-x86_64
 set PATH=.;%JAVA_HOME%\jre\bin;%JAVA_HOME%\bin;V:\gradle\bin;
 </code></pre>
 
