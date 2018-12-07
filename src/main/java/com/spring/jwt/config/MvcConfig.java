@@ -39,9 +39,8 @@ public class MvcConfig implements WebMvcConfigurer {
     }
     
     @Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {		
-		WebMvcConfigurer.super.addResourceHandlers(registry);
-		registry.addResourceHandler("/fileUpload/userfiles/").addResourceLocations("file:\\fileUpload\\CKFinderJava\\userfiles");
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {    	
+		WebMvcConfigurer.super.addResourceHandlers(registry);		
 	}
 
 	//多語系設定   
@@ -51,6 +50,7 @@ public class MvcConfig implements WebMvcConfigurer {
         resolver.setDefaultLocale(Locale.US);
         resolver.setCookieName("myLocaleCookie");
         resolver.setCookieMaxAge(60*60); 
+        resolver.setCookieSecure(true);
         return resolver;
     }
      

@@ -17,16 +17,16 @@
 	Configure the location of uploaded files. See the following article for more details:
 	http://docs.cksource.com/CKFinder_2.x/Developers_Guide/Java/Configuration/baseURL_and_baseDir
 	-->
-	<baseDir>\fileUpload\CKFinderJava\userfiles</baseDir>
-	<baseURL>/fileUpload/userfiles/</baseURL>
+	<baseDir>\fileUpload\ckeditor\userfiles</baseDir>
+	<baseURL></baseURL>
 	<licenseKey></licenseKey>
 	<licenseName></licenseName>
 	<!--
 	Set the maximum size of uploaded images. If an uploaded image is larger, it
 	gets scaled down proportionally. Set to 0 to disable this feature.
 	-->
-	<imgWidth>1600</imgWidth>
-	<imgHeight>1200</imgHeight>
+	<imgWidth>600</imgWidth>
+	<imgHeight>800</imgHeight>
 	<imgQuality>80</imgQuality>
 	<!--
 	See the following article for more details:
