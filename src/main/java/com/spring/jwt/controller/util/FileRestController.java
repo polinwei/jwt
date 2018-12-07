@@ -199,4 +199,15 @@ public class FileRestController {
     	
     }
     
+    @RequestMapping(value = "/auth/showCKFinderPic/images/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> showPhoto( @PathVariable String filename ) throws IOException {
+    	String imagePath = baseService.getImagePathByType("ckeditorStorageImagePath")+"/images/";
+    	
+    	Resource imgFile = resourceLoader.getResource("file:/fileUpload/"+ imagePath + "/" + filename);
+    	return ResponseEntity
+                .ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(new InputStreamResource(imgFile.getInputStream()));
+    	
+    }
 }
