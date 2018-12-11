@@ -1,5 +1,6 @@
 package com.spring.jwt.controller.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.jwt.service.BaseService;
+
 
 @RestController
 public class FileRestController {
@@ -142,6 +144,14 @@ public class FileRestController {
     private void saveUploadedFiles(String uploadType, List<MultipartFile> files) throws IOException {
 
     	String UPLOADED_FOLDER = baseService.getImagePathByType(uploadType);
+    	if (UPLOADED_FOLDER.isEmpty()) {
+    		UPLOADED_FOLDER = "modules/" + uploadType;
+    	}
+    	
+    	File folder = new File("/fileUpload/" + UPLOADED_FOLDER);
+    	if (!folder.exists()) {
+    		folder.mkdirs();
+    	}
     	
         for (MultipartFile file : files) {
 
@@ -167,6 +177,9 @@ public class FileRestController {
 	@RequestMapping(value = "/auth/showimg/{imageType}/{filename}", method = RequestMethod.GET,produces = MediaType.IMAGE_JPEG_VALUE)
 	public void showImage(@PathVariable String imageType, @PathVariable String filename, HttpServletResponse response) throws IOException {
 		String imagePath = baseService.getImagePathByType(imageType);
+		if (imagePath.isEmpty()) {
+			imagePath = "modules/" + imageType;
+    	}
 		
 		Resource imgFile = resourceLoader.getResource("file:/fileUpload/"+ imagePath + "/" + filename);
 		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
@@ -176,6 +189,9 @@ public class FileRestController {
 	@RequestMapping(value = "/auth/showpic/{imageType}/{filename}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> showPic( @PathVariable String imageType, @PathVariable String filename ) throws IOException {
     	String imagePath = baseService.getImagePathByType(imageType);
+    	if (imagePath.isEmpty()) {
+			imagePath = "modules/" + imageType;
+    	}
     	
     	Resource imgFile = resourceLoader.getResource("file:/fileUpload/"+ imagePath + "/" + filename);
     	byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
@@ -190,6 +206,9 @@ public class FileRestController {
     @RequestMapping(value = "/auth/showphoto/{imageType}/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> showPhoto( @PathVariable String imageType, @PathVariable String filename ) throws IOException {
     	String imagePath = baseService.getImagePathByType(imageType);
+    	if (imagePath.isEmpty()) {
+			imagePath = "modules/" + imageType;
+    	}
     	
     	Resource imgFile = resourceLoader.getResource("file:/fileUpload/"+ imagePath + "/" + filename);
     	return ResponseEntity
@@ -199,11 +218,11 @@ public class FileRestController {
     	
     }
     
-    @RequestMapping(value = "/auth/showCKFinderPic/images/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<InputStreamResource> showPhoto( @PathVariable String filename ) throws IOException {
-    	String imagePath = baseService.getImagePathByType("ckeditorStorageImagePath")+"/images/";
+    @RequestMapping(value = "/auth/showCKFinderPic/{username}/images/{filename}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> showCKFinderPic( @PathVariable String username, @PathVariable String filename ) throws IOException {
+    	String imagePath = baseService.getImagePathByType("ckeditorStorageImagePath") + "/" + username +"/images/";
     	
-    	Resource imgFile = resourceLoader.getResource("file:/fileUpload/"+ imagePath + "/" + filename);
+    	Resource imgFile = resourceLoader.getResource("file:/fileUpload/"+ imagePath + filename);
     	return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)

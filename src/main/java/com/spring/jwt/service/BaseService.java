@@ -23,6 +23,11 @@ public class BaseService {
 	}
 	
 	public String getImagePathByType(String uploadType) {
-		return scRepository.findByParamName(uploadType).getParamValue();
+		if (scRepository.findByParamName(uploadType)!=null) {
+			return scRepository.findByParamName(uploadType).getParamValue();
+		} else {
+			return "";
+		}
+		
 	}
 }

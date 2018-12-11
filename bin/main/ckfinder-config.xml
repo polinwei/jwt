@@ -17,7 +17,7 @@
 	Configure the location of uploaded files. See the following article for more details:
 	http://docs.cksource.com/CKFinder_2.x/Developers_Guide/Java/Configuration/baseURL_and_baseDir
 	-->
-	<baseDir>\fileUpload\ckeditor</baseDir>
+	<baseDir>\fileUpload\ckeditor\images</baseDir>
 	<baseURL>/auth/showCKFinderPic/</baseURL>
 	<licenseKey></licenseKey>
 	<licenseName></licenseName>
@@ -82,7 +82,7 @@
 	<userRoleSessionVar>CKFinder_UserRole</userRoleSessionVar>
 	<accessControls>
 		<accessControl>
-			<role>*</role>
+			<role>ADMIN</role>
 			<resourceType>*</resourceType>
 			<folder>/</folder>
 			<folderView>true</folderView>
@@ -94,6 +94,19 @@
 			<fileRename>true</fileRename>
 			<fileDelete>true</fileDelete>
 		</accessControl>
+		<accessControl>
+			<role>USER</role>
+			<resourceType>Images</resourceType>
+			<folder>/</folder>
+			<folderView>true</folderView>
+			<folderCreate>true</folderCreate>
+			<folderRename>false</folderRename>
+			<folderDelete>false</folderDelete>
+			<fileView>true</fileView>
+			<fileUpload>true</fileUpload>
+			<fileRename>false</fileRename>
+			<fileDelete>false</fileDelete>
+		</accessControl>		
 	</accessControls>
 	<thumbs>
 		<enabled>true</enabled>
@@ -185,6 +198,7 @@
 				<param name="smallThumb" value="90x90"></param>
 				<param name="mediumThumb" value="120x120"></param>
 				<param name="largeThumb" value="180x180"></param>
+				<param name="ExtraThumb" value="600x800"></param>
 			</params>
 		</plugin>
 		<plugin>
@@ -209,5 +223,8 @@
 		</plugin>
 		-->
 	</plugins>
+	<basePathBuilderImpl>com.spring.jwt.config.CKFinderConfigurationPathBuilder</basePathBuilderImpl>
+	<!--  
 	<basePathBuilderImpl>com.ckfinder.connector.configuration.ConfigurationPathBuilder</basePathBuilderImpl>
+	-->
 </config>

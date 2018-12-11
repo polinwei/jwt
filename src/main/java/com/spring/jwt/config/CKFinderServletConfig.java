@@ -10,9 +10,9 @@ import com.ckfinder.connector.ConnectorServlet;
 @Configuration
 public class CKFinderServletConfig extends ConnectorServlet {
 
-    @Value("${ckeditor.storage.image.path}")
-    private String baseDir;
-    // @Value("${ckeditor.access.image.url}")
+    //@Value("${ckeditor.storage.image.path}")
+    //private String baseDir;
+    //@Value("${ckeditor.access.image.url}")
     //private String baseURL;
 
     @Bean
@@ -21,8 +21,8 @@ public class CKFinderServletConfig extends ConnectorServlet {
         registrationBean.addInitParameter("XMLConfig","classpath:ckfinder-config.xml");
         registrationBean.addInitParameter("debug","false");
         registrationBean.addInitParameter("configuration","com.spring.jwt.config.CKFinderConfig");
-        //初始化ckfinder.xml 配置
-        registrationBean.addInitParameter("baseDir",baseDir);
+        //初始化ckfinder.xml 配置, 改透過 ckfinder-config.xml來作初始化
+        //registrationBean.addInitParameter("baseDir",baseDir);
         //registrationBean.addInitParameter("baseURL",baseURL);
         return registrationBean;
     }

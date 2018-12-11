@@ -144,7 +144,9 @@
 <!-- page script -->
 
 <script>
-CKEDITOR.replace('userProfileAjaxNote');
+CKEDITOR.replace('userProfileAjaxNote',{
+	filebrowserImageUploadUrl: '/auth/upload/ckeditorImage?Type=Images&uploadType=userProfile'
+});
 $(function () {
     // Replace the <textarea id="editor1"> with a CKEditor
     // instance, using default configuration.
