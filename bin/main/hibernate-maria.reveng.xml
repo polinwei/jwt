@@ -2,7 +2,5 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd" >
 
 <hibernate-reverse-engineering>
-	<table-filter match-name="system_config"
-		match-catalog="my_spring">
-	</table-filter>
+	<table-filter match-name="app_codes" match-catalog="my_spring"></table-filter>
 </hibernate-reverse-engineering>

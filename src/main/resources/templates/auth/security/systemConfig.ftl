@@ -14,7 +14,7 @@
 			tableId="tblSystemConfig"
 			dtAjaxUrl="/auth/security/systemConfigs"
 			crudAjaxUrl="/auth/security/systemConfig"
-			paramsStr="{'isAjaxOptions':true,'crudKey':'id'}"
+			paramsStr="{'isAjaxOptions':true,'uploadType':'security','isNoteColumn':true}"
 			columnsStr="[{'th':'id','data':'id','visible': 'false','type':'hidden','required':'true'},
 					     {'th':'program.common.paramName','data':'paramName','type':'text','required':'true'},
 			             {'th':'program.common.paramValue','data':'paramValue','type':'text','required':'true'},

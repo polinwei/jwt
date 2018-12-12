@@ -3,7 +3,6 @@ package com.spring.jwt.controller.security;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -25,40 +24,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.spring.jwt.db.maria.dao.security.SystemConfigRepository;
-import com.spring.jwt.db.maria.model.security.SystemConfig;
+import com.spring.jwt.db.maria.dao.security.AppCodesRepository;
+import com.spring.jwt.db.maria.model.security.AppCodes;
 import com.spring.jwt.service.UserService;
-
 
 @RestController
 @RequestMapping(path = "/auth/security")
-public class SystemConfigRestController {
+public class AppCodesRestController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
-	SystemConfigRepository scRepository;
+	AppCodesRepository acRepo;
 	@Autowired
 	UserService userService;
 	
 	/**
 	 *  查詢所有資料
-	 * @return List<UserProfile>
+	 * @return
 	 */
-	@GetMapping("systemConfigs")
-	public List<SystemConfig> getAllDatas(){	
-		return scRepository.findAll();
+	@GetMapping("appCodes")
+	public List<AppCodes> getAllDatas(){
+		return acRepo.findAll();
 	}
 	
 	/**
-	 * 取得某一筆資料
+	 * 取得一筆資料
 	 * @param id
 	 * @return
 	 */
-	@GetMapping("systemConfig/{id}")
+	@GetMapping("appCode/{id}")
 	public ResponseEntity<?> getData(@PathVariable Long id){
-		Optional<SystemConfig> systemConfig = scRepository.findById(id);
-		if (systemConfig.isPresent()) {
-			return new ResponseEntity<SystemConfig>(systemConfig.get(), HttpStatus.OK);
+		Optional<AppCodes> appCodes = acRepo.findById(id);
+		if (appCodes.isPresent()) {
+			return new ResponseEntity<AppCodes>(appCodes.get(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
@@ -66,68 +64,64 @@ public class SystemConfigRestController {
 	
 	/**
 	 * 新增
-	 * @param userProfile  可以用 @RequestBody Map<String,Object> params 取得所有 Form 裡的輸入值
-	 * @param bindingResult
+	 * @param appCodes
+	 * @param br
 	 * @return
 	 */
-	@PostMapping("systemConfig")	
-	public ResponseEntity<?> addData(@RequestBody @Valid SystemConfig systemConfig, BindingResult bindingResult){
+	@PostMapping("appCode")
+	public ResponseEntity<?> addData(@RequestBody @Valid AppCodes appCodes, BindingResult br){
 		
-		SystemConfig newEntity = new SystemConfig();
+		AppCodes newEntity = new AppCodes();
 		URI location = null;
 		
-		if ( bindingResult.hasErrors()) {
-			return new ResponseEntity(bindingResult.getFieldErrors(),HttpStatus.METHOD_NOT_ALLOWED);
+		if ( br.hasErrors()) {
+			return new ResponseEntity(br.getFieldErrors(),HttpStatus.METHOD_NOT_ALLOWED);
 		}
 		
 		try {
-			systemConfig.setCreateDate(new Date());
-			systemConfig.setCreateUser(userService.getCurrentUser().getId());
-			newEntity = scRepository.save(systemConfig);
+			appCodes.setCreateUser(userService.getCurrentUser().getId());
+			appCodes.setCreateDate(new Date());
+			newEntity = acRepo.save(appCodes);
 			location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newEntity.getId()).toUri();
 			
 		} catch (DataIntegrityViolationException e) {			
-			return new ResponseEntity(bindingResult.getFieldErrors(),HttpStatus.CONFLICT);
+			return new ResponseEntity(br.getFieldErrors(),HttpStatus.CONFLICT);
 		} catch (Exception e) {
-			return new ResponseEntity(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(br.getAllErrors(), HttpStatus.BAD_REQUEST);
 		}
 		
 		return new ResponseEntity(ResponseEntity.created(location).build(),HttpStatus.CREATED);
-	}
 		
+	}
+	
 	/**
 	 * 更新
-	 * @param systemConfig
+	 * @param appCodes
 	 * @param id
-	 * @param bindingResult
+	 * @param br
 	 * @return
 	 */
-	@PutMapping("systemConfig/{id}")
-	public ResponseEntity<?> updateData(@RequestBody @Valid SystemConfig systemConfig , @PathVariable long id, BindingResult bindingResult){
-		
-		Optional <SystemConfig> currentEntity = scRepository.findById(id);
+	@PutMapping("appCode/{id}")
+	public ResponseEntity<?> updateData(@RequestBody @Valid AppCodes appCodes , @PathVariable long id, BindingResult br){
+		Optional<AppCodes> currentEntity = acRepo.findById(id);
 		if (currentEntity.isPresent()) {
 			try {
-				systemConfig.setUpdateDate(new Date());
-				systemConfig.setUpdateUser(userService.getCurrentJwtUser().getId());
-				scRepository.save(systemConfig);
+				appCodes.setUpdateDate(new Date());
+				appCodes.setUpdateUser(userService.getCurrentUser().getId());
+				acRepo.save(appCodes);
 				return new ResponseEntity(HttpStatus.OK);
 			} catch (DataIntegrityViolationException e) {			
-				return new ResponseEntity(bindingResult.getFieldErrors(),HttpStatus.CONFLICT);
+				return new ResponseEntity(br.getFieldErrors(),HttpStatus.CONFLICT);
 			} catch (Exception e) {
-				return new ResponseEntity(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+				return new ResponseEntity(br.getAllErrors(), HttpStatus.BAD_REQUEST);
 			}
 		} else {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
 	}
 	
-	/**
-	 * 刪除
-	 * @param id
-	 */
-	@DeleteMapping("systemConfig/{id}")
+	@DeleteMapping("appCode/{id}")
 	public void delData(@PathVariable Long id){
-		scRepository.deleteById(id);
+		acRepo.deleteById(id);
 	}
 }

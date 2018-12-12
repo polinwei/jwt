@@ -90,9 +90,13 @@
 </table>
 
 <script>
-
-CKEDITOR.replace('${tableId}note');
-
+<#if isNoteColumn?? && isNoteColumn>
+CKEDITOR.replace('${tableId}note'
+    <#if uploadType?? && uploadType!="">
+		,{filebrowserImageUploadUrl: '/auth/upload/ckeditorImage?Type=Images&uploadType=${uploadType}'}
+	</#if>
+);  
+</#if>
 <#-- JS for  grid 顯示資料 -->
 $('#${tableId}').DataTable({
 	language: {
@@ -142,7 +146,9 @@ $('#${tableId}').DataTable({
 			className: "btn btn-xs btn-primary btnAdd",
 			action: function ( e, dt, node, config ) {
 			    $("#ajaxForm${tableId} input").val("");
-			    CKEDITOR.instances['${tableId}note'].setData("");
+			    <#if isNoteColumn?? && isNoteColumn>
+			    	CKEDITOR.instances['${tableId}note'].setData("");
+			    </#if>
 				$("#ajaxForm${tableId}").attr("action","${crudAjaxUrl}");
 				$("#ajaxForm${tableId}").attr("method","post");                 
 				$('#modal${tableId}').modal('show');
@@ -167,10 +173,11 @@ $('#${tableId} tbody').on('click', '.btn${tableId}Edit', function (){
 	
 	$.each( data, function( key, value ) {		
 		$('#ajaxForm${tableId} input[name="'+key+'"] ').val(value);
-		<#-- -->
-		if (key=='note'){
-			CKEDITOR.instances['${tableId}note'].setData(value);
-		}
+		<#if isNoteColumn?? && isNoteColumn>
+			if (key=='note'){
+				CKEDITOR.instances['${tableId}note'].setData(value);
+			}
+		</#if>
 		 
 	});
 	
@@ -185,9 +192,10 @@ $("#ajaxForm${tableId}").submit(function(event){
     var post_url = $(this).attr("action"); <#-- get form action url -->
     var request_method = $(this).attr("method"); <#-- get form GET/POST method -->
     <#-- CKEDITOR 資料取得 -->
-    noteValue = CKEDITOR.instances['${tableId}note'].getData();
-    $('#ajaxForm${tableId} textarea[name="note"] ').val(noteValue);
-    
+    <#if isNoteColumn?? && isNoteColumn>
+	    noteValue = CKEDITOR.instances['${tableId}note'].getData();
+	    $('#ajaxForm${tableId} textarea[name="note"] ').val(noteValue);
+    </#if>
     var form_data = JSON.stringify( $(this).serializeObject() ); <#-- Encode form elements for submission -->
    
     $.ajax({

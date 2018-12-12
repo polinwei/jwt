@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.1.0.RELEASE'
+		springBootVersion = '2.1.1.RELEASE'
 		jjwtVersion = '0.9.0'
 		findbugsVersion='3.0.1'
 		bootstrapVersion = '3.3.7'
