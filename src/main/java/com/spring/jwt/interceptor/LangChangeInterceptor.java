@@ -20,7 +20,7 @@ public class LangChangeInterceptor extends LocaleChangeInterceptor {
 		Cookie myLocaleCookie = WebUtils.getCookie(request, "myLocaleCookie");
 		
 		if (newLocale != null) {
-			request.setAttribute("lang", newLocale);
+			request.setAttribute("lang", newLocale);			
 		} else if (myLocaleCookie != null) {
 			request.setAttribute("lang", myLocaleCookie.getValue());
 		}				
