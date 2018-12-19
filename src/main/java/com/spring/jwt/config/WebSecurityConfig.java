@@ -87,6 +87,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/register").permitAll()
                 // demo
                 .antMatchers("/demo/**").permitAll()
+                // 讓 Spring Boot Admin 可以連入
+                .antMatchers("/actuator/**").permitAll()
                 
                 .anyRequest().authenticated()   // 除了以上的 URL 外, 都需要認證才可以訪問
                 .and()

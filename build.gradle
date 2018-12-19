@@ -57,6 +57,7 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-freemarker")
 	compile("org.springframework.boot:spring-boot-starter-web")
 	compile("org.springframework.boot:spring-boot-starter-security")
+	compile("org.springframework.boot:spring-boot-starter-data-ldap")
 	compile("org.springframework.security:spring-security-taglibs")
 	compile("org.springframework.boot:spring-boot-devtools") // Class 程式有更改時, 自動重啟
 	compile("org.hibernate.validator:hibernate-validator") //驗證
@@ -75,6 +76,7 @@ dependencies {
 	compile("com.google.code.gson:gson:${gsonVersion}")
 	compile("org.webjars.bowergithub.lipis:flag-icon-css:3.1.0")
 	compileOnly("org.springframework.boot:spring-boot-configuration-processor")
+	compile('de.codecentric:spring-boot-admin-starter-client:2.1.1') // SpringBoot Admin Client
 	testCompile("org.springframework.boot:spring-boot-starter-test")
 	testCompile("org.springframework.security:spring-security-test")
 

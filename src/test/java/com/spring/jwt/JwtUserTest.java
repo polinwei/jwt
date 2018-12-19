@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class JwtUserTest {
-	private final static Logger logger = LoggerFactory.getLogger(JwtUserTest.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 
 	@Autowired

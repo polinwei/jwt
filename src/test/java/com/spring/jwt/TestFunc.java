@@ -3,6 +3,10 @@ package com.spring.jwt;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -20,22 +24,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class TestFunc {
-
-	public static void main(String[] args) throws Exception  {
-		// TODO Auto-generated method stub
-		try {
-			File xmlFile = ResourceUtils.getFile("classpath:ckfinder-config.xml");
-			readMXLFile(xmlFile);
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
-	public static void readMXLFile(File xmlFile) throws Exception {
+	@Test
+	public void readMXLFile() throws Exception {
+		File xmlFile = ResourceUtils.getFile("classpath:ckfinder-config.xml");
 		InputStream is = new FileInputStream(xmlFile);
 		StringBuilder contentBuilder = new StringBuilder();
 		try (Stream<String> stream = Files.lines(Paths.get(xmlFile.getAbsolutePath()), StandardCharsets.UTF_8)) {
