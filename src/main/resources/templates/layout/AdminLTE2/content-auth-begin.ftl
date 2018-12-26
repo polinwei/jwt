@@ -19,29 +19,11 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown notifications-menu">
-              <!-- Menu toggle button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <#if Request.lang?? && Request.lang=="zh_TW">
-              		<i class="flag-icon flag-icon-tw"></i>
-              	<#else>
-              		<i class="flag-icon flag-icon-us"></i>
-              	</#if> 
-              </a>
-              <ul class="dropdown-menu">                
-                <li>
-                  <!-- Inner Menu: contains the notifications -->
-                  <ul class="menu">
-                    <li><!-- start language list -->
-                      <a href='${springMacroRequestContext.getRequestUri()}?lang=zh_TW'><i class="flag-icon flag-icon-tw text-aqua"></i> Chinese </a>
-                    </li>
-                    <li><a href="${springMacroRequestContext.getRequestUri()}?lang=en_US"><i class="flag-icon flag-icon-us text-aqua"></i> 英文  </a></li>
-                    <!-- end language list -->
-                  </ul>
-                </li>                
-              </ul>
-            </li> 
-          
+	        <li><!-- start language list -->
+	          <a href='${springMacroRequestContext.getRequestUri()}?lang=zh_TW'><i class="flag-icon flag-icon-tw text-aqua"></i> Chinese </a>
+	        </li>
+	        <li><a href="${springMacroRequestContext.getRequestUri()}?lang=en_US"><i class="flag-icon flag-icon-us text-aqua"></i> 英文  </a></li>
+	        <!-- end language list -->          
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-envelope-o"></i>

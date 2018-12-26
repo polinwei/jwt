@@ -25,7 +25,7 @@ CONSTRAINT fk_systemconfig_update_user FOREIGN KEY (update_user) REFERENCES user
 
 INSERT INTO `system_config` (`id`, `param_name`, `param_value`, `param_desc`, `note`, `create_date`, `update_date`, `create_user`, `update_user`) VALUES
 (1, 'avatar-folder', 'images/avatar', '個人相片存放目錄', '<p>個人相片統一存放目錄</p>\r\n', NULL, '2018-12-12 11:43:27', NULL, 1),
-(2, 'ckeditorStorageImagePath', 'ckeditor/images', ' ckeditor Storage Image Path', '', NULL, '2018-12-12 11:43:21', NULL, 1);
+(2, 'ckeditorStorageImagePath', 'ckeditor/images', 'ckeditor Storage Image Path', '', NULL, '2018-12-12 11:43:21', NULL, 1);
 
 CREATE TABLE user_profile 
 (

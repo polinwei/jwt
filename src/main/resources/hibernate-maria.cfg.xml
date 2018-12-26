@@ -10,6 +10,7 @@
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
         <property name="hibernate.connection.pool_size">1</property>
-        <property name="hibernate.default_catalog">my_spring</property>      
+        <property name="hibernate.default_catalog">my_spring</property>
+        <property name="hibernate.default_schema">my_spring</property>      
     </session-factory>
 </hibernate-configuration>

@@ -30,4 +30,9 @@ public class DemoController {
         return "demo/uploadDemo";
 	}
 	
+	@GetMapping("jqwidgets")
+	public String jqwidgets(Model model) {
+		
+        return "demo/jqwidgets";
+	}
 }
