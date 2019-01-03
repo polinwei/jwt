@@ -30,6 +30,9 @@
   <link rel="stylesheet" href="/js/jquery-confirm/jquery-confirm.min.css">
   <link rel="stylesheet" href="/js/jquery-fancybox/jquery.fancybox.min.css">
 
+  <#-- add one of the jQWidgets styles -->
+  <link rel="stylesheet" href="/AdminLTE2/bower_components/jqwidgets/styles/jqx.base.css" type="text/css" />  
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -66,6 +69,9 @@
 <script src="/AdminLTE2/bower_components/datatables.net-extensions/pdfmake/vfs_fonts.js"></script>
 <script src="/AdminLTE2/bower_components/datatables.net-extensions/JSZip/jszip.min.js"></script>
 
+<#-- add the jQWidgets framework -->
+<script type="text/javascript" src="/AdminLTE2/bower_components/jqwidgets/jqx-all.js"></script>
+
 <#-- CK Editor  -->
 <script src="/AdminLTE2/bower_components/ckeditor/ckeditor.js"></script>
 <#-- use jquery-ui drag function to drag Modal  -->
@@ -89,6 +95,7 @@
 
 
 $(document).ready(function() {
+    
 	<#-- use jquery-ui drag function to drag Modal  -->
 	$('.modal-dialog').draggable();
 	<#-- pdfmake 中文字 -->

@@ -302,7 +302,8 @@ $('#tblUserList').DataTable({
     },
  	ajax: {
  		url:"/auth/security/users",dataSrc:"",
- 		headers: jwtClient.setAuthorizationTokenHeader()
+ 		headers: jwtClient.setAuthorizationTokenHeader(),
+ 		async: false
 	},
 	columns: [
 	      {
@@ -339,8 +340,8 @@ $('#tblUserList tbody').on('click', '.btnSelect', function (){
 	var data =  $('#tblUserList').DataTable().row($row).data();
 	var url = $(this).attr('data-url');
 	
-	console.log('data', data);
-	console.log('Record ID is', data['id']);
+	//console.log('data', data);
+	//console.log('Record ID is', data['id']);
 
 	$('#userProfileAjaxForm input[name="userId"] ').val(data['id']);
 	$('#userProfileAjaxForm input[name="username"] ').val(data['username']);
@@ -355,8 +356,8 @@ $('#tblUserProfile tbody').on('click', '.btnDTView', function (){
 	var data =  $('#tblUserProfile').DataTable().row($row).data();
 	var url = $(this).attr('data-url');
 	
-	console.log('data', data);
-	console.log('Record ID is', data['id']);
+	//console.log('data', data);
+	//console.log('Record ID is', data['id']);
 	
 	$("#userProfileAjaxForm").attr("action",url);
 	$("#userProfileAjaxForm").attr("method","put");

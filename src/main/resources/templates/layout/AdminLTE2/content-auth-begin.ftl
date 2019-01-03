@@ -320,6 +320,17 @@
             <li class="active"><a href="/auth/security/authority"><i class="fa fa-circle-o"></i> Authorities </a></li>
             <li><a href="/auth/security/configSet"><i class="fa fa-circle-o"></i> ConfigSet </a></li>
           </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-edit"></i> <span>Organization</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="/auth/organization/OrgSet"><i class="fa fa-circle-o"></i> Company/Department/Staff </a></li>
+          </ul>
         </li>        
         
         <li class="treeview">

@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,7 +37,10 @@ public class User implements java.io.Serializable {
 	private Long id;
 	private User userByCreateUser;
 	private User userByUpdateUser;
+	@Size(min=3, max=50 , message = "{Size}")
 	private String username;
+	@NotEmpty
+	@Size(min=4, max=100 , message = "{Size}")
 	private String password;
 	private String avatar;
 	private String firstname;
