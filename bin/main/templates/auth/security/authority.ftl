@@ -248,7 +248,7 @@ $('#tblAuthority').DataTable({
 				<#assign isDelDisable = 'disabled="disabled" '>				
 			</#if>
 			
-            return '<a href="#" data-url=/auth/authentication/authority/'+data+' class="btn btn-xs btn-primary btnDTView btnEdit" ${isEditDisable!""}><i class="fa fa-pencil"></i>Edit</a>'<@security.authorize access="hasRole('ADMIN')">+
+            return '<a href="#" data-url=/auth/authentication/authority/'+data+' class="btn btn-xs btn-primary btnDTView btnEdit" ${isEditDisable!""}><i class="fa fa-pencil"></i>Edit</a> '<@security.authorize access="hasRole('ADMIN')">+
                    '<a href="#" data-url=/auth/authentication/authority/'+data+' data-ajax="true" class="btn btn-xs btn-danger btnDel" ${isDelDisable!""}><i class="fa fa-trash-o"></i>Delete</a>' </@security.authorize>
        	}  
       }],

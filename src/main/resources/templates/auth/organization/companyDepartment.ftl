@@ -1,4 +1,9 @@
 
+<#-- add one of the jQWidgets styles -->
+<link rel="stylesheet" href="/AdminLTE2/bower_components/jqwidgets/styles/jqx.base.css" type="text/css" />  
+<#-- add the jQWidgets framework -->
+<script type="text/javascript" src="/AdminLTE2/bower_components/jqwidgets/jqx-all.js"></script>
+
   <!-- Default box -->
   <div class="box box-danger">
     <div class="box-header">
@@ -8,17 +13,296 @@
       </div>
     </div>
     <div class="box-body">
-	    <div id='jqxWidgetCompanyDepartment' >
+    	<div id="eventLogCompany"></div>
+	    <div id='jqxWidgetCompanyDepartment'>
         <@spring.message "program.companyController.programName" />
-        <div id="companyGrid"></div>
+        <div id="companyGrid">
+			<script type="text/javascript">
+	            var companyGridEditClick = function (rowid) {
+	            	// get current row data
+              	  	var rowdata = $("#companyGrid").jqxGrid('getrowdata', rowid);
+              	    var url = $("#companyDetailForm").attr("action") + "/" + rowdata.id ; // 點2次以上會有問題待解
+              	    console.log(url);
+              	    $("#companyDetailForm").attr("action",url);
+              	    $("#companyDetailForm").attr("method","put");
+              	    
+              		$.each( rowdata, function( key, value ) {		
+              			$('#companyDetailForm input[name="'+key+'"] ').val(value);
+              		});	            	
+              		
+              	    $('#modal-companyDetail').modal('show');
+	            }
+	            
+	            function companyGridDelClick(rowid){
+	            	// get current row data
+              	  	var rowdata = $("#companyGrid").jqxGrid('getrowdata', rowid);
+	              	  $.confirm({
+					        title: '<@spring.message "modal.confirm.del.title"/>',
+					        content: '<@spring.message "modal.confirm.del.content"/>',
+					        type: 'red',
+					        animation: 'zoom',
+					        icon: 'fa fa-warning',
+					        buttons: {
+					            cancel: {
+					                text: '<@spring.message "modal.button.cancel" />',                
+					                keys: ['esc'],
+					                action: function(){
+					                	// Reload
+					                	 $("#companyGrid").jqxGrid('updatebounddata');
+					                }
+					            },
+					            confirm: {
+					                text: '<@spring.message "modal.button.confirm" />',
+					                btnClass: 'btn-danger',
+					                keys: ['enter'],
+					                action: function(){
+					                	if (rowdata.id!="") {
+					                    	$.ajax({
+					                            cache: false,
+					                            contentType: "application/json; charset=utf-8",
+					                            url: '/auth/org/company/'+ rowdata.id,                            
+					                            type: 'delete',                            
+					                            headers:jwtClient.setAuthorizationTokenHeader(),
+					                            success: function (data, status, xhr) {
+					                            	$("#companyGrid").jqxGrid('updatebounddata');
+					                                // delete command is executed.
+					                            	$("#eventLogCompany").html('<span class="btn bg-maroon btn-flat margin">刪除成功</span>');
+					                            },
+					                            error: function (jqXHR, textStatus, errorThrown) {
+					                            	$.alert({
+					       			                    title: 'Alert!',
+					       			                    content: 'Manipulation failed',
+					       			                    icon: 'fa fa-warning',
+					       			                    type: 'red'
+					       			                });
+					                                // Reload
+					                            	$("#companyGrid").jqxGrid('updatebounddata');
+					                            	$("#eventLogCompany").html('<span class="btn bg-maroon btn-flat margin">刪除失敗</span>');
+					                            }
+					                        });	      				                    	
+						                	
+					                    } else {
+					                   		// Reload
+			                            	$("#companyGrid").jqxGrid('updatebounddata');
+					                    }
+					                }
+					            }
+					        }
+					    }); <!--./delete confirm -->
+	            }
+	            
+	        </script>        
+        </div>
         <@spring.message "program.departmentController.programName" />
         <div id="departmentGrid"></div>
     	</div>
     </div><!-- /.box-body -->
   </div><!-- /.box -->
-  
+
+
+        <div class="modal fade" id="modal-companyDetail">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><@spring.message "program.companyController.programName" /></h4>
+              </div>
+              <div class="modal-body">
+
+				<!-- ajax-form id="authorityAjaxForm" -->
+				<form id="companyDetailForm" action="/auth/org/company" method="post">
+			      <input type="hidden" id="companyId" name="id" >
+			      <div class="box box-danger">
+			        <!-- /.box-header -->
+			        <div class="box-body">
+			          <div class="row">
+			            <div class="col-md-6">
+			              <div class="form-group">
+			                <label for="companyCode"><@spring.message "program.companyController.companyCode" /></label>
+			                <input type="text" class="form-control" id="companyCode" placeholder="<@spring.message "program.companyController.companyCode" />" name="code" required>             
+			              </div><!-- /.form-group -->
+			            </div><!-- /.col -->
+			            <div class="col-md-6">
+			              <div class="form-group">                
+			                <label for="companyName"><@spring.message "program.companyController.companyName" /></label>
+			                <input type="text" class="form-control" id="companyName" placeholder="<@spring.message "program.companyController.companyName" />" name="name" required>
+			              </div><!-- /.form-group -->
+			            </div><!-- /.col -->			            
+			          </div><!-- /.row -->
+			          <div class="row">
+			            <div class="col-md-6">
+			              <div class="form-group">
+			                <label for="CompanyNameEng"><@spring.message "program.companyController.companyNameEng" /></label>
+			                <input type="text" class="form-control" id="CompanyNameEng" placeholder="<@spring.message "program.companyController.companyNameEng" />" name="nameEng" >             
+			              </div><!-- /.form-group -->
+			            </div><!-- /.col -->
+			            <div class="col-md-6">
+			              <div class="form-group">                
+			                <label for="Superintendent"><@spring.message "program.companyController.superintendent" /></label>
+			                <input type="text" class="form-control" id="Superintendent" placeholder="<@spring.message "program.companyController.superintendent" />" name="superintendent" required>
+			              </div><!-- /.form-group -->
+			            </div><!-- /.col -->			            
+			          </div><!-- /.row -->
+			          <div class="row">
+			            <div class="col-md-6">
+			              <div class="form-group">
+			                <label for="address"><@spring.message "program.common.address" /></label>
+			                <input type="text" class="form-control" id="address" placeholder="<@spring.message "program.common.address" />" name="address" >             
+			              </div><!-- /.form-group -->
+			            </div><!-- /.col -->
+			            <div class="col-md-6">
+			              <div class="form-group">                
+			                <label for="addressEng"><@spring.message "program.common.addressEng" /></label>
+			                <input type="text" class="form-control" id="addressEng" placeholder="<@spring.message "program.common.addressEng" />" name="addressEng" >
+			              </div><!-- /.form-group -->
+			            </div><!-- /.col -->			            
+			          </div><!-- /.row -->
+			          <div class="row">
+			            <div class="col-md-6">
+			              <div class="form-group">
+			                <label for="telephone"><@spring.message "program.common.telephone" /></label>
+			                <input type="text" class="form-control" id="telephone" placeholder="<@spring.message "program.common.telephone" />" name="telephone" >             
+			              </div><!-- /.form-group -->
+			            </div><!-- /.col -->
+			            <div class="col-md-6">
+			              <div class="form-group">                
+			                <label for="fax"><@spring.message "program.common.fax" /></label>
+			                <input type="text" class="form-control" id="fax" placeholder="<@spring.message "program.common.fax" />" name="fax" >
+			              </div><!-- /.form-group -->
+			            </div><!-- /.col -->			            
+			          </div><!-- /.row -->
+			          <div class="row">
+			            <div class="col-md-6">
+			              <div class="form-group">
+			                <label for="website"><@spring.message "program.common.website" /></label>
+			                <input type="text" class="form-control" id="website" placeholder="<@spring.message "program.common.website" />" name="website" >             
+			              </div><!-- /.form-group -->
+			            </div><!-- /.col -->
+			            <div class="col-md-6">
+			              <div class="form-group">                
+			                <label for="note"><@spring.message "program.common.note" /></label>
+			                <input type="text" class="form-control" id="note" placeholder="<@spring.message "program.common.note" />" name="note" >
+			              </div><!-- /.form-group -->
+			            </div><!-- /.col -->			            
+			          </div><!-- /.row -->			          			          			          
+			          <div class="row">
+			            <div class="col-md-6">
+			              <div class="form-group">
+			              	<label for="startDate"><@spring.message "program.common.createDate" /></label>
+			              	<div class="input-group date">
+			                  <div class="input-group-addon">
+			                    <i class="fa fa-calendar"></i>
+			                  </div>
+			              	  <input type="text" class="form-control" id="startDate" name="startDate" data-date-format="yyyy/mm/dd" data-mask>
+			              	</div>
+			              </div><!-- /.form-group -->
+			            </div><!-- /.col -->
+			            <div class="col-md-6">
+			              <div class="form-group">                
+			                <label for="endDate"><@spring.message "program.common.endDate" /></label>
+			                <div class="input-group date">
+			                  <div class="input-group-addon">
+			                    <i class="fa fa-calendar"></i>
+			                  </div>
+			                  <input type="text" class="form-control" id="endDate" name="endDate" data-date-format="yyyy/mm/dd">
+			                </div>
+			              </div><!-- /.form-group -->
+			            </div><!-- /.col -->			            
+			          </div><!-- /.row -->			          
+			          
+			          <div class="row">
+					      <div class="col-xs-6">
+					          <button type="submit" class="btn btn-primary btnAdd"><@spring.message "label.submit"/></button>
+					          <button type="reset" class="btn btn-danger"><@spring.message "label.reset"/></button>
+					          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					      </div>          
+			          </div> <!-- /.row -->
+			        </div><!-- /.box-body -->
+			      </div><!-- /.box -->
+			      </form>
+				<!-- /.ajax-form id="authorityAjaxForm" --> 
+
+              </div> <!-- /.modal-body -->
+            </div>   <!-- /.modal-content -->
+          </div>     <!-- /.modal-dialog -->
+        </div>       <!-- /.modal --> 
+
+
+
+
 <script type="text/javascript">
+
+
+//表單以 Ajax 方式執行 CRUD 
+$("#companyDetailForm").submit(function(event){	
+    event.preventDefault(); //prevent default action
+    var post_url = $(this).attr("action"); //get form action url
+    var request_method = $(this).attr("method"); //get form GET/POST method
+    var form_data = JSON.stringify( $(this).serializeObject() ); //$(this).serialize(); //Encode form elements for submission
+   
+    $.ajax({
+        url : post_url,
+        type: request_method,
+        contentType: "application/json; charset=utf-8",
+        data : form_data,
+        headers:jwtClient.setAuthorizationTokenHeader(),
+		success:function(data, textStatus, jqXHR){//返回json结果
+			// Reload
+			$("#companyGrid").jqxGrid('updatebounddata');
+			$('#modal-companyDetail').modal('toggle');
+			
+		},
+		complete: function(jqXHR, textStatus) {
+		    switch (jqXHR.status) {
+		        case 200:
+		        	$.alert({
+	                    title: 'Congratulations!',
+	                    content: 'Manipulation succeeded',
+	                    type: 'green'                    
+	                });
+		            break;
+		        case 201:
+		        	$.alert({
+	                    title: 'Congratulations!',
+	                    content: 'Created a new record',
+	                    type: 'green'                    
+	                });
+		        	break;
+		        case 404:
+		        	$.alert({
+		                  title: 'Alert!',
+		                  content: 'This record is not found',
+		                  icon: 'fa fa-warning',
+		                  type: 'red'
+		              });
+		            break;
+		        case 409:
+		        	$.alert({
+	                    title: 'Alert!',
+	                    content: 'This record is conflict',
+	                    icon: 'fa fa-warning',
+	                    type: 'red'
+	                });
+		        	break;
+		        default:
+		        	$.alert({
+	                    title: 'Alert!',
+	                    content: 'Manipulation failed',
+	                    icon: 'fa fa-warning',
+	                    type: 'red'
+	                });
+		    }
+		}
+    })
+});
+
+
 $(document).ready(function () {
+	$('#companyDetailForm input[name="startDate"] ').inputmask('yyyy/mm/dd')
+	$('[data-mask]').inputmask();
+	$('#companyDetailForm input[name="startDate"] ').datepicker();
+   	$('#companyDetailForm input[name="endDate"] ').datepicker();
             // prepare the data
             
             var source = {                
@@ -52,23 +336,14 @@ $(document).ready(function () {
                             type: request_method,                            
                             headers:jwtClient.setAuthorizationTokenHeader(),
                             success: function (data, status, xhr) {
-                                // insert command is executed.
-                                $.alert({
-	           			                    title: 'Congratulations!',
-	           			                    content: 'Manipulation succeeded',
-	           			                    type: 'green'                    
-	           			                });
+                                // insert command is executed.                                
 								commit(true);
 								// Reload
 			                	$("#companyGrid").jqxGrid('updatebounddata');
+			                	$("#eventLogCompany").html('<span class="btn bg-maroon btn-flat margin">儲存成功</span>');
                             },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                            	$.alert({
-       			                    title: 'Alert!',
-       			                    content: 'Manipulation failed',
-       			                    icon: 'fa fa-warning',
-       			                    type: 'red'
-       			                }); 
+                            error: function (jqXHR, textStatus, errorThrown) {                            	
+                            	$("#eventLogCompany").html('<span class="btn bg-maroon btn-flat margin">刪除失敗</span>');
                                 //commit(false); // 輸入的資料不要清除
                             }
                         });
@@ -109,6 +384,7 @@ $(document).ready(function () {
 												commit(true);
 												// Reload
 							                	$("#companyGrid").jqxGrid('updatebounddata');
+							                	$("#eventLogCompany").html('<span class="btn bg-maroon btn-flat margin">刪除成功</span>');
 				                            },
 				                            error: function (jqXHR, textStatus, errorThrown) {
 				                            	$.alert({
@@ -141,17 +417,20 @@ $(document).ready(function () {
                 height: '100%',
                 source: dataAdapter,
                 editable: true,
-                selectionmode: 'singlerow',
+                //selectionmode: 'singlerow',
+                //selectionmode: 'singlecell',
                 editmode: 'selectedrow',
-                altrows: true,
+                //pageable: true,
+                altRows: true,                
                 showtoolbar: true,                
                 rendertoolbar: function (toolbar) {
                 	var container = $("<div style='margin: 5px;'></div>");
                     toolbar.append(container);
                     container.append('<input id="btnReloadCompany" style="margin-left: 5px;" class="btn btn-xs btn-primary" type="button" value="Reload" />');
                     container.append('<input id="btnAddCompany" style="margin-left: 5px;" class="btn btn-xs btn-primary" type="button" value="Add" />');
+                    <@security.authorize access="hasRole('ADMIN')">
                     container.append('<input id="btnDelCompany" style="margin-left: 5px;" class="btn btn-xs btn-danger" type="button" value="Del" />');
-                    
+                    </@security.authorize>
                     // Reload
                     $("#btnReloadCompany").on('click', function () {
                         $("#companyGrid").jqxGrid('updatebounddata');
@@ -160,7 +439,7 @@ $(document).ready(function () {
 			        $("#btnAddCompany").bind('click', function () {
 			            var rowscount = $("#companyGrid").jqxGrid('getdatainformation').rowscount;			           
 			            var commit = $("#companyGrid").jqxGrid('addrow', null, {});
-			            //$("#companyGrid").jqxGrid('beginrowedit', rowscount);
+			            $('#companyGrid').jqxGrid({ editable: true});
 			        });
 			        // update row.
 			        $("#btnEditCompany").bind('click', function () {
@@ -190,7 +469,7 @@ $(document).ready(function () {
                 },
                 columns: [
                   { text: 'id', datafield: 'id' , hidden: true },
-                  { text: 'Company code', datafield: 'code',
+                  { text: '<@spring.message "program.companyController.companyCode" />', datafield: 'code',
                 	validation: function (cell, value) {
                 		if ( !value || value =="") {
               			  return { result: false, message: "Company code cannot be empty" };
@@ -198,7 +477,7 @@ $(document).ready(function () {
                 		return true;
                 	}
                   },
-                  { text: 'Company Name', datafield: 'name',
+                  { text: '<@spring.message "program.companyController.companyName" />', datafield: 'name',
                 	validation: function (cell, value) {
                 		if ( !value || value =="") {
               			  return { result: false, message: "Company name cannot be empty" };
@@ -206,7 +485,7 @@ $(document).ready(function () {
                 		return true;
                 	} 
                   },
-                  { text: 'Superintendent', datafield: 'superintendent',
+                  { text: '<@spring.message "program.companyController.superintendent" />', datafield: 'superintendent',
                 	validation: function (cell, value) {
                 		if ( !value || value =="") {
               			  return { result: false, message: "Superintendent cannot be empty" };
@@ -214,7 +493,7 @@ $(document).ready(function () {
                 		return true;
                 	} 
                   },
-                  { text: 'address', datafield: 'address' ,
+                  { text: '<@spring.message "program.common.address" />', datafield: 'address' , width: 250,
                 	validation: function (cell, value) {
                 		if ( !value || value =="") {
               			  return { result: false, message: "Company address cannot be empty" };
@@ -222,15 +501,21 @@ $(document).ready(function () {
                 		return true;
                 	}
                   },
-                  { text: 'Start Date', datafield: 'startDate' , cellsformat: 'yyyy/MM/dd', columntype: 'datetimeinput',
+                  { text: '<@spring.message "program.common.createDate" />', datafield: 'startDate' , cellsformat: 'yyyy/MM/dd', columntype: 'datetimeinput',
                 	validation: function (cell, value) {
                 		if ( !value || value =="") {
                 			  return { result: false, message: "Start Date cannot be empty" };
 						}
                   		return true;
-                	  }
+                	  },
+	                  initeditor: function (row, cellvalue, editor) {
+	                	  console.log(cellvalue)
+	                	  if(!cellvalue || cellvalue=="") {
+	                		  editor.jqxDateTimeInput('setDate', new Date("1973/01/01")); 
+	                	  }
+	                  }
                   },
-                  { text: 'End Date', datafield: 'endDate' , cellsformat: 'yyyy/MM/dd', columntype: 'datetimeinput' ,
+                  { text: '<@spring.message "program.common.endDate" />', datafield: 'endDate' , cellsformat: 'yyyy/MM/dd', columntype: 'datetimeinput' ,
 					validation: function (cell, value) {						
 						// get current row data
 						var datarow = $("#companyGrid").jqxGrid('getrowdata', cell.row);						
@@ -244,66 +529,28 @@ $(document).ready(function () {
 						return true;
 					}
                   },
-                  { text: '<@spring.message "label.ajaxOptions" />', datafield: 'Del', columntype: 'button', editable:false,
-                	  cellsrenderer: 
-                		  function () { return 'Del'; }, 
-	                	  buttonclick: function (rowid) {
-	                		// get current row data
-	      					var rowdata = $("#companyGrid").jqxGrid('getrowdata', rowid);
-	                		  $.confirm({
-	      				        title: '<@spring.message "modal.confirm.del.title"/>',
-	      				        content: '<@spring.message "modal.confirm.del.content"/>',
-	      				        type: 'red',
-	      				        icon: 'fa fa-warning',
-	      				        buttons: {
-	      				            cancel: {
-	      				                text: '<@spring.message "modal.button.cancel" />',                
-	      				                keys: ['esc'],
-	      				                action: function(){
-	      				                	// Reload
-	      				                	 $("#companyGrid").jqxGrid('updatebounddata');
-	      				                }
-	      				            },
-	      				            confirm: {
-	      				                text: '<@spring.message "modal.button.confirm" />',
-	      				                btnClass: 'btn-danger',
-	      				                keys: ['enter'],
-	      				                action: function(){
-	      				                	if (rowdata.id!="") {
-	      				                    	$.ajax({
-	      				                            cache: false,
-	      				                            contentType: "application/json; charset=utf-8",
-	      				                            url: '/auth/org/company/'+ rowdata.id,                            
-	      				                            type: 'delete',                            
-	      				                            headers:jwtClient.setAuthorizationTokenHeader(),
-	      				                            success: function (data, status, xhr) {
-	      				                            	$("#companyGrid").jqxGrid('updatebounddata');
-	      				                                // delete command is executed.				
-	      				                            },
-	      				                            error: function (jqXHR, textStatus, errorThrown) {
-	      				                            	$.alert({
-	      				       			                    title: 'Alert!',
-	      				       			                    content: 'Manipulation failed',
-	      				       			                    icon: 'fa fa-warning',
-	      				       			                    type: 'red'
-	      				       			                });
-	      				                                // Reload
-	      				                            	$("#companyGrid").jqxGrid('updatebounddata');
-	      				                            }
-	      				                        });	      				                    	
-	      					                	
-	      				                    } else {
-	      				                   		// Reload
-  				                            	$("#companyGrid").jqxGrid('updatebounddata');
-	      				                    }
-	      				                }
-	      				            }
-	      				        }
-	      				    }); <!--./delete confirm -->
-		                  }
+                  <@security.authorize access="hasRole('ADMIN')">
+                  {
+                      text: '<@spring.message "label.ajaxOptions" />', cellsAlign: 'center', align: "center", columnType: 'none', editable: false, sortable: false, dataField: null, width: 150,
+                      cellsRenderer: function (rowid, column, value) {
+                    	  // get current row data
+                    	  var datarow = $("#companyGrid").jqxGrid('getrowdata', rowid);
+                          // render custom column.
+                    	  <#if Request.progPermits?? && !Request.progPermits["isEdit"] >
+              				<#assign isEditDisable = 'disabled="disabled" '>
+	              		</#if>
+	              		<#if Request.progPermits?? && !Request.progPermits["isDel"] >
+	          				<#assign isDelDisable = 'disabled="disabled" '>				
+	          			</#if>
+	          			return '<a href="#" onclick=companyGridEditClick('+rowid+') data-url=/auth/org/company/'+datarow.id+' data-rowid=rowid class="btn btn-xs btn-primary btnDTView btnEdit" ${isEditDisable!""}><i class="fa fa-pencil"></i>Edit More</a> '	          			        
+                                +'<a href="#" onclick=companyGridDelClick('+rowid+') data-url=/auth/org/company/'+datarow.id+' data-rowid=rowid class="btn btn-xs btn-danger btnDel" ${isDelDisable!""}><i class="fa fa-trash-o"></i>Delete</a>' ;
+                      }
                   }
-                  
-                ]
-            });
+                  </@security.authorize>
+                ] <!-- ./columns -->
+            });    
+            
         });
+                    
+        
 </script>

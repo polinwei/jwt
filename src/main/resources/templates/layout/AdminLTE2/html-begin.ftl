@@ -12,11 +12,23 @@
   <#-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="/AdminLTE2/bower_components/bootstrap/dist/css/bootstrap.min.css">
   <#-- Font Awesome -->
-  <link rel="stylesheet" href="/webjars/font-awesome/5.2.0/css/all.css">
+  <link rel="stylesheet" href="/webjars/font-awesome/5.2.0/css/all.css"> 
   <link rel="stylesheet" href="/AdminLTE2/bower_components/font-awesome/css/font-awesome.min.css">  
   <#-- Ionicons -->
   <link rel="stylesheet" href="/AdminLTE2/bower_components/Ionicons/css/ionicons.min.css">
   <link rel="stylesheet" href="/webjars/flag-icon-css/css/flag-icon.min.css">
+  <#-- daterange picker -->
+  <link rel="stylesheet" href="/AdminLTE2/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+  <#-- bootstrap datepicker -->
+  <link rel="stylesheet" href="/AdminLTE2/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+  <#-- Bootstrap time Picker -->
+  <link rel="stylesheet" href="/AdminLTE2/plugins/timepicker/bootstrap-timepicker.min.css">
+  <#-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="/AdminLTE2/plugins/iCheck/all.css">
+  <#--  Bootstrap Color Picker -->
+  <link rel="stylesheet" href="/AdminLTE2/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+  <#-- Select2 -->
+  <link rel="stylesheet" href="/AdminLTE2/bower_components/select2/dist/css/select2.min.css">
   <#-- DataTables -->
   <link rel="stylesheet" href="/AdminLTE2/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
   <#-- Theme style -->
@@ -26,12 +38,11 @@
   <link rel="stylesheet" href="/AdminLTE2/dist/css/skins/_all-skins.min.css">
   <#-- jquery-ui style -->
   <link rel="stylesheet" href="/AdminLTE2/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
+
+  
   
   <link rel="stylesheet" href="/js/jquery-confirm/jquery-confirm.min.css">
   <link rel="stylesheet" href="/js/jquery-fancybox/jquery.fancybox.min.css">
-
-  <#-- add one of the jQWidgets styles -->
-  <link rel="stylesheet" href="/AdminLTE2/bower_components/jqwidgets/styles/jqx.base.css" type="text/css" />  
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -42,8 +53,24 @@
 
 <#-- jQuery 3 -->
 <script src="/AdminLTE2/bower_components/jquery/dist/jquery.min.js"></script>
+<#-- DataTables -->
+<script src="/AdminLTE2/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/AdminLTE2/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="/AdminLTE2/bower_components/datatables.net-extensions/buttons/js/dataTables.buttons.min.js"></script>
+<script src="/AdminLTE2/bower_components/datatables.net-extensions/buttons/js/buttons.html5.min.js"></script>
+<script src="/AdminLTE2/bower_components/datatables.net-extensions/pdfmake/pdfmake.min.js"></script>
+<script src="/AdminLTE2/bower_components/datatables.net-extensions/pdfmake/vfs_fonts.js"></script>
+<script src="/AdminLTE2/bower_components/datatables.net-extensions/JSZip/jszip.min.js"></script>
+
+<#-- CK Editor  -->
+<script src="/AdminLTE2/bower_components/ckeditor/ckeditor.js"></script>
+<#-- use jquery-ui drag function to drag Modal  -->
+<script src="/AdminLTE2/bower_components/jquery-ui/jquery-ui.js"></script>
+
 <#-- Bootstrap 3.3.7 -->
 <script src="/AdminLTE2/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<#-- Select2 -->
+<script src="/AdminLTE2/bower_components/select2/dist/js/select2.full.min.js"></script>
 <#-- FastClick -->
 <script src="/AdminLTE2/bower_components/fastclick/lib/fastclick.js"></script>
 <#-- AdminLTE App -->
@@ -57,25 +84,23 @@
 <script src="/AdminLTE2/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <#-- ChartJS -->
 <script src="/AdminLTE2/bower_components/chart.js/Chart.js"></script>
+
+<#-- InputMask -->
+<script src="/AdminLTE2/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="/AdminLTE2/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="/AdminLTE2/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <#-- date-range-picker -->
 <script src="/AdminLTE2/bower_components/moment/min/moment.min.js"></script>
+<script src="/AdminLTE2/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<#-- bootstrap datepicker -->
+<script src="/AdminLTE2/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<#-- bootstrap color picker -->
+<script src="/AdminLTE2/bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+<#-- bootstrap time picker -->
+<script src="/AdminLTE2/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<#-- iCheck 1.0.1 -->
+<script src="/AdminLTE2/plugins/iCheck/icheck.min.js"></script>
 
-<#-- DataTables -->
-<script src="/AdminLTE2/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="/AdminLTE2/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<script src="/AdminLTE2/bower_components/datatables.net-extensions/buttons/js/dataTables.buttons.min.js"></script>
-<script src="/AdminLTE2/bower_components/datatables.net-extensions/buttons/js/buttons.html5.min.js"></script>
-<script src="/AdminLTE2/bower_components/datatables.net-extensions/pdfmake/pdfmake.min.js"></script>
-<script src="/AdminLTE2/bower_components/datatables.net-extensions/pdfmake/vfs_fonts.js"></script>
-<script src="/AdminLTE2/bower_components/datatables.net-extensions/JSZip/jszip.min.js"></script>
-
-<#-- add the jQWidgets framework -->
-<script type="text/javascript" src="/AdminLTE2/bower_components/jqwidgets/jqx-all.js"></script>
-
-<#-- CK Editor  -->
-<script src="/AdminLTE2/bower_components/ckeditor/ckeditor.js"></script>
-<#-- use jquery-ui drag function to drag Modal  -->
-<script src="/AdminLTE2/bower_components/jquery-ui/jquery-ui.js"></script>
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 
@@ -91,9 +116,6 @@
 </@security.authorize>
 
 <script>
-
-
-
 $(document).ready(function() {
     
 	<#-- use jquery-ui drag function to drag Modal  -->

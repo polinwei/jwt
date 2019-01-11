@@ -10,15 +10,15 @@ var jwtClient = function(){
     var TOKEN_KEY = "jwtToken";
  	// FUNCTIONS =============================================================
     var getJwtToken = function() {
-        return localStorage.getItem(TOKEN_KEY);
+        return sessionStorage.getItem(TOKEN_KEY);
     }
 
     var setJwtToken = function(token) {
-        localStorage.setItem(TOKEN_KEY, token);
+        sessionStorage.setItem(TOKEN_KEY, token);
     }
 
     var removeJwtToken = function() {
-        localStorage.removeItem(TOKEN_KEY);
+        sessionStorage.removeItem(TOKEN_KEY);
     }
     var setAuthorizationTokenHeader = function () {
         var token = getJwtToken();
@@ -58,15 +58,15 @@ $(function () {
 
     // FUNCTIONS =============================================================
     function getJwtToken() {
-        return localStorage.getItem(TOKEN_KEY);
+        return sessionStorage.getItem(TOKEN_KEY);
     }
 
     function setJwtToken(token) {
-        localStorage.setItem(TOKEN_KEY, token);
+        sessionStorage.setItem(TOKEN_KEY, token);
     }
 
     function removeJwtToken() {
-        localStorage.removeItem(TOKEN_KEY);
+        sessionStorage.removeItem(TOKEN_KEY);
     }
 
     function doJWTLogin(loginData) {
@@ -76,8 +76,7 @@ $(function () {
             data: JSON.stringify(loginData),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function (data, textStatus, jqXHR) {
-                console.log(data);
+            success: function (data, textStatus, jqXHR) {                
                 setJwtToken(data.token);                
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -100,8 +99,7 @@ $(function () {
             type: "POST",            
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function (data, textStatus, jqXHR) {
-                console.log(data);
+            success: function (data, textStatus, jqXHR) {                
                 setJwtToken(data.token);                
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -125,8 +123,7 @@ $(function () {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             headers: createAuthorizationTokenHeader(),
-            success: function (data, textStatus, jqXHR) {
-                console.log(data);
+            success: function (data, textStatus, jqXHR) {                
                 setJwtToken(data.token);                
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -136,8 +133,7 @@ $(function () {
                         .find(".modal-body")
                         .empty()
                         .html("<p>Message from server:<br>" + jqXHR.responseText + "</p>");
-                } else if (jqXHR.status === 500){
-                	console.log(jqXHR.responseText);
+                } else if (jqXHR.status === 500){                	
                 	var responseText = jQuery.parseJSON(jqXHR.responseText);
                 	$.confirm({
                         icon: 'fa fa-warning',

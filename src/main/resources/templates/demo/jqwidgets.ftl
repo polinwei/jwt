@@ -46,6 +46,10 @@
                 row["price"] = price;
                 row["quantity"] = quantity;
                 row["total"] = price * quantity;
+                var date = new Date();
+		        date.setFullYear(2016, Math.floor(Math.random() * 11), Math.floor(Math.random() * 27));
+		        date.setHours(0, 0, 0, 0);
+		        row["date"] = date;
                 data[i] = row;
             }
             var source =
@@ -59,12 +63,32 @@
             });
             $("#jqxgrid").jqxGrid(
             {
+            	width: '100%',
+                height: '100%',
                 source: dataAdapter,
+                editable: true,
                 sortable: true,
                 columns: [
                   { text: 'First Name', datafield: 'firstname', width: 100 },
                   { text: 'Last Name', datafield: 'lastname', width: 100 },
                   { text: 'Product', datafield: 'productname', width: 180 },
+                  {
+                      text: 'Ship Date', datafield: 'date', columntype: 'datetimeinput', width: 110, align: 'right', cellsalign: 'right', cellsformat: 'yyyy/MM/dd',
+                  	  validation: function (cell, value) {
+                          if (value == "")
+                             return true;
+                          var year = value.getFullYear();
+                          if (year >= 2020) {
+                              return { result: false, message: "Ship Date should be before 1/1/2020" };
+                          }
+                          return true;
+                      },
+                      initeditor: function (row, cellvalue, editor) {                       
+                          if(cellvalue=="") {
+	                		  editor.jqxDateTimeInput('setDate', new Date(1970, 1, 1)); 
+	                	  }
+                      }
+                  },
                   { text: 'Quantity', datafield: 'quantity', width: 80, cellsalign: 'right' },
                   { text: 'Unit Price', datafield: 'price', width: 90, cellsalign: 'right', cellsformat: 'c2' },
                   { text: 'Total', datafield: 'total', width: 100, cellsalign: 'right', cellsformat: 'c2' }

@@ -104,7 +104,8 @@ $('#${tableId}').DataTable({
     },
  	ajax: {
  		url:'${dtAjaxUrl}',dataSrc:'',
- 		headers: jwtClient.setAuthorizationTokenHeader()
+ 		headers: jwtClient.setAuthorizationTokenHeader(),
+ 		async: false
 	},
 	columns: [
 	      <#list columns as column>

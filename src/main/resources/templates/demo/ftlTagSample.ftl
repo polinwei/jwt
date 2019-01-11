@@ -42,7 +42,8 @@ $('#tblUserList').DataTable({
     },
  	ajax: {
  		url:"/auth/security/users",dataSrc:"",
- 		headers: jwtClient.setAuthorizationTokenHeader()
+ 		headers: jwtClient.setAuthorizationTokenHeader(),
+ 		async: false
 	},
 	columns: [
 	      {

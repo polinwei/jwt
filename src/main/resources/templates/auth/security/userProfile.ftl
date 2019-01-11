@@ -153,13 +153,18 @@ $(function () {
     
     
 })
+$.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) { 
+	alert(message);
+    console.log(message);
+};
 $('#tblUserProfile').DataTable({
 	language: {
         "url": "/AdminLTE2/bower_components/datatables.net/i18n/${.locale}.json"
     },
  	ajax: {
  		url:"/auth/security/userProfiles",dataSrc:"",
- 		headers: jwtClient.setAuthorizationTokenHeader()
+ 		headers: jwtClient.setAuthorizationTokenHeader(),
+ 		async: false
 	},	
  	columns: [
  	  { data: "id" , visible: false},
@@ -178,7 +183,7 @@ $('#tblUserProfile').DataTable({
 				<#assign isDelDisable = 'disabled="disabled" '>				
 			</#if>
 			
-            return '<a href="#" data-url=/auth/security/userProfile/'+data+' class="btn btn-xs btn-primary btnDTView btnEdit" ${isEditDisable!""}><i class="fa fa-pencil"></i>Edit</a>'+
+            return '<a href="#" data-url=/auth/security/userProfile/'+data+' class="btn btn-xs btn-primary btnDTView btnEdit" ${isEditDisable!""}><i class="fa fa-pencil"></i>Edit</a> '+
                    '<a href="#" data-url=/auth/security/userProfile/'+data+' data-ajax="true" class="btn btn-xs btn-danger btnDel" ${isDelDisable!""}><i class="fa fa-trash-o"></i>Delete</a>'
        	}  
       }],

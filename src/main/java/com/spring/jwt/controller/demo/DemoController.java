@@ -30,6 +30,12 @@ public class DemoController {
         return "demo/uploadDemo";
 	}
 	
+	@GetMapping("forms/advanced")
+	public String formAdvanced(Model model) {
+		
+        return "demo/formAdvanced";
+	}
+	
 	@GetMapping("jqwidgets")
 	public String jqwidgets(Model model) {
 		
