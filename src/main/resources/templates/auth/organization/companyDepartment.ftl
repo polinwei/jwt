@@ -17,23 +17,30 @@
 	    <div id='jqxWidgetCompanyDepartment'>
         <@spring.message "program.companyController.programName" />
         <div id="companyGrid">
-			<script type="text/javascript">
-	            var companyGridEditClick = function (rowid) {
+			<script type="text/javascript">	            
+	            $(document).on('click', '#companyGrid .btnRowEdit', function () { 
+	            	var rowid = $(this).attr('data-rowid');	            	
 	            	// get current row data
-              	  	var rowdata = $("#companyGrid").jqxGrid('getrowdata', rowid);
-              	    var url = $("#companyDetailForm").attr("action") + "/" + rowdata.id ; // 點2次以上會有問題待解
-              	    console.log(url);
+              	  	var rowdata = $("#companyGrid").jqxGrid('getrowdata',  $(this).attr('data-rowid'));              	    
+              	    console.log(rowdata);
+              	    var url = $(this).attr('data-url');
               	    $("#companyDetailForm").attr("action",url);
               	    $("#companyDetailForm").attr("method","put");
               	    
               		$.each( rowdata, function( key, value ) {		
               			$('#companyDetailForm input[name="'+key+'"] ').val(value);
-              		});	            	
-              		
+              		});
+              		if (rowdata.startDate){
+              			$("#companyDetailForm input[name='startDate']").datepicker('update', moment(rowdata.startDate).format('YYYY/MM/DD'));
+              		}
+              		if (rowdata.endDate){
+              			$("#companyDetailForm input[name='endDate']").datepicker('update', moment(rowdata.endDate).format('YYYY/MM/DD'));
+              		}              		
               	    $('#modal-companyDetail').modal('show');
-	            }
+	            })
 	            
-	            function companyGridDelClick(rowid){
+	            $(document).on('click', '#companyGrid .btnRowDel', function () {
+	            	var rowid = $(this).attr('data-rowid');	
 	            	// get current row data
               	  	var rowdata = $("#companyGrid").jqxGrid('getrowdata', rowid);
 	              	  $.confirm({
@@ -89,7 +96,7 @@
 					            }
 					        }
 					    }); <!--./delete confirm -->
-	            }
+	            });
 	            
 	        </script>        
         </div>
@@ -205,7 +212,7 @@
 			                  <div class="input-group-addon">
 			                    <i class="fa fa-calendar"></i>
 			                  </div>
-			                  <input type="text" class="form-control" id="endDate" name="endDate" data-date-format="yyyy/mm/dd">
+			                  <input type="text" class="form-control" id="endDate" name="endDate" data-date-format="yyyy/mm/dd" data-mask>
 			                </div>
 			              </div><!-- /.form-group -->
 			            </div><!-- /.col -->			            
@@ -239,6 +246,17 @@ $("#companyDetailForm").submit(function(event){
     event.preventDefault(); //prevent default action
     var post_url = $(this).attr("action"); //get form action url
     var request_method = $(this).attr("method"); //get form GET/POST method
+    
+    d = $('#companyDetailForm input[name="startDate"] ').val();
+    if(d){    	
+        $('#companyDetailForm input[name="startDate"] ').val(new Date(d).toISOString());
+    }
+    
+    d = $('#companyDetailForm input[name="endDate"] ').val();
+    if(d){    	
+        $('#companyDetailForm input[name="endDate"] ').val(new Date(d).toISOString());
+    }
+    
     var form_data = JSON.stringify( $(this).serializeObject() ); //$(this).serialize(); //Encode form elements for submission
    
     $.ajax({
@@ -299,10 +317,11 @@ $("#companyDetailForm").submit(function(event){
 
 
 $(document).ready(function () {
-	$('#companyDetailForm input[name="startDate"] ').inputmask('yyyy/mm/dd')
-	$('[data-mask]').inputmask();
-	$('#companyDetailForm input[name="startDate"] ').datepicker();
-   	$('#companyDetailForm input[name="endDate"] ').datepicker();
+	$('#companyDetailForm input[name="startDate"] ').datepicker({format: 'yyyy/mm/dd'});
+   	$('#companyDetailForm input[name="endDate"] ').datepicker({format: 'yyyy/mm/dd'});
+	//$('#companyDetailForm input[name="startDate"] ').inputmask('yyyy/mm/dd');
+	//$('[data-mask]').inputmask();
+
             // prepare the data
             
             var source = {                
@@ -508,8 +527,7 @@ $(document).ready(function () {
 						}
                   		return true;
                 	  },
-	                  initeditor: function (row, cellvalue, editor) {
-	                	  console.log(cellvalue)
+	                  initeditor: function (row, cellvalue, editor) {	                	  
 	                	  if(!cellvalue || cellvalue=="") {
 	                		  editor.jqxDateTimeInput('setDate', new Date("1973/01/01")); 
 	                	  }
@@ -542,8 +560,8 @@ $(document).ready(function () {
 	              		<#if Request.progPermits?? && !Request.progPermits["isDel"] >
 	          				<#assign isDelDisable = 'disabled="disabled" '>				
 	          			</#if>
-	          			return '<a href="#" onclick=companyGridEditClick('+rowid+') data-url=/auth/org/company/'+datarow.id+' data-rowid=rowid class="btn btn-xs btn-primary btnDTView btnEdit" ${isEditDisable!""}><i class="fa fa-pencil"></i>Edit More</a> '	          			        
-                                +'<a href="#" onclick=companyGridDelClick('+rowid+') data-url=/auth/org/company/'+datarow.id+' data-rowid=rowid class="btn btn-xs btn-danger btnDel" ${isDelDisable!""}><i class="fa fa-trash-o"></i>Delete</a>' ;
+	          			return '<a href="#"  data-url=/auth/org/company/'+datarow.id+' data-rowid='+rowid+' class="btn btn-xs btn-primary btnDTView btnRowEdit" ${isEditDisable!""}><i class="fa fa-pencil"></i>Edit More</a> '	          			        
+                              +'<a href="#"  data-url=/auth/org/company/'+datarow.id+' data-rowid='+rowid+' class="btn btn-xs btn-danger btnRowDel" ${isDelDisable!""}><i class="fa fa-trash-o"></i>Delete</a>' ;
                       }
                   }
                   </@security.authorize>
