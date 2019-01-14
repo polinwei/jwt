@@ -247,18 +247,20 @@ $("#companyDetailForm").submit(function(event){
     var post_url = $(this).attr("action"); //get form action url
     var request_method = $(this).attr("method"); //get form GET/POST method
     
+    $('#companyDetailForm input[name="startDate"] ').inputmask('remove');
+    $('#companyDetailForm input[name="endDate"] ').inputmask('remove');
     d = $('#companyDetailForm input[name="startDate"] ').val();
     if(d){    	
-        $('#companyDetailForm input[name="startDate"] ').val(new Date(d).toISOString());
+        $('#companyDetailForm input[name="startDate"] ').val(new Date(moment(d,"YYYYMMDD").calendar()).toISOString());
     }
     
     d = $('#companyDetailForm input[name="endDate"] ').val();
     if(d){    	
-        $('#companyDetailForm input[name="endDate"] ').val(new Date(d).toISOString());
+        $('#companyDetailForm input[name="endDate"] ').val(new Date(moment(d,"YYYYMMDD").calendar()).toISOString());
     }
-    
+
     var form_data = JSON.stringify( $(this).serializeObject() ); //$(this).serialize(); //Encode form elements for submission
-   
+    
     $.ajax({
         url : post_url,
         type: request_method,
@@ -269,6 +271,10 @@ $("#companyDetailForm").submit(function(event){
 			// Reload
 			$("#companyGrid").jqxGrid('updatebounddata');
 			$('#modal-companyDetail').modal('toggle');
+			
+			$('#companyDetailForm input[name="startDate"] ').inputmask('yyyy/mm/dd');
+			$('#companyDetailForm input[name="endDate"] ').inputmask('yyyy/mm/dd');
+			$('[data-mask]').inputmask();
 			
 		},
 		complete: function(jqXHR, textStatus) {
@@ -319,8 +325,9 @@ $("#companyDetailForm").submit(function(event){
 $(document).ready(function () {
 	$('#companyDetailForm input[name="startDate"] ').datepicker({format: 'yyyy/mm/dd'});
    	$('#companyDetailForm input[name="endDate"] ').datepicker({format: 'yyyy/mm/dd'});
-	//$('#companyDetailForm input[name="startDate"] ').inputmask('yyyy/mm/dd');
-	//$('[data-mask]').inputmask();
+	$('#companyDetailForm input[name="startDate"] ').inputmask('yyyy/mm/dd');
+	$('#companyDetailForm input[name="endDate"] ').inputmask('yyyy/mm/dd');
+	$('[data-mask]').inputmask();
 
             // prepare the data
             
