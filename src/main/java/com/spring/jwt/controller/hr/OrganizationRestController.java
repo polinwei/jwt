@@ -107,6 +107,8 @@ public class OrganizationRestController {
 			try {
 				company.setUpdateDate(new Date());
 				company.setUpdateUser(userService.getCurrentUser().getId());
+				company.setCreateUser(currentEntity.get().getCreateUser());
+				company.setCreateDate(currentEntity.get().getCreateDate());
 				companyRepo.save(company);
 				
 				return new ResponseEntity(HttpStatus.OK);

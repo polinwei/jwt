@@ -316,6 +316,9 @@ $("#companyDetailForm").submit(function(event){
 	                    icon: 'fa fa-warning',
 	                    type: 'red'
 	                });
+			        $('#companyDetailForm input[name="startDate"] ').inputmask('yyyy/mm/dd');
+					$('#companyDetailForm input[name="endDate"] ').inputmask('yyyy/mm/dd');
+					$('[data-mask]').inputmask();
 		    }
 		}
     })
@@ -336,9 +339,15 @@ $(document).ready(function () {
                 datafields: [
                 	{ name: 'id' },
 			        { name: 'code' },
-			        { name: 'name' },			        
+			        { name: 'name' },
+			        { name: 'nameEng' },			        
 			        { name: 'superintendent' },
 			        { name: 'address' },
+			        { name: 'addressEng' },
+			        { name: 'telephone' },
+			        { name: 'fax' },
+			        { name: 'website' },
+			        { name: 'note' },
 			        { name: 'startDate', type: 'date' },
 			        { name: 'endDate', type: 'date' }
 			    ],
@@ -454,6 +463,7 @@ $(document).ready(function () {
                     toolbar.append(container);
                     container.append('<input id="btnReloadCompany" style="margin-left: 5px;" class="btn btn-xs btn-primary" type="button" value="Reload" />');
                     container.append('<input id="btnAddCompany" style="margin-left: 5px;" class="btn btn-xs btn-primary" type="button" value="Add" />');
+                    container.append('<input id="btnEditMoreCompany" style="margin-left: 5px;" class="btn btn-xs btn-primary" type="button" value="EditMore" />');
                     <@security.authorize access="hasRole('ADMIN')">
                     container.append('<input id="btnDelCompany" style="margin-left: 5px;" class="btn btn-xs btn-danger" type="button" value="Del" />');
                     </@security.authorize>
@@ -468,17 +478,29 @@ $(document).ready(function () {
 			            $('#companyGrid').jqxGrid({ editable: true});
 			        });
 			        // update row.
-			        $("#btnEditCompany").bind('click', function () {
+			        $("#btnEditMoreCompany").bind('click', function () {
 			        	
                         var selectedrowindex = $("#companyGrid").jqxGrid('getselectedrowindex');                        
                         var rowscount = $("#companyGrid").jqxGrid('getdatainformation').rowscount;
                         if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
-                            var id = $("#companyGrid").jqxGrid('getrowid', selectedrowindex);
+                            var rowid = $("#companyGrid").jqxGrid('getrowid', selectedrowindex);
                             // get current row data
-    						var datarow = $("#companyGrid").jqxGrid('getrowdata', id);
-    						var griddata = $('#companyGrid').jqxGrid('getdatainformation');
-                            $("#companyGrid").jqxGrid('updaterow', id, datarow);
-                            $("#companyGrid").jqxGrid('ensurerowvisible', selectedrowindex);
+    						var rowdata = $("#companyGrid").jqxGrid('getrowdata', rowid);
+    						console.log(rowdata);
+    	              	    var url = "/auth/org/company/"+rowdata.id;
+    	              	    $("#companyDetailForm").attr("action",url);
+    	              	    $("#companyDetailForm").attr("method","put");
+    	              	    
+    	              		$.each( rowdata, function( key, value ) {		
+    	              			$('#companyDetailForm input[name="'+key+'"] ').val(value);
+    	              		});
+    	              		if (rowdata.startDate){
+    	              			$("#companyDetailForm input[name='startDate']").datepicker('update', moment(rowdata.startDate).format('YYYY/MM/DD'));
+    	              		}
+    	              		if (rowdata.endDate){
+    	              			$("#companyDetailForm input[name='endDate']").datepicker('update', moment(rowdata.endDate).format('YYYY/MM/DD'));
+    	              		}              		
+    	              	    $('#modal-companyDetail').modal('show');
                         }
 			        });
 			        // delete row
