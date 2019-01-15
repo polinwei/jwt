@@ -108,6 +108,8 @@ public class AppCodesRestController {
 			try {
 				appCodes.setUpdateDate(new Date());
 				appCodes.setUpdateUser(userService.getCurrentUser().getId());
+				appCodes.setCreateDate(currentEntity.get().getCreateDate());
+				appCodes.setCreateUser(currentEntity.get().getCreateUser());
 				acRepo.save(appCodes);
 				return new ResponseEntity(HttpStatus.OK);
 			} catch (DataIntegrityViolationException e) {			

@@ -110,6 +110,8 @@ public class SystemConfigRestController {
 			try {
 				systemConfig.setUpdateDate(new Date());
 				systemConfig.setUpdateUser(userService.getCurrentJwtUser().getId());
+				systemConfig.setCreateDate(currentEntity.get().getCreateDate());
+				systemConfig.setCreateUser(currentEntity.get().getCreateUser());
 				scRepository.save(systemConfig);
 				return new ResponseEntity(HttpStatus.OK);
 			} catch (DataIntegrityViolationException e) {			

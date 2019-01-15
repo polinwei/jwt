@@ -113,6 +113,8 @@ public class UserProfileRestController {
 				userProfile.setId(id);
 				userProfile.setUpdateDate(new Date());
 				userProfile.setUpdateUser(userService.getCurrentUser().getId());
+				userProfile.setCreateDate(currentEntity.get().getCreateDate());
+				userProfile.setCreateUser(currentEntity.get().getCreateUser());
 				userProfileRepository.save(userProfile);
 				return new ResponseEntity( ResponseEntity.noContent().build(), HttpStatus.OK);
 			} catch (DataIntegrityViolationException e) {			
