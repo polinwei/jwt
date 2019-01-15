@@ -14,8 +14,7 @@
     </div>
     <div class="box-body">
     	<div id="eventLogCompany"></div>
-	    <div id='jqxWidgetCompanyDepartment'>
-        <@spring.message "program.companyController.programName" />
+	    <div id='jqxWidgetCompanyDepartment'>        
         <div id="companyGrid">
 			<script type="text/javascript">	            
 	            $(document).on('click', '#companyGrid .btnRowEdit', function () { 
@@ -100,8 +99,7 @@
 	            
 	        </script>        
         </div>
-        <@spring.message "program.departmentController.programName" />
-        <div id="departmentGrid"></div>
+        
     	</div>
     </div><!-- /.box-body -->
   </div><!-- /.box -->
@@ -248,7 +246,7 @@ $("#companyDetailForm").submit(function(event){
     var request_method = $(this).attr("method"); //get form GET/POST method
     
     $('#companyDetailForm input[name="startDate"] ').inputmask('remove');
-    $('#companyDetailForm input[name="endDate"] ').inputmask('remove');
+    $('#companyDetailForm input[name="endDate"] ').inputmask('remove');    
     d = $('#companyDetailForm input[name="startDate"] ').val();
     if(d){    	
         $('#companyDetailForm input[name="startDate"] ').val(new Date(moment(d,"YYYYMMDD").calendar()).toISOString());
@@ -485,8 +483,7 @@ $(document).ready(function () {
                         if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
                             var rowid = $("#companyGrid").jqxGrid('getrowid', selectedrowindex);
                             // get current row data
-    						var rowdata = $("#companyGrid").jqxGrid('getrowdata', rowid);
-    						console.log(rowdata);
+    						var rowdata = $("#companyGrid").jqxGrid('getrowdata', rowid);    						
     	              	    var url = "/auth/org/company/"+rowdata.id;
     	              	    $("#companyDetailForm").attr("action",url);
     	              	    $("#companyDetailForm").attr("method","put");
