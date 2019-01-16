@@ -1,9 +1,4 @@
 
-<#-- add one of the jQWidgets styles -->
-<link rel="stylesheet" href="/AdminLTE2/bower_components/jqwidgets/styles/jqx.base.css" type="text/css" />  
-<#-- add the jQWidgets framework -->
-<script type="text/javascript" src="/AdminLTE2/bower_components/jqwidgets/jqx-all.js"></script>
-
   <!-- Default box -->
   <div class="box box-danger">
     <div class="box-header">
@@ -473,7 +468,7 @@ $(document).ready(function () {
 			        $("#btnAddCompany").bind('click', function () {
 			            var rowscount = $("#companyGrid").jqxGrid('getdatainformation').rowscount;			           
 			            var commit = $("#companyGrid").jqxGrid('addrow', null, {});
-			            $('#companyGrid').jqxGrid({ editable: true});
+			            $("#companyGrid").jqxGrid('begincelledit', rowscount, "code");
 			        });
 			        // update row.
 			        $("#btnEditMoreCompany").bind('click', function () {

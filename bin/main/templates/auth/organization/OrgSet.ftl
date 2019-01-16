@@ -1,6 +1,12 @@
 <#include "/layout/AdminLTE2/html-begin.ftl">
 <#include "/layout/AdminLTE2/content-auth-begin.ftl">
 
+<#-- add one of the jQWidgets styles -->
+<link rel="stylesheet" href="/AdminLTE2/bower_components/jqwidgets/styles/jqx.base.css" type="text/css" />  
+<#-- add the jQWidgets framework -->
+<script type="text/javascript" src="/AdminLTE2/bower_components/jqwidgets/jqx-all.js"></script>
+<script type="text/javascript" src="/AdminLTE2/bower_components/jqwidgets/globalization/globalize.js"></script>
+
   <div class="box box-default">
 	<div class="box-header with-border">
 	  <h3 class="box-title"><@spring.message "program.companyController.programName" /></h3>

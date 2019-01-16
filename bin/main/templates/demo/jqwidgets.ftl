@@ -14,6 +14,7 @@
 
 <!-- add the jQWidgets framework -->
     <script type="text/javascript" src="/AdminLTE2/bower_components/jqwidgets/jqx-all.js"></script>
+    <script type="text/javascript" src="/AdminLTE2/bower_components/jqwidgets/globalization/globalize.js"></script>
     
 <script type="text/javascript">
         $(document).ready(function () {
