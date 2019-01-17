@@ -232,7 +232,10 @@
 
 
 <script type="text/javascript">
-
+$('#btnAddCompany').click(function () {
+	var rowscount = $("#companyGrid").jqxGrid('getdatainformation').rowscount;
+	$("#companyGrid").jqxGrid('begincelledit', rowscount, "code");
+});
 
 //表單以 Ajax 方式執行 CRUD 
 $("#companyDetailForm").submit(function(event){	
@@ -466,9 +469,10 @@ $(document).ready(function () {
                     });
                     // create new row.
 			        $("#btnAddCompany").bind('click', function () {
-			            var rowscount = $("#companyGrid").jqxGrid('getdatainformation').rowscount;			           
-			            var commit = $("#companyGrid").jqxGrid('addrow', null, {});
+			        	var rowscount = $("#companyGrid").jqxGrid('getdatainformation').rowscount;
+			        	var commit = $("#companyGrid").jqxGrid('addrow', null, {});			            
 			            $("#companyGrid").jqxGrid('begincelledit', rowscount, "code");
+			            $("#companyGrid").jqxGrid('ensurerowvisible', rowscount);
 			        });
 			        // update row.
 			        $("#btnEditMoreCompany").bind('click', function () {

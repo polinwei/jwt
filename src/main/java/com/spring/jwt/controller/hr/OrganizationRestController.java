@@ -27,6 +27,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.spring.jwt.db.maria.dao.hr.CompanyRepository;
 import com.spring.jwt.db.maria.dao.hr.DepartmentRepository;
 import com.spring.jwt.db.maria.model.hr.Company;
+import com.spring.jwt.db.maria.model.hr.Department;
 import com.spring.jwt.service.UserService;
 
 @RestController
@@ -42,7 +43,7 @@ public class OrganizationRestController {
 	UserService userService;
 	
 	/**
-	 *  查詢所有資料
+	 *  查詢所有公司資料
 	 * @return
 	 */
 	@GetMapping("companies")
@@ -51,7 +52,7 @@ public class OrganizationRestController {
 	}
 	
 	/**
-	 * 取得一筆資料
+	 * 取得一筆公司資料
 	 * @param id
 	 * @return
 	 */
@@ -65,7 +66,7 @@ public class OrganizationRestController {
 		}
 	}
 	/**
-	 * 新增
+	 * 新增公司
 	 * @param company
 	 * @param BindingResult
 	 * @return
@@ -94,7 +95,7 @@ public class OrganizationRestController {
 		
 	}
 	/**
-	 * 更新
+	 * 更新公司
 	 * @param company
 	 * @param id
 	 * @param BindingResult
@@ -121,10 +122,104 @@ public class OrganizationRestController {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
 	}
+	/**
+	 * 刪除公司
+	 * @param id
+	 */
 	@DeleteMapping("company/{id}")
 	public void deleteCompany(@PathVariable long id) {
 		companyRepo.deleteById(id);
 	}
 	
+	/**
+	 *  查詢所有部門資料
+	 * @return
+	 */
+	@GetMapping("departments")
+	public List<Department> getAllDepartment(){		
+		return departmentRepo.findAll();
+	}
+	
+	/**
+	 * 取得一筆部門資料
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("department/{id}")
+	public ResponseEntity<?> getDepartment(@PathVariable Long id){
+		Optional<Department> department = departmentRepo.findById(id);
+		if (department.isPresent()) {
+			return new ResponseEntity<Department>(department.get(),HttpStatus.OK);
+		} else {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	/**
+	 * 新增部門
+	 * @param department
+	 * @param BindingResult
+	 * @return
+	 */
+	@PostMapping("department")
+	public ResponseEntity<?> addDepartment(@RequestBody @Valid Department department, BindingResult br){
+		Department newEntity = new Department();
+		URI location = null;
+		
+		if ( br.hasErrors()) {
+			return new ResponseEntity(br.getFieldErrors(),HttpStatus.METHOD_NOT_ALLOWED);
+		}
+		
+		try {
+			department.setCreateDate(new Date());
+			department.setCreateUser(userService.getCurrentUser().getId());
+			newEntity = departmentRepo.save(department);
+			location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newEntity.getId()).toUri();
+			
+		} catch (DataIntegrityViolationException e) {			
+			return new ResponseEntity(br.getFieldErrors(),HttpStatus.CONFLICT);
+		} catch (Exception e) {
+			return new ResponseEntity(br.getAllErrors(), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity(ResponseEntity.created(location).build(),HttpStatus.CREATED);
+		
+	}	
+	
+	/**
+	 * 更新部門
+	 * @param department
+	 * @param id
+	 * @param BindingResult
+	 * @return
+	 */
+	@PutMapping("department/{id}")
+	public ResponseEntity<?> updateDepartment(@RequestBody @Valid Department department, @PathVariable long id, BindingResult br) {
+		Optional<Department> currentEntity = departmentRepo.findById(id);
+		if (currentEntity.isPresent()) {
+			try {
+				department.setUpdateDate(new Date());
+				department.setUpdateUser(userService.getCurrentUser().getId());
+				department.setCreateUser(currentEntity.get().getCreateUser());
+				department.setCreateDate(currentEntity.get().getCreateDate());
+				departmentRepo.save(department);
+				
+				return new ResponseEntity(HttpStatus.OK);
+			} catch (DataIntegrityViolationException e) {			
+				return new ResponseEntity(br.getFieldErrors(),HttpStatus.CONFLICT);
+			} catch (Exception e) {
+				return new ResponseEntity(br.getAllErrors(), HttpStatus.BAD_REQUEST);
+			}
+		} else {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+	}
+	/**
+	 * 刪除部門
+	 * @param id
+	 */
+	@DeleteMapping("department/{id}")
+	public void deleteDepartment(@PathVariable long id) {
+		departmentRepo.deleteById(id);
+	}
 	
 }
