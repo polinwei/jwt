@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
@@ -241,8 +242,7 @@ public class Company implements java.io.Serializable {
 		this.updateUser = updateUser;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
-	@JsonManagedReference
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "company")	
 	public Set<Department> getDepartments() {
 		return this.departments;
 	}
@@ -251,8 +251,7 @@ public class Company implements java.io.Serializable {
 		this.departments = departments;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
-	@JsonBackReference
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "company")	
 	public Set<UserDetails> getUserDetailses() {
 		return this.userDetailses;
 	}

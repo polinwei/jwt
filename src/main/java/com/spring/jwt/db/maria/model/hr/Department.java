@@ -86,7 +86,7 @@ public class Department implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "company_id", nullable = false)
-	@JsonBackReference
+	@JsonIgnore
 	public Company getCompany() {
 		return this.company;
 	}
@@ -97,7 +97,7 @@ public class Department implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "upper_dept_id")
-	@JsonBackReference
+	@JsonIgnore
 	public Department getDepartment() {
 		return this.department;
 	}
@@ -107,8 +107,7 @@ public class Department implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "manager_id")
-	@JsonBackReference
+	@JoinColumn(name = "manager_id")	
 	public UserDetails getUserDetails() {
 		return this.userDetails;
 	}
@@ -202,8 +201,7 @@ public class Department implements java.io.Serializable {
 		this.updateUser = updateUser;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
-	@JsonBackReference
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "department")	
 	public Set<Department> getDepartments() {
 		return this.departments;
 	}
@@ -212,8 +210,7 @@ public class Department implements java.io.Serializable {
 		this.departments = departments;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
-	@JsonBackReference
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "department")	
 	public Set<UserDetails> getUserDetailses() {
 		return this.userDetailses;
 	}
