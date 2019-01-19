@@ -21,27 +21,45 @@
 
 $(document).ready(function () {
 
-	// prepare the data    
+	// prepare the data 
+	var dfsDepartment = [
+    	{ name: 'id' },
+        { name: 'name' },
+        { name: 'nameEng' },			        
+        { name: 'costCenter' },
+        { name: 'userDetails' },
+        { name: 'startDate', type: 'date' },
+        { name: 'endDate', type: 'date' }
+    ];
     var dsDepartment = {                
-        datatype: "json",
-        datafields: [
-        	{ name: 'id' },
-	        { name: 'name' },
-	        { name: 'nameEng' },			        
-	        { name: 'costCenter' },
-	        { name: 'startDate', type: 'date' },
-	        { name: 'endDate', type: 'date' }
-	    ],
-        url: "/auth/org/departments",
-    };
-    var daDepartment = new $.jqx.dataAdapter(dsDepartment, {
-        loadComplete: function (data) { },
-        loadError: function (xhr, status, error) { }      
-    });
+            datatype: "json",
+            datafields: dfsDepartment,
+            //url: "/auth/org/departments",
+        };
+    var daDepartment = new $.jqx.dataAdapter(dsDepartment);
+    daDepartment.dataBind();
+
+    $("#companyGrid").on('rowselect', function (event) {    	
+        var companyId = event.args.row.id;
+        if (companyId){
+            var departments = event.args.row.departments;        
+            var dataSource = {
+            		datatype: "json",
+                    datafields: dfsDepartment,
+                    localdata: departments,
+                    sortcolumn: 'id',
+                    sortdirection: 'asc'
+                }
+            var adapter = new $.jqx.dataAdapter(dataSource);    
+            // update data source.
+            $("#departmentGrid").jqxGrid({ source: adapter });
+        }
+    });    
+    
     $("#departmentGrid").jqxGrid({
     	width: '100%',
         height: '100%',
-        source: daDepartment,
+        //source: daDepartment,
         editable: true,
         editmode: 'selectedrow',
         altRows: true,
@@ -61,6 +79,16 @@ $(document).ready(function () {
         	},
         	{
         		text: '<@spring.message "program.common.costCenter" />', datafield: 'costCenter'
+        	},
+        	{
+        		text: 'manager_id', datafield: 'userDetails',
+        		cellsRenderer: function (rowid, column, value) {
+        			var manager = value;
+        			if (manager){
+        				console.log(manager);
+        				return manager.empNo;
+        			}      			
+        		}
         	},
         	{ text: '<@spring.message "program.common.createDate" />', datafield: 'startDate' , cellsformat: 'yyyy/MM/dd', columntype: 'datetimeinput',
             	validation: function (cell, value) {
@@ -92,6 +120,7 @@ $(document).ready(function () {
         	
 		] <#-- ./columns -->
     });
+    
 	
 })
 

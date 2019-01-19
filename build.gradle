@@ -9,6 +9,7 @@ buildscript {
 		fontawesomeVersion = '5.2.0'
 		jspapiVersion = '2.3.3'
 		gsonVersion = '2.8.5'
+		modelMapperVersion = '2.3.2'
 	}
 	repositories {
 		mavenCentral()
@@ -79,6 +80,7 @@ dependencies {
 	compile('de.codecentric:spring-boot-admin-starter-client:2.1.1') // SpringBoot Admin Client
 	testCompile("org.springframework.boot:spring-boot-starter-test")
 	testCompile("org.springframework.security:spring-security-test")
+	compile("org.modelmapper:modelmapper:${modelMapperVersion}")
 
 	compile fileTree(include: ['*.jar'], dir: 'libs')
 }

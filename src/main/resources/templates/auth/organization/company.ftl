@@ -8,8 +8,7 @@
       </div>
     </div>
     <div class="box-body">
-    	<div id="eventLogCompany"></div>
-	    <div id='jqxWidgetCompanyDepartment'>        
+    		            
         <div id="companyGrid">
 			<script type="text/javascript">	            
 	            $(document).on('click', '#companyGrid .btnRowEdit', function () { 
@@ -67,7 +66,7 @@
 					                            success: function (data, status, xhr) {
 					                            	$("#companyGrid").jqxGrid('updatebounddata');
 					                                // delete command is executed.
-					                            	$("#eventLogCompany").html('<span class="btn bg-maroon btn-flat margin">刪除成功</span>');
+					                            	$("#eventLogCompany").html('刪除成功');
 					                            },
 					                            error: function (jqXHR, textStatus, errorThrown) {
 					                            	$.alert({
@@ -78,7 +77,7 @@
 					       			                });
 					                                // Reload
 					                            	$("#companyGrid").jqxGrid('updatebounddata');
-					                            	$("#eventLogCompany").html('<span class="btn bg-maroon btn-flat margin">刪除失敗</span>');
+					                            	$("#eventLogCompany").html('刪除失敗');
 					                            }
 					                        });	      				                    	
 						                	
@@ -94,7 +93,8 @@
 	            
 	        </script>        
         </div>
-        
+        <div class="box-footer">
+        	<span id="eventLogCompany" class="text-red"/>
     	</div>
     </div><!-- /.box-body -->
   </div><!-- /.box -->
@@ -344,6 +344,8 @@ $(document).ready(function () {
 			        { name: 'fax' },
 			        { name: 'website' },
 			        { name: 'note' },
+			        { name: 'departments' },
+			        { name: 'userDetailses' },
 			        { name: 'startDate', type: 'date' },
 			        { name: 'endDate', type: 'date' }
 			    ],
@@ -357,6 +359,8 @@ $(document).ready(function () {
                     	var post_url = '/auth/org/company';
                     	var request_method = 'post';
                     }
+                    //delete rowdata['departments'];
+                    //console.log(rowdata);
                     
                     if (rowdata!="") {
                     	$.ajax({
@@ -371,10 +375,10 @@ $(document).ready(function () {
 								commit(true);
 								// Reload
 			                	$("#companyGrid").jqxGrid('updatebounddata');
-			                	$("#eventLogCompany").html('<span class="btn bg-maroon btn-flat margin">儲存成功</span>');
+			                	$("#eventLogCompany").html('儲存成功');
                             },
                             error: function (jqXHR, textStatus, errorThrown) {                            	
-                            	$("#eventLogCompany").html('<span class="btn bg-maroon btn-flat margin">刪除失敗</span>');
+                            	$("#eventLogCompany").html('刪除失敗');
                                 //commit(false); // 輸入的資料不要清除
                             }
                         });
@@ -415,7 +419,7 @@ $(document).ready(function () {
 												commit(true);
 												// Reload
 							                	$("#companyGrid").jqxGrid('updatebounddata');
-							                	$("#eventLogCompany").html('<span class="btn bg-maroon btn-flat margin">刪除成功</span>');
+							                	$("#eventLogCompany").html('刪除成功');
 				                            },
 				                            error: function (jqXHR, textStatus, errorThrown) {
 				                            	$.alert({
@@ -591,9 +595,9 @@ $(document).ready(function () {
                   }
                   </@security.authorize>
                 ] <!-- ./columns -->
-            });    
-            
+            });
+            <#-- 預選第一筆 
+            $("#companyGrid").jqxGrid('selectrow', 0);
+            -->
         });
-                    
-        
 </script>
