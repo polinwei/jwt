@@ -185,11 +185,11 @@ public class Company implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "start_date", length = 26)
+	@Column(name = "start_date", length = 26)	
 	public Date getStartDate() {
 		return this.startDate;
 	}
-
+	
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}

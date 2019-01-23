@@ -23,33 +23,40 @@
 		</div><!-- /.col -->
 	  </div> <!-- /.row -->
 	  
-<!-- START CUSTOM TABS -->
-<div class="row">
-  <div class="col-md-12">
-    <!-- Custom Tabs -->
-    <div class="nav-tabs-custom">
-      <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab_department" data-toggle="tab"><@spring.message "program.departmentController.programName" /></a></li>
-        <li><a href="#tab_userDetails" data-toggle="tab"><@spring.message "program.userDetailsController.programName" /></a></li>
-      </ul>
-      <div class="tab-content">
-        <div class="tab-pane active" id="tab_department">
-			<#include "/auth/organization/department.ftl">
-        </div>
-        <!-- /.tab-pane -->
-        <div class="tab-pane" id="tab_userDetails">
-        	<#include "/auth/organization/userDetails.ftl">
-        </div>
-        <!-- /.tab-pane -->
-      </div>
-      <!-- /.tab-content -->
-    </div>
-    <!-- nav-tabs-custom -->
-  </div>
-  <!-- /.col -->
-</div>
-<!-- /.row -->
-<!-- END CUSTOM TABS -->	  
+		<!-- START CUSTOM TABS -->
+		<div class="row">
+		  <div class="col-md-12">
+		    <!-- Custom Tabs -->
+		    <div class="nav-tabs-custom">
+		      <ul class="nav nav-tabs">
+		        <li class="active"><a href="#tab_department" data-toggle="tab"><@spring.message "program.departmentController.programName" /></a></li>
+		        <li><a href="#tab_userDetails" data-toggle="tab"><@spring.message "program.userDetailsController.programName" /></a></li>
+		      </ul>
+		      <div class="tab-content">
+		        <div class="tab-pane active" id="tab_department">
+		        	<div class="row">
+			        	<div class="col-md-8">
+							<#include "/auth/organization/department.ftl">
+						</div>
+						<div class="col-md-4">
+							<#include "/auth/organization/departmentUsers.ftl">
+						</div>
+					</div>
+		        </div>
+		        <!-- /.tab-pane -->
+		        <div class="tab-pane" id="tab_userDetails">
+		        	<#include "/auth/organization/userDetails.ftl">
+		        </div>
+		        <!-- /.tab-pane -->
+		      </div>
+		      <!-- /.tab-content -->
+		    </div>
+		    <!-- nav-tabs-custom -->
+		  </div>
+		  <!-- /.col -->
+		</div>
+		<!-- /.row -->
+		<!-- END CUSTOM TABS -->	  
 	  
 	</div>
 	<!-- /.box-body -->

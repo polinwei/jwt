@@ -87,8 +87,8 @@ public class OrganizationRestController {
 	public ResponseEntity<?> addCompany(@RequestBody Map<String,Object> params , BindingResult br) throws ParseException{	
 
 		//轉換日期
-		params.put("startDate", baseService.ConvertStringToDate(params.get("startDate")));
-		params.put("endDate", baseService.ConvertStringToDate(params.get("endDate")));
+		params.put("startDate", baseService.IsoStringToDate(params.get("startDate")));
+		params.put("endDate", baseService.IsoStringToDate(params.get("endDate")));
 		Company company = modelMapper.map(params, Company.class);
 		Company newEntity = new Company();
 		URI location = null;
@@ -121,8 +121,8 @@ public class OrganizationRestController {
 	@PutMapping("company/{id}")
 	public ResponseEntity<?> updateCompany(@RequestBody Map<String,Object> params, @PathVariable long id, BindingResult br) throws ParseException{
 		//轉換日期
-		params.put("startDate", baseService.ConvertStringToDate(params.get("startDate")));
-		params.put("endDate", baseService.ConvertStringToDate(params.get("endDate")));
+		//params.put("startDate", baseService.IsoStringToDate(params.get("startDate")));
+		//params.put("endDate", baseService.IsoStringToDate(params.get("endDate")));
 		Company company = modelMapper.map(params, Company.class);
 		Optional<Company> currentEntity = companyRepo.findById(id);
 		if (currentEntity.isPresent()) {

@@ -1,5 +1,10 @@
 package com.spring.jwt.config;
 
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -7,12 +12,17 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.modelmapper.AbstractConverter;
+import org.modelmapper.AbstractProvider;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.Provider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -98,7 +108,70 @@ public class MvcConfig implements WebMvcConfigurer {
      */
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+    	ModelMapper modelMapper = new ModelMapper();
+    	
+        Provider<LocalDate> localDateProvider = new AbstractProvider<LocalDate>() {
+            @Override
+            public LocalDate get() {
+                return LocalDate.now();
+            }
+        };
+
+        Converter<String, LocalDate> StringToLocalDate = new AbstractConverter<String, LocalDate>() {
+            @Override
+            protected LocalDate convert(String source) {
+            	if (StringUtils.isEmpty(source))
+            		return null;
+            	
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate localDate = LocalDate.parse(source, format);
+                return localDate;
+            }
+        };
+        
+        
+        Provider<Date> DateProvider = new AbstractProvider<Date>() {
+            @Override
+            public Date get() {
+                return new Date();
+            }
+        };
+        Converter<String, Date> IsoStringToDate = new AbstractConverter<String, Date>() {
+            @Override
+            protected Date convert(String source) {
+            	if (StringUtils.isEmpty(source))
+            		return null;
+            	
+            	SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");                
+            	Date date = null;
+				try {
+					date = inputFormat.parse(source);
+				} catch (ParseException e) {
+					
+					try {
+						inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+						date = inputFormat.parse(source);
+					} catch (Exception e1) {						
+						try {
+							inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+							date = inputFormat.parse(source);
+						} catch (ParseException e2) {
+							// TODO Auto-generated catch block
+							e2.printStackTrace();
+						}
+					}
+				}
+                return date;
+            }
+        };
+        modelMapper.createTypeMap(String.class, LocalDate.class) ;
+        modelMapper.getTypeMap(String.class, LocalDate.class).setProvider(localDateProvider);
+        modelMapper.addConverter(StringToLocalDate);
+        
+        modelMapper.createTypeMap(String.class, Date.class);
+        modelMapper.getTypeMap(String.class, Date.class).setProvider(DateProvider);
+        modelMapper.addConverter(IsoStringToDate);
+        return modelMapper;
     }
 
 }

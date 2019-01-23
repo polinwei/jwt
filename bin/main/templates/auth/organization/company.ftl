@@ -11,85 +11,7 @@
     		            
         <div id="companyGrid">
 			<script type="text/javascript">	            
-	            $(document).on('click', '#companyGrid .btnRowEdit', function () { 
-	            	var rowid = $(this).attr('data-rowid');	            	
-	            	// get current row data
-              	  	var rowdata = $("#companyGrid").jqxGrid('getrowdata',  $(this).attr('data-rowid'));              	    
-              	    console.log(rowdata);
-              	    var url = $(this).attr('data-url');
-              	    $("#companyDetailForm").attr("action",url);
-              	    $("#companyDetailForm").attr("method","put");
-              	    
-              		$.each( rowdata, function( key, value ) {		
-              			$('#companyDetailForm input[name="'+key+'"] ').val(value);
-              		});
-              		if (rowdata.startDate){
-              			$("#companyDetailForm input[name='startDate']").datepicker('update', moment(rowdata.startDate).format('YYYY/MM/DD'));
-              		}
-              		if (rowdata.endDate){
-              			$("#companyDetailForm input[name='endDate']").datepicker('update', moment(rowdata.endDate).format('YYYY/MM/DD'));
-              		}              		
-              	    $('#modal-companyDetail').modal('show');
-	            })
-	            
-	            $(document).on('click', '#companyGrid .btnRowDel', function () {
-	            	var rowid = $(this).attr('data-rowid');	
-	            	// get current row data
-              	  	var rowdata = $("#companyGrid").jqxGrid('getrowdata', rowid);
-	              	  $.confirm({
-					        title: '<@spring.message "modal.confirm.del.title"/>',
-					        content: '<@spring.message "modal.confirm.del.content"/>',
-					        type: 'red',
-					        animation: 'zoom',
-					        icon: 'fa fa-warning',
-					        buttons: {
-					            cancel: {
-					                text: '<@spring.message "modal.button.cancel" />',                
-					                keys: ['esc'],
-					                action: function(){
-					                	// Reload
-					                	 $("#companyGrid").jqxGrid('updatebounddata');
-					                }
-					            },
-					            confirm: {
-					                text: '<@spring.message "modal.button.confirm" />',
-					                btnClass: 'btn-danger',
-					                keys: ['enter'],
-					                action: function(){
-					                	if (rowdata.id!="") {
-					                    	$.ajax({
-					                            cache: false,
-					                            contentType: "application/json; charset=utf-8",
-					                            url: '/auth/org/company/'+ rowdata.id,                            
-					                            type: 'delete',                            
-					                            headers:jwtClient.setAuthorizationTokenHeader(),
-					                            success: function (data, status, xhr) {
-					                            	$("#companyGrid").jqxGrid('updatebounddata');
-					                                // delete command is executed.
-					                            	$("#eventLogCompany").html('刪除成功');
-					                            },
-					                            error: function (jqXHR, textStatus, errorThrown) {
-					                            	$.alert({
-					       			                    title: 'Alert!',
-					       			                    content: 'Manipulation failed',
-					       			                    icon: 'fa fa-warning',
-					       			                    type: 'red'
-					       			                });
-					                                // Reload
-					                            	$("#companyGrid").jqxGrid('updatebounddata');
-					                            	$("#eventLogCompany").html('刪除失敗');
-					                            }
-					                        });	      				                    	
-						                	
-					                    } else {
-					                   		// Reload
-			                            	$("#companyGrid").jqxGrid('updatebounddata');
-					                    }
-					                }
-					            }
-					        }
-					    }); <!--./delete confirm -->
-	            });
+
 	            
 	        </script>        
         </div>
@@ -237,22 +159,100 @@ $('#btnAddCompany').click(function () {
 	$("#companyGrid").jqxGrid('begincelledit', rowscount, "code");
 });
 
+$(document).on('click', '#companyGrid .btnRowEdit', function () { 
+	var rowid = $(this).attr('data-rowid');	            	
+	// get current row data
+	  	var rowdata = $("#companyGrid").jqxGrid('getrowdata',  $(this).attr('data-rowid'));
+	    var url = $(this).attr('data-url');
+	    $("#companyDetailForm").attr("action",url);
+	    $("#companyDetailForm").attr("method","put");
+	    
+		$.each( rowdata, function( key, value ) {		
+			$('#companyDetailForm input[name="'+key+'"] ').val(value);
+		});
+		if (rowdata.startDate){
+			$("#companyDetailForm input[name='startDate']").datepicker('update', moment(rowdata.startDate).format('YYYY/MM/DD'));
+		}
+		if (rowdata.endDate){
+			$("#companyDetailForm input[name='endDate']").datepicker('update', moment(rowdata.endDate).format('YYYY/MM/DD'));
+		}              		
+	    $('#modal-companyDetail').modal('show');
+})
+
+$(document).on('click', '#companyGrid .btnRowDel', function () {
+	var rowid = $(this).attr('data-rowid');	
+	// get current row data
+	  	var rowdata = $("#companyGrid").jqxGrid('getrowdata', rowid);
+  	  $.confirm({
+	        title: '<@spring.message "modal.confirm.del.title"/>',
+	        content: '<@spring.message "modal.confirm.del.content"/>',
+	        type: 'red',
+	        animation: 'zoom',
+	        icon: 'fa fa-warning',
+	        buttons: {
+	            cancel: {
+	                text: '<@spring.message "modal.button.cancel" />',                
+	                keys: ['esc'],
+	                action: function(){
+	                	// Reload
+	                	 $("#companyGrid").jqxGrid('updatebounddata');
+	                }
+	            },
+	            confirm: {
+	                text: '<@spring.message "modal.button.confirm" />',
+	                btnClass: 'btn-danger',
+	                keys: ['enter'],
+	                action: function(){
+	                	if (rowdata.id!="") {
+	                    	$.ajax({
+	                            cache: false,
+	                            contentType: "application/json; charset=utf-8",
+	                            url: '/auth/org/company/'+ rowdata.id,                            
+	                            type: 'delete',                            
+	                            headers:jwtClient.setAuthorizationTokenHeader(),
+	                            success: function (data, status, xhr) {
+	                            	$("#companyGrid").jqxGrid('updatebounddata');
+	                                // delete command is executed.
+	                            	$("#eventLogCompany").html('刪除成功');
+	                            },
+	                            error: function (jqXHR, textStatus, errorThrown) {
+	                            	$.alert({
+	       			                    title: 'Alert!',
+	       			                    content: 'Manipulation failed',
+	       			                    icon: 'fa fa-warning',
+	       			                    type: 'red'
+	       			                });
+	                                // Reload
+	                            	$("#companyGrid").jqxGrid('updatebounddata');
+	                            	$("#eventLogCompany").html('刪除失敗');
+	                            }
+	                        });	      				                    	
+		                	
+	                    } else {
+	                   		// Reload
+                        	$("#companyGrid").jqxGrid('updatebounddata');
+	                    }
+	                }
+	            }
+	        }
+	    }); <!--./delete confirm -->
+});
+
 //表單以 Ajax 方式執行 CRUD 
 $("#companyDetailForm").submit(function(event){	
     event.preventDefault(); //prevent default action
     var post_url = $(this).attr("action"); //get form action url
-    var request_method = $(this).attr("method"); //get form GET/POST method
-    
+    var request_method = $(this).attr("method"); //get form GET/POST method    
     $('#companyDetailForm input[name="startDate"] ').inputmask('remove');
     $('#companyDetailForm input[name="endDate"] ').inputmask('remove');    
     d = $('#companyDetailForm input[name="startDate"] ').val();
-    if(d){    	
-        $('#companyDetailForm input[name="startDate"] ').val(new Date(moment(d,"YYYYMMDD").calendar()).toISOString());
-    }
-    
+    console.log(moment(d).format("YYYY-MM-DDTHH:MM:SSZZ"));    
+    if(d){
+        $('#companyDetailForm input[name="startDate"] ').val(moment(d).format("YYYY-MM-DDTSS:SS:SSZZ"));
+    }    
     d = $('#companyDetailForm input[name="endDate"] ').val();
     if(d){    	
-        $('#companyDetailForm input[name="endDate"] ').val(new Date(moment(d,"YYYYMMDD").calendar()).toISOString());
+        $('#companyDetailForm input[name="endDate"] ').val(moment(d).format("YYYY-MM-DDTSS:SS:SSZZ"));
     }
 
     var form_data = JSON.stringify( $(this).serializeObject() ); //$(this).serialize(); //Encode form elements for submission
@@ -321,7 +321,7 @@ $("#companyDetailForm").submit(function(event){
 });
 
 
-$(document).ready(function () {
+$(document).ready(function () {	
 	$('#companyDetailForm input[name="startDate"] ').datepicker({format: 'yyyy/mm/dd'});
    	$('#companyDetailForm input[name="endDate"] ').datepicker({format: 'yyyy/mm/dd'});
 	$('#companyDetailForm input[name="startDate"] ').inputmask('yyyy/mm/dd');

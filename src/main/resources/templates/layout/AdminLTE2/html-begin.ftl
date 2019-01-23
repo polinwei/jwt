@@ -91,6 +91,8 @@
 <script src="/AdminLTE2/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <#-- date-range-picker -->
 <script src="/AdminLTE2/bower_components/moment/min/moment.min.js"></script>
+<script src="/AdminLTE2/bower_components/moment/min/moment-timezone.min.js"></script>
+<script src="/AdminLTE2/bower_components/moment/min/moment-timezone-with-data-2012-2022.min.js"></script>
 <script src="/AdminLTE2/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <#-- bootstrap datepicker -->
 <script src="/AdminLTE2/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
