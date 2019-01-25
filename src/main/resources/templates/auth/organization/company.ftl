@@ -246,13 +246,16 @@ $("#companyDetailForm").submit(function(event){
     $('#companyDetailForm input[name="startDate"] ').inputmask('remove');
     $('#companyDetailForm input[name="endDate"] ').inputmask('remove');    
     d = $('#companyDetailForm input[name="startDate"] ').val();
-    console.log(moment(d).format("YYYY-MM-DDTHH:MM:SSZZ"));    
     if(d){
-        $('#companyDetailForm input[name="startDate"] ').val(moment(d).format("YYYY-MM-DDTSS:SS:SSZZ"));
+    	var date = d+" "+moment().format("HHmmss");
+        $('#companyDetailForm input[name="startDate"] ').val(moment(date).format("YYYY-MM-DDTHH:mm:ssZZ"));
+        console.log(moment().format());
+        console.log(moment(date).format("YYYY-MM-DDTHH:mm:ssZZ"));
     }    
     d = $('#companyDetailForm input[name="endDate"] ').val();
-    if(d){    	
-        $('#companyDetailForm input[name="endDate"] ').val(moment(d).format("YYYY-MM-DDTSS:SS:SSZZ"));
+    if(d){
+    	var date = d+" "+moment().format("HHmmss");
+        $('#companyDetailForm input[name="endDate"] ').val(moment(d).format("YYYY-MM-DDTHH:mm:ssZZ"));
     }
 
     var form_data = JSON.stringify( $(this).serializeObject() ); //$(this).serialize(); //Encode form elements for submission

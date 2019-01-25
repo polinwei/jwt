@@ -8,13 +8,21 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.jwt.db.maria.dao.security.AppCodesRepository;
 import com.spring.jwt.db.maria.dao.security.SystemConfigRepository;
 
@@ -23,6 +31,8 @@ public class BaseService {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());	
 	
+	@Autowired
+	HttpServletRequest request;
 	@Autowired
 	SystemConfigRepository scRepository;
 	@Autowired
@@ -58,8 +68,7 @@ public class BaseService {
     	Date date = null;
 		try {
 			date = inputFormat.parse(strDate.toString());
-		} catch (ParseException e) {
-			
+		} catch (Exception e) {			
 			try {
 				inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 				date = inputFormat.parse(strDate.toString());
@@ -67,13 +76,31 @@ public class BaseService {
 				try {
 					inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 					date = inputFormat.parse(strDate.toString());
-				} catch (ParseException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
+				} catch (Exception e2) {
+					try {
+						inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+						date = inputFormat.parse(strDate.toString());
+					} catch (Exception e3) {
+						// TODO Auto-generated catch block
+						e3.printStackTrace();
+					}
 				}
 			}
 		}
         return date;
-	}	
-
+	}
+	
+	public Date utcDateConvert(Date utcDate, String to_tz) {
+		Date date = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		sdf.setTimeZone(TimeZone.getTimeZone(to_tz));
+		try {
+			date = sdf.parse(utcDate.toString());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return date;		
+	}
+	
 }

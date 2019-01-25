@@ -19,6 +19,8 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, Long> 
 	
 	default Map<Long, UserProfile> findAllToMap() {
         return findAll().stream().collect(Collectors.toMap(UserProfile::getId, v -> v));
-    }	
+    }
+
+	List<UserProfile> findByUserId(Long id);	
 	
 }

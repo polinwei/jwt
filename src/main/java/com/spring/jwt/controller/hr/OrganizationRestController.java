@@ -1,22 +1,28 @@
 package com.spring.jwt.controller.hr;
 
 import java.net.URI;
+import java.security.AccessController;
+import java.security.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TimeZone;
 
 import javax.validation.Valid;
-
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.jwt.db.maria.dao.hr.CompanyRepository;
 import com.spring.jwt.db.maria.dao.hr.DepartmentRepository;
@@ -52,14 +59,23 @@ public class OrganizationRestController {
 	@Autowired
 	BaseService baseService;
 	@Autowired
-    private ModelMapper modelMapper;
+    ModelMapper modelMapper;
+	
+	@Autowired
+	ObjectMapper jsonMapper;
+
 	/**
 	 *  查詢所有公司資料
 	 * @return
 	 */
 	@GetMapping("companies")
 	public List<Company> getAllCompany(){		
-		return companyRepo.findAll();
+		List<Company> allCompany = companyRepo.findAll();		
+		Long uid = userService.getCurrentUser().getId();
+		//json 產出時, 時區轉換成用戶在 userProfile 裡 paramName:TIMEZONE 的時間
+		String userTZ = userService.getUserTimeZone(uid);		
+		jsonMapper.setTimeZone(TimeZone.getTimeZone(userTZ));	
+		return allCompany;
 	}
 	
 	/**
