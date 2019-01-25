@@ -79,7 +79,7 @@ public class UserService {
 	}
 	
 	public String getUserTimeZone(Long id) {
-		String paramValue = getUserSpecificProfileByUid(id, "TIMEZONE");
+		String paramValue = getUserSpecificProfileByUid(id, "TIME_ZONE");
 		if ( !StringUtils.isEmpty(paramValue)) {
 			return paramValue;
 		} else {

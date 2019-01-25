@@ -39,7 +39,7 @@ public class BaseService {
 	AppCodesRepository acRepository;
 	
 	public String getAvatarFolder() {
-		return scRepository.findByParamName("avatar_folder").getParamValue();
+		return scRepository.findByParamName("AVATAR_FOLDER").getParamValue();
 	}
 	/**
 	 * 取得上載圖片的路徑

@@ -72,7 +72,7 @@ public class OrganizationRestController {
 	public List<Company> getAllCompany(){		
 		List<Company> allCompany = companyRepo.findAll();		
 		Long uid = userService.getCurrentUser().getId();
-		//json 產出時, 時區轉換成用戶在 userProfile 裡 paramName:TIMEZONE 的時間
+		//json 產出時, 時區轉換成用戶在 userProfile 裡 paramName:TIME_ZONE 的時間
 		String userTZ = userService.getUserTimeZone(uid);		
 		jsonMapper.setTimeZone(TimeZone.getTimeZone(userTZ));	
 		return allCompany;

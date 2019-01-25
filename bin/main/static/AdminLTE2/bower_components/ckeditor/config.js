@@ -41,7 +41,7 @@ CKEDITOR.editorConfig = function( config ) {
 	
 		
 	//開啟圖片上傳功能
-	config.filebrowserImageUploadUrl= '/auth/upload/ckeditorImage?Type=Images&uploadType=ckeditorStorageImagePath'  // /auth/upload/ckeditorImage 這個是後臺配置的@RequestMapping裡面的值
+	config.filebrowserImageUploadUrl= '/auth/upload/ckeditorImage?Type=Images&uploadType=CKEDITOR_STORAGE_IMAGE_PATH'  // /auth/upload/ckeditorImage 這個是後臺配置的@RequestMapping裡面的值
 	config.filebrowserImageBrowseUrl = '/AdminLTE2/bower_components/ckfinder/ckfinder.html?Type=Images';
 	//config.filebrowserBrowseUrl = '/AdminLTE2/bower_components/ckfinder/ckfinder.html';
 };

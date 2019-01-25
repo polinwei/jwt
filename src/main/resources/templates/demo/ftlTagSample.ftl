@@ -5,7 +5,7 @@
         <!-- Add the bg color to the header using any of the bg-* classes -->
         <div class="widget-user-header bg-yellow">
           <div class="widget-user-image">
-            <img class="img-circle" src="/auth/showphoto/avatar-folder/${Avatar}" alt="User Avatar" />
+            <img class="img-circle" src="/auth/showphoto/AVATAR_FOLDER/${Avatar}" alt="User Avatar" />
           </div>
           <!-- /.widget-user-image -->
           <h3 class="widget-user-username">${userName}</h3>
@@ -58,7 +58,7 @@ $('#tblUserList').DataTable({
 	       	}
 		  },
 	      { data: "avatar" , render: function(data, type, row, meta) {	    		
-	            return '<img src=/auth/showphoto/avatar-folder/'+data+' />';
+	            return '<img src=/auth/showphoto/AVATAR_FOLDER/'+data+' />';
 	       	}
 		  },
 

@@ -24,8 +24,8 @@ CONSTRAINT fk_systemconfig_update_user FOREIGN KEY (update_user) REFERENCES user
 );
 
 INSERT INTO `system_config` (`id`, `param_name`, `param_value`, `param_desc`, `note`, `create_date`, `update_date`, `create_user`, `update_user`) VALUES
-(1, 'avatar-folder', 'images/avatar', '個人相片存放目錄', '<p>個人相片統一存放目錄</p>\r\n', NULL, '2018-12-12 11:43:27', NULL, 1),
-(2, 'ckeditorStorageImagePath', 'ckeditor/images', 'ckeditor Storage Image Path', '', NULL, '2018-12-12 11:43:21', NULL, 1);
+(1, 'AVATAR_FOLDER', 'images/avatar', '個人相片存放目錄', '<p>個人相片統一存放目錄</p>\r\n', NULL, '2018-12-12 11:43:27', NULL, 1),
+(2, 'CKEDITOR_STORAGE_IMAGE_PATH', 'ckeditor/images', 'ckeditor Storage Image Path', '', NULL, '2018-12-12 11:43:21', NULL, 1);
 
 CREATE TABLE user_profile 
 (
@@ -45,6 +45,10 @@ CONSTRAINT fk_user_profile_user_id FOREIGN KEY (user_id) REFERENCES user (id) MA
 CONSTRAINT fk_user_profile_create_user FOREIGN KEY (create_user) REFERENCES user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,
 CONSTRAINT fk_user_profile_update_user FOREIGN KEY (update_user) REFERENCES user (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+
+INSERT INTO `user_profile` (`id`, `user_id`, `param_name`, `param_value`, `param_desc`, `note`, `create_date`, `update_date`, `create_user`, `update_user`) VALUES
+(11, 1, 'TIME_ZONE', 'Asia/Taipei', '使用者的時區', '', '2019-01-24 07:39:05', NULL, 1, NULL),
+(12, 2, 'TIME_ZONE', 'America/Monterrey', '使用者的時區', '', '2019-01-25 08:39:05', NULL, 1, NULL);
 
 CREATE TABLE app_codes
 (
