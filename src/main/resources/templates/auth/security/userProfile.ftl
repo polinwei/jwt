@@ -405,8 +405,8 @@ $(document).on('click', '.btnDel', function () {
                		    $.ajax({
                		        url : url,
                		        type: "delete",
-               		        contentType: "application/json; charset=utf-8",               		        
-               		        headers:{"Authorization": "Bearer " + localStorage.getItem("jwtToken") },
+               		        contentType: "application/json; charset=utf-8",
+               		        headers:jwtClient.setAuthorizationTokenHeader(),
                				success:function(data, textStatus, jqXHR){//返回json结果			
                					$('#tblUserProfile').DataTable().ajax.reload();
                				},

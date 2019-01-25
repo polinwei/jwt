@@ -179,7 +179,7 @@ $(document).on('click', '.btnDel', function () {
                		        url : url,
                		        type: "delete",
                		        contentType: "application/json; charset=utf-8",               		        
-               		        headers:{"Authorization": "Bearer " + localStorage.getItem("jwtToken") },
+               		        headers:jwtClient.setAuthorizationTokenHeader(),
                				success:function(data, textStatus, jqXHR){//返回json结果			
                					$('#tblAuthority').DataTable().ajax.reload();
                				},
