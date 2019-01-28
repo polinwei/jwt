@@ -3,6 +3,7 @@ package com.spring.jwt.service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.jwt.authentication.security.JwtUser;
 import com.spring.jwt.db.maria.dao.authentication.UserRepository;
 import com.spring.jwt.db.maria.dao.security.UserProfileRepository;
@@ -29,6 +31,8 @@ public class UserService {
 	UserRepository userRepo;
 	@Autowired
 	UserProfileRepository userProfileRepo;
+	@Autowired
+	ObjectMapper jsonMapper;
 	
 	private Authentication authentication;
 	
@@ -77,7 +81,11 @@ public class UserService {
 		}
 		return paramValue;
 	}
-	
+	/**
+	 * 取得使用者的時區
+	 * @param id
+	 * @return
+	 */
 	public String getUserTimeZone(Long id) {
 		String paramValue = getUserSpecificProfileByUid(id, "TIME_ZONE");
 		if ( !StringUtils.isEmpty(paramValue)) {
@@ -87,4 +95,19 @@ public class UserService {
 		}
 	}
 	
+	/**
+	 * 取得目前用戶的時區
+	 * @return
+	 */
+	public String getCurrentUserTimeZone() {
+		User user = getCurrentUser();
+		return getUserTimeZone(user.getId());
+	}
+	/**
+	 * json 產出時, 時區轉換成用戶在 userProfile 裡 paramName:TIME_ZONE 的時間
+	 */
+	public void changeToCurrentUserTimeZone() {		
+		String userTZ = getCurrentUserTimeZone();
+		jsonMapper.setTimeZone(TimeZone.getTimeZone(userTZ));		
+	}
 }

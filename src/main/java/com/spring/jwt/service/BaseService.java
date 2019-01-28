@@ -89,7 +89,12 @@ public class BaseService {
 		}
         return date;
 	}
-	
+	/**
+	 * 資料庫table裡的 UTC 日期, 轉換到其它時區時間
+	 * @param utcDate
+	 * @param to_tz
+	 * @return
+	 */
 	public Date utcDateConvert(Date utcDate, String to_tz) {
 		Date date = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");

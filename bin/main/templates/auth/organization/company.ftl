@@ -456,13 +456,13 @@ $(document).ready(function () {
             $("#companyGrid").jqxGrid(
             {
             	width: '100%',
-                height: '100%',
+                height: '250px',
                 source: dataAdapter,
                 editable: true,
                 //selectionmode: 'singlerow',
                 //selectionmode: 'singlecell',
                 editmode: 'selectedrow',
-                //pageable: true,
+                pageable: true,
                 altRows: true,                
                 showtoolbar: true,                
                 rendertoolbar: function (toolbar) {

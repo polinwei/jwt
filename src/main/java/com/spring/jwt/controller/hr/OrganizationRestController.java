@@ -70,12 +70,12 @@ public class OrganizationRestController {
 	 */
 	@GetMapping("companies")
 	public List<Company> getAllCompany(){		
-		List<Company> allCompany = companyRepo.findAll();		
+		//List<Company> allCompany = companyRepo.findAll();		
 		Long uid = userService.getCurrentUser().getId();
 		//json 產出時, 時區轉換成用戶在 userProfile 裡 paramName:TIME_ZONE 的時間
 		String userTZ = userService.getUserTimeZone(uid);		
 		jsonMapper.setTimeZone(TimeZone.getTimeZone(userTZ));	
-		return allCompany;
+		return companyRepo.findAll();
 	}
 	
 	/**
@@ -86,6 +86,7 @@ public class OrganizationRestController {
 	@GetMapping("company/{id}")
 	public ResponseEntity<?> getCompany(@PathVariable Long id){
 		Optional<Company> company = companyRepo.findById(id);
+		userService.changeToCurrentUserTimeZone();
 		if (company.isPresent()) {
 			return new ResponseEntity<Company>(company.get(),HttpStatus.OK);
 		} else {
@@ -173,7 +174,8 @@ public class OrganizationRestController {
 	 * @return
 	 */
 	@GetMapping("departments")
-	public List<Department> getAllDepartment(){		
+	public List<Department> getAllDepartment(){	
+		userService.changeToCurrentUserTimeZone();
 		return departmentRepo.findAll();
 	}
 	
