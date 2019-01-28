@@ -103,8 +103,8 @@ public class OrganizationRestController {
 	public ResponseEntity<?> addCompany(@RequestBody Map<String,Object> params , BindingResult br) throws ParseException{	
 
 		//轉換日期
-		params.put("startDate", baseService.IsoStringToDate(params.get("startDate")));
-		params.put("endDate", baseService.IsoStringToDate(params.get("endDate")));
+		//params.put("startDate", baseService.IsoStringToDate(params.get("startDate")));
+		//params.put("endDate", baseService.IsoStringToDate(params.get("endDate")));
 		Company company = modelMapper.map(params, Company.class);
 		Company newEntity = new Company();
 		URI location = null;

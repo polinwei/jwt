@@ -249,8 +249,6 @@ $("#companyDetailForm").submit(function(event){
     if(d){
     	var date = d+" "+moment().format("HHmmss");
         $('#companyDetailForm input[name="startDate"] ').val(moment(date).format("YYYY-MM-DDTHH:mm:ssZZ"));
-        console.log(moment().format());
-        console.log(moment(date).format("YYYY-MM-DDTHH:mm:ssZZ"));
     }    
     d = $('#companyDetailForm input[name="endDate"] ').val();
     if(d){
@@ -363,8 +361,14 @@ $(document).ready(function () {
                     	var request_method = 'post';
                     }
                     //delete rowdata['departments'];
-                    //console.log(rowdata);
-                    
+                    if (rowdata['startDate']){
+                    	var d = moment(rowdata['startDate']).format("YYYYMMDD")+" "+moment().format("HHmmss");                    
+                        rowdata['startDate'] = moment(d).format("YYYY-MM-DDTHH:mm:ssZZ");
+                    }
+                    if(rowdata['endDate']){
+                    	var d = moment(rowdata['endDate']).format("YYYYMMDD")+" "+moment().format("HHmmss");                    
+                        rowdata['endDate'] = moment(d).format("YYYY-MM-DDTHH:mm:ssZZ");
+                    }                    
                     if (rowdata!="") {
                     	$.ajax({
                             cache: false,
