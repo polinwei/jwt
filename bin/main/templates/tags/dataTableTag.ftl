@@ -10,7 +10,7 @@
 	  <div class="modal-body">
 		
 		<#-- ajax-form id="userProfileAjaxForm" -->
-		<form id="ajaxForm${tableId}" action="${crudAjaxUrl}" method="post">
+		<form id="ajaxForm${tableId}" action="${crudAjaxUrl}" method="post" autocomplete = "off">
 		  
 		  <div class="box box-info">
 			<#-- /.box-header -->
@@ -133,7 +133,7 @@ $('#${tableId}').DataTable({
 	      </#if>
 
 	],
-	dom: 'lrBtip',
+	<#-- dom: 'lrBtip',  -->
 	buttons: [
 		{
 		   text: 'Reload',

@@ -22,20 +22,56 @@ $(document).ready(function () {
 	// prepare the data 
 	var dfsDeptUsers = [
     	{ name: 'id' },
-        { name: 'name' },
-        { name: 'nameEng' },			        
+    	{ name: 'userId' },	
+    	{ name: 'empNo' },
+        { name: 'jobTitle' },        		        
         { name: 'costCenter' },
         { name: 'userDetails' },
-        { name: 'startDate', type: 'date' },
-        { name: 'endDate', type: 'date' }
+        { name: 'authUser' },
+        { name: 'hireDate', type: 'date' },
+        { name: 'resignationDate', type: 'date' }
     ];
-    var dsDepartUser = {                
+    var dsDeptUsers = {                
             datatype: "json",
             datafields: dfsDeptUsers,
             //url: "/auth/org/departments",
         };
-    var daDepartment = new $.jqx.dataAdapter(dfsDeptUsers);
-    daDepartment.dataBind();
+    var daDeptUsers = new $.jqx.dataAdapter(dfsDeptUsers);
+    daDeptUsers.dataBind();
+    
+    $("#departmentGrid").on('rowselect', function (event) {
+        if (event.args.row){
+            var users = event.args.row.userDetailses;            
+            var dataSource = {
+            		datatype: "json",
+                    datafields: dfsDeptUsers,
+                    localdata: users,
+                    sortcolumn: 'id',
+                    sortdirection: 'asc'
+                }
+            var adapter = new $.jqx.dataAdapter(dataSource);    
+            // update data source.
+            $("#departUsersGrid").jqxGrid({ source: adapter });
+        }
+    });    
+    
+    
+    $("#departUsersGrid").jqxGrid({
+    	width: '100%',
+        height: '100%',        
+        editmode: 'selectedrow',
+        altRows: true,
+        columns: [
+        	{ text: 'id', datafield: 'id' , hidden: true },
+        	{ text: '<@spring.message "program.userDetailsController.empNo" />', datafield: 'empNo' },
+        	{ text: 'authUser', datafield: 'authUser', 
+        		cellsRenderer: function (rowid, column, value) {   
+        			var authUser = value;
+        			return authUser.username;
+        		} 
+        	}
+        ]<#-- ./columns -->
+    });
 
 })
 </script>

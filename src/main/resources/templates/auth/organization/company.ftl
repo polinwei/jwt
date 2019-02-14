@@ -33,7 +33,7 @@
               <div class="modal-body">
 
 				<!-- ajax-form id="authorityAjaxForm" -->
-				<form id="companyDetailForm" action="/auth/org/company" method="post">
+				<form id="companyDetailForm" action="/auth/org/company" method="post" autocomplete = "off">
 			      <input type="hidden" id="companyId" name="id" >
 			      <div class="box box-danger">
 			        <!-- /.box-header -->
@@ -116,7 +116,7 @@
 			                  <div class="input-group-addon">
 			                    <i class="fa fa-calendar"></i>
 			                  </div>
-			              	  <input type="text" class="form-control" id="startDate" name="startDate" data-date-format="yyyy/mm/dd" data-mask>
+			              	  <input type="text" class="form-control" name="startDate" data-date-format="yyyy/mm/dd" data-mask>
 			              	</div>
 			              </div><!-- /.form-group -->
 			            </div><!-- /.col -->
@@ -127,7 +127,7 @@
 			                  <div class="input-group-addon">
 			                    <i class="fa fa-calendar"></i>
 			                  </div>
-			                  <input type="text" class="form-control" id="endDate" name="endDate" data-date-format="yyyy/mm/dd" data-mask>
+			                  <input type="text" class="form-control" name="endDate" data-date-format="yyyy/mm/dd" data-mask>
 			                </div>
 			              </div><!-- /.form-group -->
 			            </div><!-- /.col -->			            
@@ -182,60 +182,60 @@ $(document).on('click', '#companyGrid .btnRowEdit', function () {
 $(document).on('click', '#companyGrid .btnRowDel', function () {
 	var rowid = $(this).attr('data-rowid');	
 	// get current row data
-	  	var rowdata = $("#companyGrid").jqxGrid('getrowdata', rowid);
-  	  $.confirm({
-	        title: '<@spring.message "modal.confirm.del.title"/>',
-	        content: '<@spring.message "modal.confirm.del.content"/>',
-	        type: 'red',
-	        animation: 'zoom',
-	        icon: 'fa fa-warning',
-	        buttons: {
-	            cancel: {
-	                text: '<@spring.message "modal.button.cancel" />',                
-	                keys: ['esc'],
-	                action: function(){
-	                	// Reload
-	                	 $("#companyGrid").jqxGrid('updatebounddata');
-	                }
-	            },
-	            confirm: {
-	                text: '<@spring.message "modal.button.confirm" />',
-	                btnClass: 'btn-danger',
-	                keys: ['enter'],
-	                action: function(){
-	                	if (rowdata.id!="") {
-	                    	$.ajax({
-	                            cache: false,
-	                            contentType: "application/json; charset=utf-8",
-	                            url: '/auth/org/company/'+ rowdata.id,                            
-	                            type: 'delete',                            
-	                            headers:jwtClient.setAuthorizationTokenHeader(),
-	                            success: function (data, status, xhr) {
-	                            	$("#companyGrid").jqxGrid('updatebounddata');
-	                                // delete command is executed.
-	                            	$("#eventLogCompany").html('刪除成功');
-	                            },
-	                            error: function (jqXHR, textStatus, errorThrown) {
-	                            	$.alert({
-	       			                    title: 'Alert!',
-	       			                    content: 'Manipulation failed',
-	       			                    icon: 'fa fa-warning',
-	       			                    type: 'red'
-	       			                });
-	                                // Reload
-	                            	$("#companyGrid").jqxGrid('updatebounddata');
-	                            	$("#eventLogCompany").html('刪除失敗');
-	                            }
-	                        });	      				                    	
-		                	
-	                    } else {
-	                   		// Reload
-                        	$("#companyGrid").jqxGrid('updatebounddata');
-	                    }
-	                }
-	            }
-	        }
-	    }); <!--./delete confirm -->
+	var rowdata = $("#companyGrid").jqxGrid('getrowdata', rowid);
+ 	$.confirm({
+        title: '<@spring.message "modal.confirm.del.title"/>',
+        content: '<@spring.message "modal.confirm.del.content"/>',
+        type: 'red',
+        animation: 'zoom',
+        icon: 'fa fa-warning',
+        buttons: {
+            cancel: {
+                text: '<@spring.message "modal.button.cancel" />',                
+                keys: ['esc'],
+                action: function(){
+                	// Reload
+                	 $("#companyGrid").jqxGrid('updatebounddata');
+                }
+            },
+            confirm: {
+                text: '<@spring.message "modal.button.confirm" />',
+                btnClass: 'btn-danger',
+                keys: ['enter'],
+                action: function(){
+                	if (rowdata.id!="") {
+                    	$.ajax({
+                            cache: false,
+                            contentType: "application/json; charset=utf-8",
+                            url: '/auth/org/company/'+ rowdata.id,                            
+                            type: 'delete',                            
+                            headers:jwtClient.setAuthorizationTokenHeader(),
+                            success: function (data, status, xhr) {
+                            	$("#companyGrid").jqxGrid('updatebounddata');
+                                // delete command is executed.
+                            	$("#eventLogCompany").html('刪除成功');
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                            	$.alert({
+       			                    title: 'Alert!',
+       			                    content: 'Manipulation failed',
+       			                    icon: 'fa fa-warning',
+       			                    type: 'red'
+       			                });
+                                // Reload
+                            	$("#companyGrid").jqxGrid('updatebounddata');
+                            	$("#eventLogCompany").html('刪除失敗');
+                            }
+                        });	      				                    	
+	                	
+                    } else {
+                   		// Reload
+                       	$("#companyGrid").jqxGrid('updatebounddata');
+                    }
+                }
+            }
+        }
+    }); <!--./delete confirm -->
 });
 
 //表單以 Ajax 方式執行 CRUD 
@@ -323,8 +323,8 @@ $("#companyDetailForm").submit(function(event){
 
 
 $(document).ready(function () {	
-	$('#companyDetailForm input[name="startDate"] ').datepicker({format: 'yyyy/mm/dd'});
-   	$('#companyDetailForm input[name="endDate"] ').datepicker({format: 'yyyy/mm/dd'});
+	$('#companyDetailForm input[name="startDate"] ').datepicker({format: 'yyyy/mm/dd', clearBtn: true,todayHighlight: true,});
+   	$('#companyDetailForm input[name="endDate"] ').datepicker({format: 'yyyy/mm/dd', clearBtn: true,todayHighlight: true,});
 	$('#companyDetailForm input[name="startDate"] ').inputmask('yyyy/mm/dd');
 	$('#companyDetailForm input[name="endDate"] ').inputmask('yyyy/mm/dd');
 	$('[data-mask]').inputmask();
@@ -360,7 +360,9 @@ $(document).ready(function () {
                     	var post_url = '/auth/org/company';
                     	var request_method = 'post';
                     }
-                    //delete rowdata['departments'];
+                    // 不用回傳 departments & userDeatilses 這兩個參數集
+                    delete rowdata['departments'];
+                    delete rowdata['userDetailses'];
                     if (rowdata['startDate']){
                     	var d = moment(rowdata['startDate']).format("YYYYMMDD")+" "+moment().format("HHmmss");                    
                         rowdata['startDate'] = moment(d).format("YYYY-MM-DDTHH:mm:ssZZ");
@@ -459,6 +461,7 @@ $(document).ready(function () {
                 height: '250px',
                 source: dataAdapter,
                 editable: true,
+                sortable: true,
                 //selectionmode: 'singlerow',
                 //selectionmode: 'singlecell',
                 editmode: 'selectedrow',
@@ -556,7 +559,7 @@ $(document).ready(function () {
                 		return true;
                 	}
                   },
-                  { text: '<@spring.message "program.common.createDate" />', datafield: 'startDate' , cellsformat: 'yyyy/MM/dd', columntype: 'datetimeinput',
+                  { text: '<@spring.message "program.common.startDate" />', datafield: 'startDate' , cellsformat: 'yyyy/MM/dd', columntype: 'datetimeinput',
                 	validation: function (cell, value) {
                 		if ( !value || value =="") {
                 			  return { result: false, message: "Start Date cannot be empty" };

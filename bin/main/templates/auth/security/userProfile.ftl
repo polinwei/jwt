@@ -49,7 +49,7 @@
 			              <div class="form-group">
 			                <label for="userProfileAjaxUsername"><@spring.message "label.username" /></label>
 			                <div class="input-group">
-				                <input type="text" class="form-control" placeholder="<@spring.message "label.username" />" name="username" required readonly>
+				                <input type="text" class="form-control" id="userProfileAjaxUsername" placeholder="<@spring.message "label.username" />" name="username" required readonly>
 				                <span class="input-group-addon"><i class="fa fa-list" id="userProfileUsernameList" style="cursor: pointer;"></i></span>
 				            </div>
 			              </div>
@@ -155,7 +155,7 @@ $(function () {
 })
 $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) { 
 	alert(message);
-    console.log(message);
+    //console.log(message);
 };
 $('#tblUserProfile').DataTable({
 	language: {
@@ -187,7 +187,7 @@ $('#tblUserProfile').DataTable({
                    '<a href="#" data-url=/auth/security/userProfile/'+data+' data-ajax="true" class="btn btn-xs btn-danger btnDel" ${isDelDisable!""}><i class="fa fa-trash-o"></i>Delete</a>'
        	}  
       }],
-  dom: 'lrBtip',        
+  //dom: 'lrBtip',        
   buttons: [     	
      	{
      		extend: 'copy',
@@ -300,6 +300,9 @@ $("#userProfileAjaxForm").submit(function(event){
 $('#userProfileUsernameList').click(function(){
 	$('#modal-userProfileUsernameList').modal('show');
 });
+$('#userProfileAjaxUsername').click(function(){
+	$('#modal-userProfileUsernameList').modal('show');
+});
 
 $('#tblUserList').DataTable({
 	language: {
@@ -310,6 +313,7 @@ $('#tblUserList').DataTable({
  		headers: jwtClient.setAuthorizationTokenHeader(),
  		async: false
 	},
+	//dom: 'lrBtip',
 	columns: [
 	      {
 	    	data: "id", render: function(data, type, row, meta) {	    		
@@ -323,7 +327,7 @@ $('#tblUserList').DataTable({
 	       	}
 		  },
 	      { data: "avatar" , render: function(data, type, row, meta) {	    		
-	            return '<img src=/auth/showphoto/avatar-folder/'+data+' />';
+	            return '<img src=/auth/showphoto/AVATAR_FOLDER/'+data+' />';
 	       	}
 		  },
 

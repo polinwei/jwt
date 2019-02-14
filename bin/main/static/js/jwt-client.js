@@ -150,9 +150,10 @@ $(function () {
                             }
                         }
                     });                    
-                    
+                } else if (jqXHR.status === 400){
+                	console.log("No need to refresh Token");
                 } else {
-                    throw new Error("an unexpected error occured: " + errorThrown);
+                    //throw new Error("an unexpected error occured: " + errorThrown);
                 }
             }
         });
@@ -266,7 +267,12 @@ $(function () {
     if (!getJwtToken()) {        
     	doGetAuthToken();
     } else {
-    	doRefreshToken();
+    	var jwtDecoded = jwt_decode(getJwtToken());
+    	var jwtExp = moment(jwtDecoded.exp * 1000).format();
+    	var now = moment().format();     	
+    	if (moment().isAfter(moment(jwtDecoded.exp * 1000))) {
+    		doRefreshToken();
+    	}    	
     }
     
 });
