@@ -110,7 +110,7 @@
         </div>       <!-- /.modal -->      
       
 
-        <div class="modal fade" id="modal-userProfileUsernameList" tabindex="-1">
+        <div class="modal fade" id="modal-userProfileUsernameList">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">

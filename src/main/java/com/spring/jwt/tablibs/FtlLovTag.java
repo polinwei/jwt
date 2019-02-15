@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
@@ -116,7 +117,8 @@ public class FtlLovTag extends TagSupport {
 			Map<String , Object> dataModel = new HashMap<String, Object>();
 			dataModel.put("progPermits", progPermits);
 			dataModel.put("lovTableId", lovTableId);
-			dataModel.put("dtAjaxUrl", dtAjaxUrl);								
+			dataModel.put("dtAjaxUrl", dtAjaxUrl);
+			dataModel.put("columns", this.setColumns());
 			if (!paramsStr.isEmpty()) {
 				dataModel.putAll(this.setParams());
 			}
@@ -134,4 +136,13 @@ public class FtlLovTag extends TagSupport {
 		return Tag.SKIP_BODY;
 	}
 
+	private String getMapValueByKey(Map<String , String> map, String mapKey) {
+		String value = "";
+		for( Entry<String, String> entry : map.entrySet()) {
+			if (entry.getKey().equals(mapKey))
+				value = entry.getValue();
+		}
+		return value;		
+	}	
+	
 }

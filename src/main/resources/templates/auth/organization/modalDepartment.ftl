@@ -38,18 +38,19 @@
 					<input type="text" class="form-control" id="departmentCostCenter" placeholder="<@spring.message "program.common.costCenter" />" name="costCenter" required>             
 				  </div> <!-- /.form-group -->
 				</div>
-				<div class="col-md-6">
-				  <div class="form-group">                
-					<label for="departmentNameEng"><@spring.message "program.departmentController.departmentManager" /></label>
-					<input type="text" class="form-control" id="departmentNameEng" placeholder="<@spring.message "program.departmentController.departmentManager" />" name="departmentManager" >
-				  </div>
+				<div class="col-md-6">				  
 				  <@pw.LOV 
-				  	fileName="tags/lovTag.ftl"
-				  	inputStr="{'inputName':'managerName', 'inputLabel':'program.departmentController.departmentManager' }"
+				  	fileName="tags/lovTag.ftl"				  	
 				  	lovTableId="tableDepartmentManagerList"
-				  	dtAjaxUrl="/auth/security/appCodes"
-				  />
-				  <!-- /.form-group -->
+				  	dtAjaxUrl="/auth/security/users"
+				  	paramsStr="{'isSelect':true}"
+				  	columnsStr="[{'th':'id','data':'id','visible': 'false','type':'hidden'},
+					     {'th':'label.username','data':'username','type':'text'},
+			             {'th':'program.userController.fullName','data':'id','type':'text','render':'row.firstname+row.lastname'},
+			             {'th':'program.common.avatar','data':'avatar','type':'image'}]"
+				  	inputStr="{'inputName':'managerName', 'inputLabel':'program.departmentController.departmentManager' }"
+				  	returnStr="{'avatar':'departmentManagerAvatar' }"
+				  />				  
 				</div><!-- /.col -->				
 			  </div><!-- /.row -->
 			  <div class="row">
@@ -96,7 +97,7 @@
 				  <div class="col-xs-6">
 					  <button type="submit" class="btn btn-primary btnAdd"><@spring.message "label.submit"/></button>
 					  <button type="reset" class="btn btn-danger"><@spring.message "label.reset"/></button>
-					  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					  <button type="button" class="btn bg-yellow" data-dismiss="modal">Close</button>
 				  </div>          
 			  </div> <!-- /.row -->
 			</div><!-- /.box-body -->
