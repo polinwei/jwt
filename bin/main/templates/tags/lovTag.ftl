@@ -84,7 +84,7 @@ $('#${lovTableId}').DataTable({
 				</#if>
 				<#if key=='type' && value=='image'>
 					render: function(data, type, row, meta) {	    		
-			            return '<img src=/auth/showphoto/AVATAR_FOLDER/'+data+' />';
+			            return '<img class="attachment-img" src=/auth/showphoto/AVATAR_FOLDER/'+data+' />';
 			       	},
 				</#if>
 			    <#if key=='render'>
@@ -113,9 +113,27 @@ $('#${lovTableId} tbody').on('click', '.btnSelect', function (){
 	var data =  $('#${lovTableId}').DataTable().row($row).data();
 	var url = $(this).attr('data-url');
 	
-	console.log('data', data);
-	console.log('Record ID is', data['id']);
+	//console.log('data', data);
+	//console.log('Record ID is', data['id']);
 
+	
+	<#list returnValues as returnValue>	
+		<#list returnValue as key , value>
+			$('#${returnValue.targetId}').val(data['${returnValue.data}']);
+			<#if key=='type' && value=='image'>				
+				//console.log('/auth/showphoto/${returnValue.imageType}/'+data['${returnValue.data}']);
+				if (data['${returnValue.data}']){
+					$('#${returnValue.targetId}').attr('src', '/auth/showphoto/${returnValue.imageType}/'+data['${returnValue.data}']);	
+				} else {
+					$('#${returnValue.targetId}').attr('src','/auth/showphoto/images/noImage.jpg');
+				}
+						
+			</#if>
+		</#list>
+	</#list>
+
+	
+	
 	$('#userProfileAjaxForm input[name="userId"] ').val(data['id']);
 	$('#userProfileAjaxForm input[name="username"] ').val(data['username']);
 	

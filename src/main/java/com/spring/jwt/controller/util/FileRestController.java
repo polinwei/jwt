@@ -182,6 +182,9 @@ public class FileRestController {
     	}
 		
 		Resource imgFile = resourceLoader.getResource("file:/fileUpload/"+ imagePath + "/" + filename);
+		if (!imgFile.exists()) {
+			imgFile = resourceLoader.getResource("file:/fileUpload/images/noImage.jpg");
+		}
 		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
 	}
@@ -194,8 +197,10 @@ public class FileRestController {
     	}
     	
     	Resource imgFile = resourceLoader.getResource("file:/fileUpload/"+ imagePath + "/" + filename);
-    	byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
-    	
+    	if (!imgFile.exists()) {
+    		imgFile = resourceLoader.getResource("file:/fileUpload/images/noImage.jpg");
+    	}
+    	byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());        	
     	return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)
@@ -211,6 +216,9 @@ public class FileRestController {
     	}
     	
     	Resource imgFile = resourceLoader.getResource("file:/fileUpload/"+ imagePath + "/" + filename);
+    	if (!imgFile.exists()) {
+    		imgFile = resourceLoader.getResource("file:/fileUpload/images/noImage.jpg");
+    	}
     	return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)
@@ -223,6 +231,9 @@ public class FileRestController {
     	String imagePath = baseService.getImagePathByType("CKEDITOR_STORAGE_IMAGE_PATH") + "/" + username +"/images/";
     	
     	Resource imgFile = resourceLoader.getResource("file:/fileUpload/"+ imagePath + filename);
+    	if (!imgFile.exists()) {
+    		imgFile = resourceLoader.getResource("file:/fileUpload/images/noImage.jpg");
+    	}
     	return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)

@@ -29,3 +29,14 @@ V:myspringboot\> `java -jar build/libs/myspring.jar`
 <p> The APR based Apache Tomcat Native library:</p>
 
 URL: http://tomcat.apache.org/download-native.cgi  下載合適版本的Tomcat Native檔案，下載的檔案包含有win32、i64、x64版本的tcnative-1.dll，請選擇符合您Tomcat版本的tcnative-1.dll置入Tomcat安裝路徑CATALINA_HOME/bin中，即可解決問題。
+
+##Eclipse.ini: memory configuration
+-------------------------------
+<p> suggetion base on total RAM is 8G :</p>
+-Xms1024m
+-Xmx1024m
+-Xmn384m
+-XX:PermSize=512m
+-XX:MaxPermSize=512m
+--add-modules=ALL-SYSTEM
+-javaagent:V:\eclipse-jee-photon-R-win32-x86_64\lombok.jar

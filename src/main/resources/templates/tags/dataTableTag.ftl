@@ -56,7 +56,7 @@
 
 			  
 			  <div class="row">
-				  <div class="col-md-6">
+				  <div class="col-md-12">
 					  <button type="submit" class="btn btn-primary btnAdd"> ${springMacroRequestContext.getMessage("label.submit")} </button>
 					  <button type="reset" class="btn btn-danger"> ${springMacroRequestContext.getMessage("label.reset")} </button>
 					  <button type="button" class="btn bg-yellow" data-dismiss="modal">${springMacroRequestContext.getMessage("label.close")} </button>

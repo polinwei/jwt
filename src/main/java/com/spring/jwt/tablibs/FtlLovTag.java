@@ -56,19 +56,7 @@ public class FtlLovTag extends TagSupport {
 	 */
 	private Map<String, Object> setParams() {
 		Gson gson = new Gson();
-		Map<String, Object> params = gson.fromJson(paramsStr, new TypeToken<LinkedHashMap<String, Object>>() {}.getType());
-		
-		Map<String, Object> p = new HashMap<String, Object>();
-		params.forEach((k,v)->{
-			if (k.equals("isAjaxOptions") && v.equals(true)) {
-				p.put("ajaxOptions", messageSource.getMessage("label.ajaxOptions", null, "ajaxOptions", locale));
-				p.put(k, v);
-			} else {
-				p.put(k, v);
-			}
-		});
-		
-		return p;
+		return gson.fromJson(paramsStr, new TypeToken<LinkedHashMap<String, Object>>() {}.getType());
 	}
 	
 	private Map<String, Object> setInputs(){
@@ -76,6 +64,11 @@ public class FtlLovTag extends TagSupport {
 		Map<String, Object> inputs = gson.fromJson(inputStr, new TypeToken<LinkedHashMap<String, Object>>() {}.getType());		
 		
 		return inputs;
+	}
+	
+	private List<HashMap<String, Object>> setReturns(){
+		Gson gson = new Gson();
+		return gson.fromJson(returnStr, new TypeToken<List<HashMap<String, Object>>>() {}.getType());
 	}
 	
 	private List<LinkedHashMap<String , String>> setColumns(){
@@ -125,8 +118,9 @@ public class FtlLovTag extends TagSupport {
 			if (!inputStr.isEmpty()) {
 				dataModel.putAll(this.setInputs());
 			}
-			
-
+			if (!returnStr.isEmpty()) {
+				dataModel.put("returnValues",this.setReturns());
+			}
 			
 			dataModel.put("springMacroRequestContext", new RequestContext(request) );
 			tl.process(dataModel, out);

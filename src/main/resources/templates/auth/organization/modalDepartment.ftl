@@ -38,7 +38,15 @@
 					<input type="text" class="form-control" id="departmentCostCenter" placeholder="<@spring.message "program.common.costCenter" />" name="costCenter" required>             
 				  </div> <!-- /.form-group -->
 				</div>
-				<div class="col-md-6">				  
+				<div class="col-md-6">
+				  <div class="form-group">
+					<label for="departmentUpperOrder"><@spring.message "program.departmentController.upperOrderDepartment" /></label>
+					<input type="text" class="form-control" id="departmentUpperOrder" placeholder="<@spring.message "program.departmentController.upperOrderDepartment" />" name="departmentUpperOrder" >             
+				  </div> <!-- /.form-group -->
+				</div><!-- /.col -->				
+			  </div><!-- /.row -->
+			  <div class="row">
+				<div class="col-md-6">
 				  <@pw.LOV 
 				  	fileName="tags/lovTag.ftl"				  	
 				  	lovTableId="tableDepartmentManagerList"
@@ -49,20 +57,12 @@
 			             {'th':'program.userController.fullName','data':'id','type':'text','render':'row.firstname+row.lastname'},
 			             {'th':'program.common.avatar','data':'avatar','type':'image'}]"
 				  	inputStr="{'inputName':'managerName', 'inputLabel':'program.departmentController.departmentManager' }"
-				  	returnStr="{'avatar':'departmentManagerAvatar' }"
-				  />				  
-				</div><!-- /.col -->				
-			  </div><!-- /.row -->
-			  <div class="row">
-				<div class="col-md-6">
-				  <div class="form-group">
-					<label for="departmentUpperOrder"><@spring.message "program.departmentController.upperOrderDepartment" /></label>
-					<input type="text" class="form-control" id="departmentUpperOrder" placeholder="<@spring.message "program.departmentController.upperOrderDepartment" />" name="departmentUpperOrder" >             
-				  </div> <!-- /.form-group -->
+				  	returnStr="[{'data':'avatar','targetId':'departmentManagerAvatar', 'type':'image','imageType':'AVATAR_FOLDER' }]"
+				  />
 				</div>
 				<div class="col-md-6">
 				  <div class="form-group">                
-					<span id="departmentManagerAvatar"><img src=/auth/showphoto/AVATAR_FOLDER/B0253.jpg alt="User Avatar" class="margin" /> </span>
+					<div class="attachment-block clearfix"><img id="departmentManagerAvatar" class="attachment-img" src='' alt="User Avatar" class="margin" /> </div>
 				  </div>
 				  <!-- /.form-group -->
 				</div><!-- /.col -->				
@@ -93,13 +93,15 @@
 	            </div><!-- /.col -->			            
 	          </div><!-- /.row -->			  
 			  
+			  <div class="box-footer">
 			  <div class="row">
-				  <div class="col-xs-6">
+				  <div class="col-xs-12">
 					  <button type="submit" class="btn btn-primary btnAdd"><@spring.message "label.submit"/></button>
 					  <button type="reset" class="btn btn-danger"><@spring.message "label.reset"/></button>
 					  <button type="button" class="btn bg-yellow" data-dismiss="modal">Close</button>
 				  </div>          
 			  </div> <!-- /.row -->
+			  </div>
 			</div><!-- /.box-body -->
 		  </div><!-- /.box -->
 		  </form>
