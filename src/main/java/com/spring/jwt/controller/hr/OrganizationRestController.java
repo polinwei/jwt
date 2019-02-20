@@ -176,6 +176,17 @@ public class OrganizationRestController {
 	}
 	
 	/**
+	 *  查詢公司的所有部門資料
+	 * @return
+	 */
+	@GetMapping("departmentsByCompany/{companyId}")
+	public List<Department> getCompanyAllDepartment(@PathVariable long companyId){	
+		userService.changeToCurrentUserTimeZone();
+		Company company = companyRepo.findById(companyId).get();
+		return departmentRepo.findAllDepartmentsByCompany(company);		
+	}
+	
+	/**
 	 * 取得一筆部門資料
 	 * @param id
 	 * @return
@@ -208,14 +219,20 @@ public class OrganizationRestController {
 		}
 		
 		try {
+			Company company = companyRepo.findById(Long.parseLong((String) params.get("company_id")) ).get();
+			Department upperOrderDepartment = departmentRepo.findById(Long.parseLong((String) params.get("upper_dept_id"))).get();					
+			department.setCompany(company);
+			department.setDepartment(upperOrderDepartment);
 			department.setCreateDate(new Date());
 			department.setCreateUser(userService.getCurrentUser().getId());
 			newEntity = departmentRepo.save(department);
 			location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newEntity.getId()).toUri();
 			
-		} catch (DataIntegrityViolationException e) {			
+		} catch (DataIntegrityViolationException e) {
+			e.printStackTrace();
 			return new ResponseEntity(br.getFieldErrors(),HttpStatus.CONFLICT);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity(br.getAllErrors(), HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity(ResponseEntity.created(location).build(),HttpStatus.CREATED);

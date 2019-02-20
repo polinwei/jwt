@@ -10,8 +10,10 @@
 		
 		<!-- ajax-form id="authorityAjaxForm" -->
 		<form id="departmentAjaxForm" action="/auth/org/department" method="post" autocomplete = "off">
-		  <input type="hidden" id="companyId" name="companyId" >
-		  <input type="hidden" id="departmentId" name="id" >
+		  <input type="hidden" id="companyId" name="company_id" >
+		  <input type="hidden" id="departId" name="id" >
+		  <input type="hidden" id="departManagerId" name="manager_id" >
+		  <input type="hidden" id="upperDepartManagerId" name="upper_dept_id" >
 		  <div class="box box-danger">
 			<!-- /.box-header -->
 			<div class="box-body">
@@ -39,10 +41,19 @@
 				  </div> <!-- /.form-group -->
 				</div>
 				<div class="col-md-6">
-				  <div class="form-group">
-					<label for="departmentUpperOrder"><@spring.message "program.departmentController.upperOrderDepartment" /></label>
-					<input type="text" class="form-control" id="departmentUpperOrder" placeholder="<@spring.message "program.departmentController.upperOrderDepartment" />" name="departmentUpperOrder" >             
-				  </div> <!-- /.form-group -->
+					<@pw.LOV 
+					  	fileName="tags/lovTag.ftl"				  	
+					  	lovTableId="tableDepartmentList"
+					  	dtAjaxUrl="/auth/org/departments"
+					  	paramsStr="{'isSelect':true}"
+					  	columnsStr="[{'th':'id','data':'id','visible': 'false','type':'hidden'},
+						     {'th':'program.departmentController.departmentName','data':'name','type':'text'},
+				             {'th':'program.departmentController.departmentNameEng','data':'nameEng','type':'text'},
+				             {'th':'program.common.costCenter','data':'costCenter','type':'text'}]"
+					  	inputStr="{'inputName':'departmentUpperOrder', 'inputLabel':'program.departmentController.upperOrderDepartment' }"
+					  	returnStr="[{'jsonKey':'name','targetId':'id_departmentUpperOrder'},
+					  		 {'jsonKey':'id','targetId':'upperDepartManagerId'}]"
+				    />				    
 				</div><!-- /.col -->				
 			  </div><!-- /.row -->
 			  <div class="row">
@@ -57,7 +68,9 @@
 			             {'th':'program.userController.fullName','data':'id','type':'text','render':'row.firstname+row.lastname'},
 			             {'th':'program.common.avatar','data':'avatar','type':'image'}]"
 				  	inputStr="{'inputName':'managerName', 'inputLabel':'program.departmentController.departmentManager' }"
-				  	returnStr="[{'data':'avatar','targetId':'departmentManagerAvatar', 'type':'image','imageType':'AVATAR_FOLDER' }]"
+				  	returnStr="[{'jsonKey':'avatar','targetId':'departmentManagerAvatar', 'type':'image','imageType':'AVATAR_FOLDER' },
+				  		 {'jsonKey':'username','targetId':'id_managerName'},
+				  		 {'jsonKey':'id','targetId':'departManagerId'} ]"
 				  />
 				</div>
 				<div class="col-md-6">
@@ -131,6 +144,7 @@
 	    d = $('#departmentAjaxForm input[name="startDate"] ').val();
 	    if(d){
 	    	var date = d+" "+moment().format("HHmmss");
+	    	console.log(date);
 	        $('#departmentAjaxForm input[name="startDate"] ').val(moment(date).format("YYYY-MM-DDTHH:mm:ssZZ"));
 	    }    
 	    d = $('#departmentAjaxForm input[name="endDate"] ').val();

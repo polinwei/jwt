@@ -58,7 +58,7 @@ $('#id_${inputName}').click(function(){
 });
 
 
-$('#${lovTableId}').DataTable({
+var dt${lovTableId} = $('#${lovTableId}').DataTable({
 	language: {
         "url": "/AdminLTE2/bower_components/datatables.net/i18n/${.locale}.json"
     },
@@ -113,32 +113,21 @@ $('#${lovTableId} tbody').on('click', '.btnSelect', function (){
 	var data =  $('#${lovTableId}').DataTable().row($row).data();
 	var url = $(this).attr('data-url');
 	
-	//console.log('data', data);
+	console.log('data', data);
 	//console.log('Record ID is', data['id']);
-
-	
 	<#list returnValues as returnValue>	
 		<#list returnValue as key , value>
-			$('#${returnValue.targetId}').val(data['${returnValue.data}']);
-			<#if key=='type' && value=='image'>				
-				//console.log('/auth/showphoto/${returnValue.imageType}/'+data['${returnValue.data}']);
-				if (data['${returnValue.data}']){
-					$('#${returnValue.targetId}').attr('src', '/auth/showphoto/${returnValue.imageType}/'+data['${returnValue.data}']);	
+			$('#${returnValue.targetId}').val(data['${returnValue.jsonKey}']);
+			<#if key=='type' && value=='image'>
+				if (data['${returnValue.jsonKey}']){
+					$('#${returnValue.targetId}').attr('src', '/auth/showphoto/${returnValue.imageType}/'+data['${returnValue.jsonKey}']);	
 				} else {
 					$('#${returnValue.targetId}').attr('src','/auth/showphoto/images/noImage.jpg');
-				}
-						
+				}	
 			</#if>
 		</#list>
-	</#list>
-
-	
-	
-	$('#userProfileAjaxForm input[name="userId"] ').val(data['id']);
-	$('#userProfileAjaxForm input[name="username"] ').val(data['username']);
-	
+	</#list>	
 	$('#modal${lovTableId}').modal('toggle');	
-
 });
 
 </script>

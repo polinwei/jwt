@@ -104,7 +104,7 @@ $(document).ready(function () {
         			var manager = value;
         			var authUser = value['authUser'];
         			if (manager){        				
-        				return authUser.username+"[" +manager.userId+"]";
+        				return authUser.username;
         			}      			
         		}
         	},
@@ -146,10 +146,12 @@ $(document).ready(function () {
     	//getselectedrowindex
     	var rowidDept = $('#departmentGrid').jqxGrid('getselectedrowindex');
     	// get current row data
-    	var rowdataDept = $("#departmentGrid").jqxGrid('getrowdata', rowidDept);
-    	
-    	if (rowdataCompany){
+    	var rowdataDept = $("#departmentGrid").jqxGrid('getrowdata', rowidDept);    	
+    	if (rowdataCompany){    		
     		$("#companyTitle").html(rowdataCompany.name);
+    		$("#departmentAjaxForm")[0].reset();
+    		$("#departmentAjaxForm input[name='company_id']").val(rowdataCompany['id']);
+    		dttableDepartmentList.ajax.url( '/auth/org/departmentsByCompany/'+ rowdataCompany['id']).load();
     		$('#modalDepartment').modal('show');
     		
     	} else {
@@ -165,13 +167,13 @@ $(document).ready(function () {
     $('#btnEditDept').click(function () {
     	var rowidCompany = $('#companyGrid').jqxGrid('getselectedrowindex');
     	var rowdataCompany = $("#companyGrid").jqxGrid('getrowdata', rowidCompany);
-    	console.log(rowdataCompany);
+    	
     	//getselectedrowindex
     	var rowidDept = $('#departmentGrid').jqxGrid('getselectedrowindex');
     	// get current row data
     	var rowdataDept = $("#departmentGrid").jqxGrid('getrowdata', rowidDept);
     	
-    	console.log(rowdataDept);
+    	
     });
     
 })
