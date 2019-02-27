@@ -15,11 +15,10 @@
 
 <#include "/auth/organization/modalDepartment.ftl">
 
-  
 <script type="text/javascript">
 
 $(document).ready(function () {
-
+	
 	// prepare the data 
 	var dfsDepartment = [
     	{ name: 'id' },
@@ -28,6 +27,7 @@ $(document).ready(function () {
         { name: 'costCenter' },
         { name: 'userDetails' },
         { name: 'userDetailses' },
+        { name: 'upperDepartId' },
         { name: 'startDate', type: 'date' },
         { name: 'endDate', type: 'date' }
     ];
@@ -42,16 +42,15 @@ $(document).ready(function () {
     $("#companyGrid").on('rowselect', function (event) {
     	
        	var companyId = event.args.row.id;        
-        var departments = event.args.row.departments;
+        var departments = event.args.row.departments;        
         var dataSource = {
         		datatype: "json",
                 datafields: dfsDepartment,
                 localdata: departments,
+                sortcolumn: 'id',
+                sortdirection: 'asc'
             }
-        var adapter = new $.jqx.dataAdapter(dataSource);    
-        // update department data source.
-        $("#departmentGrid").jqxGrid({ source: adapter });
-        $('#departmentGrid').jqxGrid({ selectedrowindex: 0});            
+        var adapter = new $.jqx.dataAdapter(dataSource);         
         // 部門內沒有成員時, 清空 departUsersGrid 裡的資料
         if (departments.length==0){
         	 // update user data source.
@@ -59,17 +58,20 @@ $(document).ready(function () {
             		datatype: "json",
                     localdata: null,
                 }
-            var adapter = new $.jqx.dataAdapter(dataSource);    
-            // update data source.
-            $("#departUsersGrid").jqxGrid({ source: adapter });
+            var adapter = new $.jqx.dataAdapter(dataSource);
+        } else {
+            
+            $('#departmentGrid').jqxGrid({ selectedrowindex: 0});   
         }
+     	// update department data source.
+        $("#departmentGrid").jqxGrid({ source: adapter });
        
     });    
     
     $("#departmentGrid").jqxGrid({
     	width: '100%',
         height: '100%',
-        sortable: true,
+        sortable: true,        
         //editmode: 'selectedrow',
         altRows: true,
         showtoolbar: true,                
@@ -151,9 +153,9 @@ $(document).ready(function () {
     		$("#companyTitle").html(rowdataCompany.name);
     		$("#departmentAjaxForm")[0].reset();
     		$("#departmentAjaxForm input[name='company_id']").val(rowdataCompany['id']);
-    		dttableDepartmentList.ajax.url( '/auth/org/departmentsByCompany/'+ rowdataCompany['id']).load();
-    		$('#modalDepartment').modal('show');
-    		
+    		$('#departmentAjaxForm input[name="opName"] ').val("post");
+    		dttableDepartmentList.ajax.url( '/auth/org/departmentsByCompany/'+ rowdataCompany['id']).load();    		
+    		$('#modalDepartment').modal('show');    		
     	} else {
     		$.alert({
 	            title: 'Alert',
@@ -171,9 +173,41 @@ $(document).ready(function () {
     	//getselectedrowindex
     	var rowidDept = $('#departmentGrid').jqxGrid('getselectedrowindex');
     	// get current row data
-    	var rowdataDept = $("#departmentGrid").jqxGrid('getrowdata', rowidDept);
+    	var rowdataDept = $("#departmentGrid").jqxGrid('getrowdata', rowidDept);  	
+    	// get all departments from grid
+    	var rowdataAllDept =  $("#departmentGrid").jqxGrid('getrows');
     	
     	
+    	$("#departmentAjaxForm input[name='company_id']").val(rowdataCompany['id']);    	
+    	dttableDepartmentList.ajax.url( '/auth/org/departmentsByCompany/'+ rowdataCompany['id']).load();
+    	$('#departmentAjaxForm input[name="opName"] ').val("put");
+    	
+    	$.each( rowdataDept, function( key, value ) {		
+			$('#departmentAjaxForm input[name="'+key+'"] ').val(value);
+			if (key="upperDepartId"){
+				$('#upperDepartId').val(rowdataDept.upperDepartId);
+				$.each( rowdataAllDept, function( key, value ) {					
+					if (value.id==rowdataDept.upperDepartId){
+						$('#departmentAjaxForm input[name="departmentUpperOrder"] ').val(value.name);
+					}
+				});
+			}
+			if (key="userDetails"){
+				if (rowdataDept.userDetails !=null && rowdataDept.userDetails.authUser != null){					
+					$('#departmentAjaxForm input[name="manager_id"] ').val(rowdataDept.userDetails.authUser.id);
+					$('#departmentAjaxForm input[name="managerName"] ').val(rowdataDept.userDetails.authUser.username);
+					$('#departmentManagerAvatar').attr('src', '/auth/showphoto/AVATAR_FOLDER/'+rowdataDept.userDetails.authUser.avatar);					
+				}
+			}
+		});
+    	if (rowdataDept.startDate){
+			$("#departmentAjaxForm input[name='startDate']").datepicker('update', moment(rowdataDept.startDate).format('YYYY/MM/DD'));
+		}
+		if (rowdataDept.endDate){
+			$("#departmentAjaxForm input[name='endDate']").datepicker('update', moment(rowdataDept.endDate).format('YYYY/MM/DD'));
+		}
+    	$('#modalDepartment').modal('show');
+    	//$('#modalDepartment').jqxWindow();
     });
     
 })

@@ -7,20 +7,14 @@
           <i class="fa fa-minus"></i></button>
       </div>
     </div>
-    <div class="box-body">
-    		            
-        <div id="companyGrid">
-			<script type="text/javascript">	            
-
-	            
-	        </script>        
+    <div class="box-body">    		            
+        <div id="companyGrid">   
         </div>
         <div class="box-footer">
         	<span id="eventLogCompany" class="text-red"/>
     	</div>
     </div><!-- /.box-body -->
   </div><!-- /.box -->
-
 
         <div class="modal fade" id="modal-companyDetail">
           <div class="modal-dialog modal-lg">
@@ -458,7 +452,7 @@ $(document).ready(function () {
             $("#companyGrid").jqxGrid(
             {
             	width: '100%',
-                height: '250px',
+                height: '280px',
                 source: dataAdapter,
                 editable: true,
                 sortable: true,
@@ -466,6 +460,7 @@ $(document).ready(function () {
                 //selectionmode: 'singlecell',
                 editmode: 'selectedrow',
                 pageable: true,
+                pagesize: 5,
                 altRows: true,                
                 showtoolbar: true,                
                 rendertoolbar: function (toolbar) {

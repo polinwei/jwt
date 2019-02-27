@@ -12,8 +12,9 @@
 		<form id="departmentAjaxForm" action="/auth/org/department" method="post" autocomplete = "off">
 		  <input type="hidden" id="companyId" name="company_id" >
 		  <input type="hidden" id="departId" name="id" >
-		  <input type="hidden" id="departManagerId" name="manager_id" >
-		  <input type="hidden" id="upperDepartManagerId" name="upper_dept_id" >
+		  <input type="hidden" id="departManagerId" name="manager_id" >		  
+		  <input type="hidden" id="upperDepartId" name="upper_dept_id" >
+		  <input type="hidden" id="opName" name="opName" >
 		  <div class="box box-danger">
 			<!-- /.box-header -->
 			<div class="box-body">
@@ -52,7 +53,7 @@
 				             {'th':'program.common.costCenter','data':'costCenter','type':'text'}]"
 					  	inputStr="{'inputName':'departmentUpperOrder', 'inputLabel':'program.departmentController.upperOrderDepartment' }"
 					  	returnStr="[{'jsonKey':'name','targetId':'id_departmentUpperOrder'},
-					  		 {'jsonKey':'id','targetId':'upperDepartManagerId'}]"
+					  		 {'jsonKey':'id','targetId':'upperDepartId'}]"
 				    />				    
 				</div><!-- /.col -->				
 			  </div><!-- /.row -->
@@ -143,8 +144,7 @@
 	    $('#departmentAjaxForm input[name="endDate"] ').inputmask('remove');    
 	    d = $('#departmentAjaxForm input[name="startDate"] ').val();
 	    if(d){
-	    	var date = d+" "+moment().format("HHmmss");
-	    	console.log(date);
+	    	var date = d+" "+moment().format("HHmmss");	    	
 	        $('#departmentAjaxForm input[name="startDate"] ').val(moment(date).format("YYYY-MM-DDTHH:mm:ssZZ"));
 	    }    
 	    d = $('#departmentAjaxForm input[name="endDate"] ').val();
@@ -183,7 +183,7 @@
 			        case 201:
 			        	$.alert({
 		                    title: 'Congratulations!',
-		                    content: 'Created a new record',
+		                    content: 'Manipulation succeeded',
 		                    type: 'green'                    
 		                });
 			        	break;

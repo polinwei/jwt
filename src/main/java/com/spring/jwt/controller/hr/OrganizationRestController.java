@@ -20,9 +20,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,8 +42,10 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.jwt.db.maria.dao.hr.CompanyRepository;
 import com.spring.jwt.db.maria.dao.hr.DepartmentRepository;
+import com.spring.jwt.db.maria.dao.hr.UserDetailsRepository;
 import com.spring.jwt.db.maria.model.hr.Company;
 import com.spring.jwt.db.maria.model.hr.Department;
+import com.spring.jwt.db.maria.model.hr.UserDetails;
 import com.spring.jwt.service.BaseService;
 import com.spring.jwt.service.UserService;
 
@@ -60,6 +64,8 @@ public class OrganizationRestController {
 	BaseService baseService;
 	@Autowired
     ModelMapper modelMapper;
+	@Autowired
+	UserDetailsRepository userDetailsRepo;
 	
 	@Autowired
 	ObjectMapper jsonMapper;
@@ -203,15 +209,15 @@ public class OrganizationRestController {
 	}
 	
 	/**
-	 * 新增部門
+	 * 新增/更新部門
 	 * @param department
 	 * @param BindingResult
 	 * @return
 	 */
 	@PostMapping("department")
-	public ResponseEntity<?> addDepartment(@RequestBody Map<String,Object> params, BindingResult br){
+	public ResponseEntity<?> saveDepartment(@RequestBody Map<String,Object> params, BindingResult br){
 		Department department =  modelMapper.map(params, Department.class);
-		Department newEntity = new Department();
+		Department newEntity = new Department();		
 		URI location = null;
 		
 		if ( br.hasErrors()) {
@@ -219,12 +225,23 @@ public class OrganizationRestController {
 		}
 		
 		try {
+			String opName = (String) params.get("opName");
 			Company company = companyRepo.findById(Long.parseLong((String) params.get("company_id")) ).get();
-			Department upperOrderDepartment = departmentRepo.findById(Long.parseLong((String) params.get("upper_dept_id"))).get();					
+			Department upperOrderDepartment = departmentRepo.findById(Long.parseLong((String) params.get("upper_dept_id"))).get();
+			Long managerId = Long.parseLong((String) params.get("manager_id"));
+			UserDetails userDetails = userDetailsRepo.findByCompanyAndDepartmentAndUserId(company, department, managerId);
 			department.setCompany(company);
 			department.setDepartment(upperOrderDepartment);
-			department.setCreateDate(new Date());
-			department.setCreateUser(userService.getCurrentUser().getId());
+			department.setUserDetails(userDetails);
+			if (opName.equalsIgnoreCase("post")) { // 新增
+				department.setCreateDate(new Date());
+				department.setCreateUser(userService.getCurrentUser().getId());
+			}
+			if (opName.equalsIgnoreCase("put")) { // 更新
+				department.setUpdateDate(new Date());
+				department.setUpdateUser(userService.getCurrentUser().getId());
+			}
+			
 			newEntity = departmentRepo.save(department);
 			location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newEntity.getId()).toUri();
 			

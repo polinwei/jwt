@@ -25,6 +25,7 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.spring.jwt.db.maria.model.security.UserProfile;
 
 /**
@@ -41,6 +42,7 @@ public class User implements java.io.Serializable {
 	private String username;
 	@NotEmpty
 	@Size(min=4, max=100 , message = "{Size}")
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // 在 json回傳時, 不要顯示密碼資訊
 	private String password;
 	private String avatar;
 	private String firstname;

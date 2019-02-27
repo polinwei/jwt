@@ -1,6 +1,6 @@
 
 <div class="lovTag">
-  <#-- bootstrap-modal v2.2.6 注意,與 ckeditor v4 衝突-->
+  <#-- bootstrap-modal v2.2.6 注意,與 ckeditor v4 衝突 -->
   <link rel="stylesheet" href="/AdminLTE2/bower_components/bootstrap-modal/css/bootstrap-modal.css">  
   <script src="/AdminLTE2/bower_components/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
   <script src="/AdminLTE2/bower_components/bootstrap-modal/js/bootstrap-modal.js"></script>
@@ -83,8 +83,13 @@ var dt${lovTableId} = $('#${lovTableId}').DataTable({
 					'${key}':<#if value=='true' || value=='false' > ${value} <#else> '${value}' </#if>,
 				</#if>
 				<#if key=='type' && value=='image'>
-					render: function(data, type, row, meta) {	    		
-			            return '<img class="attachment-img" src=/auth/showphoto/AVATAR_FOLDER/'+data+' />';
+					render: function(data, type, row, meta) {
+						if (data){
+							return '<img class="direct-chat-img" src=/auth/showphoto/AVATAR_FOLDER/'+data+' />';
+						} else {
+							return '<img class="direct-chat-img" src=/auth/showphoto/AVATAR_FOLDER/noImage.jpg />';
+						}
+			            
 			       	},
 				</#if>
 			    <#if key=='render'>
@@ -113,7 +118,7 @@ $('#${lovTableId} tbody').on('click', '.btnSelect', function (){
 	var data =  $('#${lovTableId}').DataTable().row($row).data();
 	var url = $(this).attr('data-url');
 	
-	console.log('data', data);
+	//console.log('data', data);
 	//console.log('Record ID is', data['id']);
 	<#list returnValues as returnValue>	
 		<#list returnValue as key , value>
