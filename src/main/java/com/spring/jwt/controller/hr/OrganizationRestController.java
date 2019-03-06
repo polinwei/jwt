@@ -40,9 +40,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spring.jwt.db.maria.dao.authentication.UserRepository;
 import com.spring.jwt.db.maria.dao.hr.CompanyRepository;
 import com.spring.jwt.db.maria.dao.hr.DepartmentRepository;
 import com.spring.jwt.db.maria.dao.hr.UserDetailsRepository;
+import com.spring.jwt.db.maria.model.authentication.User;
 import com.spring.jwt.db.maria.model.hr.Company;
 import com.spring.jwt.db.maria.model.hr.Department;
 import com.spring.jwt.db.maria.model.hr.UserDetails;
@@ -217,7 +219,8 @@ public class OrganizationRestController {
 	@PostMapping("department")
 	public ResponseEntity<?> saveDepartment(@RequestBody Map<String,Object> params, BindingResult br){
 		Department department =  modelMapper.map(params, Department.class);
-		Department newEntity = new Department();		
+		Department newEntity = new Department();
+		Department upperOrderDepartment = new Department();
 		URI location = null;
 		
 		if ( br.hasErrors()) {
@@ -227,12 +230,18 @@ public class OrganizationRestController {
 		try {
 			String opName = (String) params.get("opName");
 			Company company = companyRepo.findById(Long.parseLong((String) params.get("company_id")) ).get();
-			Department upperOrderDepartment = departmentRepo.findById(Long.parseLong((String) params.get("upper_dept_id"))).get();
-			Long managerId = Long.parseLong((String) params.get("manager_id"));
-			UserDetails userDetails = userDetailsRepo.findByCompanyAndDepartmentAndUserId(company, department, managerId);
-			department.setCompany(company);
+			if (! StringUtils.isEmpty(params.get("upper_dept_id"))) {
+				upperOrderDepartment = departmentRepo.findById(Long.parseLong((String) params.get("upper_dept_id"))).get();
+				
+			} else {
+				upperOrderDepartment = null;
+			}
 			department.setDepartment(upperOrderDepartment);
-			department.setUserDetails(userDetails);
+			Long managerId = Long.parseLong((String) params.get("manager_id"));
+			User deptManager = userService.getUserByUid(managerId);
+			department.setCompany(company);
+			
+			department.setUserByManagerId(deptManager);
 			if (opName.equalsIgnoreCase("post")) { // 新增
 				department.setCreateDate(new Date());
 				department.setCreateUser(userService.getCurrentUser().getId());

@@ -12,7 +12,7 @@
     </div>
 </div><!-- /.form-group -->
 
-<div class="modal fade" id="modal${lovTableId}">
+<div class="modal fade" id="modal${lovTableId}" tabindex="-1" data-backdrop="static" >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

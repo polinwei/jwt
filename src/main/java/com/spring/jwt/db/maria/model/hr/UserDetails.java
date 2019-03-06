@@ -1,9 +1,7 @@
 package com.spring.jwt.db.maria.model.hr;
-// Generated Jan 17, 2019 1:34:11 PM by Hibernate Tools 4.3.5.Final
+// Generated Mar 5, 2019 8:51:06 AM by Hibernate Tools 4.3.5.Final
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,15 +10,12 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.spring.jwt.db.maria.model.authentication.User;
 
 /**
@@ -32,10 +27,9 @@ public class UserDetails implements java.io.Serializable {
 
 	private Long id;
 	private Company company;
-	private Department department;
-	private UserDetails userDetails;
-	private User authUser;
-	private long userId;
+	private Department department;	
+	private User userByManagerId;	
+	private User userByUserId;
 	private String empNo;
 	private Date hireDate;
 	private Date resignationDate;
@@ -45,25 +39,22 @@ public class UserDetails implements java.io.Serializable {
 	private Date updateDate;
 	private Long createUser;
 	private Long updateUser;
-	private Set<Department> departments = new HashSet<Department>(0);
-	private Set<UserDetails> userDetailses = new HashSet<UserDetails>(0);
 
 	public UserDetails() {
 	}
 
-	public UserDetails(long userId, String empNo) {
-		this.userId = userId;
+	public UserDetails(User userByUserId, String empNo) {
+		this.userByUserId = userByUserId;
 		this.empNo = empNo;
 	}
 
-	public UserDetails(Company company, Department department, UserDetails userDetails, User authUser,long userId, String empNo,
-			Date hireDate, Date resignationDate, String jobTitle, String workAddress, Date createDate, Date updateDate,
-			Long createUser, Long updateUser, Set<Department> departments, Set<UserDetails> userDetailses) {
+	public UserDetails(Company company, Department department, Long createUser, User userByManagerId,
+			Long updateUser, User userByUserId, String empNo, Date hireDate, Date resignationDate,
+			String jobTitle, String workAddress, Date createDate, Date updateDate) {
 		this.company = company;
-		this.department = department;
-		this.userDetails = userDetails;
-		this.authUser = authUser;
-		this.userId = userId;
+		this.department = department;		
+		this.userByManagerId = userByManagerId;		
+		this.userByUserId = userByUserId;
 		this.empNo = empNo;
 		this.hireDate = hireDate;
 		this.resignationDate = resignationDate;
@@ -73,8 +64,6 @@ public class UserDetails implements java.io.Serializable {
 		this.updateDate = updateDate;
 		this.createUser = createUser;
 		this.updateUser = updateUser;
-		this.departments = departments;
-		this.userDetailses = userDetailses;
 	}
 
 	@Id
@@ -112,32 +101,23 @@ public class UserDetails implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "manager_id")	
-	public UserDetails getUserDetails() {
-		return this.userDetails;
+	@JoinColumn(name = "manager_id")
+	public User getUserByManagerId() {
+		return this.userByManagerId;
 	}
 
-	public void setUserDetails(UserDetails userDetails) {
-		this.userDetails = userDetails;
+	public void setUserByManagerId(User userByManagerId) {
+		this.userByManagerId = userByManagerId;
 	}
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", insertable=false, updatable=false)
-	public User getAuthUser() {
-		return authUser;
+	@JoinColumn(name = "user_id", nullable = false)
+	public User getUserByUserId() {
+		return this.userByUserId;
 	}
 
-	public void setAuthUser(User authUser) {
-		this.authUser = authUser;
-	}	
-
-	@Column(name = "user_id", nullable = false)
-	public long getUserId() {
-		return this.userId;
-	}
-
-	public void setUserId(long userId) {
-		this.userId = userId;
+	public void setUserByUserId(User userByUserId) {
+		this.userByUserId = userByUserId;
 	}
 
 	@Column(name = "emp_no", unique = true, nullable = false, length = 30)
@@ -224,25 +204,4 @@ public class UserDetails implements java.io.Serializable {
 	public void setUpdateUser(Long updateUser) {
 		this.updateUser = updateUser;
 	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	@JsonBackReference
-	public Set<Department> getDepartments() {
-		return this.departments;
-	}
-
-	public void setDepartments(Set<Department> departments) {
-		this.departments = departments;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userDetails")
-	@JsonBackReference
-	public Set<UserDetails> getUserDetailses() {
-		return this.userDetailses;
-	}
-
-	public void setUserDetailses(Set<UserDetails> userDetailses) {
-		this.userDetailses = userDetailses;
-	}
-
 }

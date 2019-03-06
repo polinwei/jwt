@@ -25,7 +25,7 @@ $(document).ready(function () {
         { name: 'name' },
         { name: 'nameEng' },			        
         { name: 'costCenter' },
-        { name: 'userDetails' },
+        { name: 'userByManagerId' },
         { name: 'userDetailses' },
         { name: 'upperDepartId' },
         { name: 'startDate', type: 'date' },
@@ -100,13 +100,12 @@ $(document).ready(function () {
         		text: '<@spring.message "program.common.costCenter" />', datafield: 'costCenter'
         	},
         	{
-        		text: '<@spring.message "program.departmentController.departmentManager" />', datafield: 'userDetails',
+        		text: '<@spring.message "program.departmentController.departmentManager" />', datafield: 'userByManagerId',
         		width: 100, sortable: false,cellsalign: 'center',
         		cellsRenderer: function (rowid, column, value) {
         			var manager = value;
-        			var authUser = value['authUser'];
         			if (manager){        				
-        				return authUser.username;
+        				return manager.username;
         			}      			
         		}
         	},
@@ -177,10 +176,10 @@ $(document).ready(function () {
     	// get all departments from grid
     	var rowdataAllDept =  $("#departmentGrid").jqxGrid('getrows');
     	
-    	
+    	$("#departmentAjaxForm")[0].reset();
     	$("#departmentAjaxForm input[name='company_id']").val(rowdataCompany['id']);    	
     	dttableDepartmentList.ajax.url( '/auth/org/departmentsByCompany/'+ rowdataCompany['id']).load();
-    	$('#departmentAjaxForm input[name="opName"] ').val("put");
+    	$('#departmentAjaxForm input[name="opName"] ').val("put");    	
     	
     	$.each( rowdataDept, function( key, value ) {		
 			$('#departmentAjaxForm input[name="'+key+'"] ').val(value);
@@ -192,12 +191,12 @@ $(document).ready(function () {
 					}
 				});
 			}
-			if (key="userDetails"){
-				if (rowdataDept.userDetails !=null && rowdataDept.userDetails.authUser != null){					
-					$('#departmentAjaxForm input[name="manager_id"] ').val(rowdataDept.userDetails.authUser.id);
-					$('#departmentAjaxForm input[name="managerName"] ').val(rowdataDept.userDetails.authUser.username);
-					$('#departmentManagerAvatar').attr('src', '/auth/showphoto/AVATAR_FOLDER/'+rowdataDept.userDetails.authUser.avatar);					
-				}
+			
+			if (key="userByManagerId" && value !=null){
+				var User = value;
+				$('#departmentAjaxForm input[name="manager_id"] ').val(User.id);
+				$('#departmentAjaxForm input[name="managerName"] ').val(User.username);
+				$('#departmentManagerAvatar').attr('src', '/auth/showphoto/AVATAR_FOLDER/'+User.avatar);
 			}
 		});
     	if (rowdataDept.startDate){
@@ -207,7 +206,13 @@ $(document).ready(function () {
 			$("#departmentAjaxForm input[name='endDate']").datepicker('update', moment(rowdataDept.endDate).format('YYYY/MM/DD'));
 		}
     	$('#modalDepartment').modal('show');
-    	//$('#modalDepartment').jqxWindow();
+    	
+    	
+    	//var mainContainer = $('.content');
+        //var offset = mainContainer.offset();
+        //$('#window0').jqxWindow({ height: 'auto', width: '100%',  position: { x: offset.left + 50, y: offset.top + 50} });
+        //$('#window0').jqxWindow('open');
+    	
     });
     
 })

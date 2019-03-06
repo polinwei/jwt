@@ -22,12 +22,9 @@ $(document).ready(function () {
 	// prepare the data 
 	var dfsDeptUsers = [
     	{ name: 'id' },
-    	{ name: 'userId' },	
     	{ name: 'empNo' },
         { name: 'jobTitle' },        		        
-        { name: 'costCenter' },
-        { name: 'userDetails' },
-        { name: 'authUser' },
+        { name: 'userByUserId' },
         { name: 'hireDate', type: 'date' },
         { name: 'resignationDate', type: 'date' }
     ];
@@ -64,10 +61,10 @@ $(document).ready(function () {
         columns: [
         	{ text: 'id', datafield: 'id' , hidden: true },
         	{ text: '<@spring.message "program.userDetailsController.empNo" />', datafield: 'empNo' },
-        	{ text: 'authUser', datafield: 'authUser', 
+        	{ text: '<@spring.message "label.username" />', datafield: 'userByUserId', 
         		cellsRenderer: function (rowid, column, value) {   
-        			var authUser = value;
-        			return authUser.username;
+        			var User = value;
+        			return User.username;
         		} 
         	}
         ]<#-- ./columns -->

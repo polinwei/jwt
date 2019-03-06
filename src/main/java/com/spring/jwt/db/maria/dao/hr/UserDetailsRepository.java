@@ -9,5 +9,5 @@ import com.spring.jwt.db.maria.model.hr.UserDetails;
 
 public interface UserDetailsRepository extends JpaRepository<UserDetails, Long> {
 
-	UserDetails findByCompanyAndDepartmentAndUserId(Company company,Department department,long userId);
+	
 }

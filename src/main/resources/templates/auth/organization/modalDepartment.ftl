@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalDepartment" >
+<div class="modal fade" id="modalDepartment" tabindex="-1">
   <div class="modal-dialog modal-lg">
 	<div class="modal-content">
 	  <div class="modal-header">
@@ -7,7 +7,7 @@
 		<h4 class="modal-title"><span id="companyTitle"/></h4>
 	  </div>
 	  <div class="modal-body">
-		
+		<div id="window0" class="row">
 		<!-- ajax-form id="authorityAjaxForm" -->
 		<form id="departmentAjaxForm" action="/auth/org/department" method="post" autocomplete = "off">
 		  <input type="hidden" id="companyId" name="company_id" >
@@ -119,6 +119,7 @@
 			</div><!-- /.box-body -->
 		  </div><!-- /.box -->
 		  </form>
+		  </div>
 		<!-- /.ajax-form id="authorityAjaxForm" --> 
 	  </div>
 	</div>
@@ -162,13 +163,38 @@
 	        data : form_data,
 	        headers:jwtClient.setAuthorizationTokenHeader(),
 			success:function(data, textStatus, jqXHR){//返回json结果
-				// Reload
-				$("#departmentGrid").jqxGrid('updatebounddata');
-				$('#modalDepartment').modal('toggle');
-				
+				$('#modalDepartment').modal('toggle');				
 				$('#departmentAjaxForm input[name="startDate"] ').inputmask('yyyy/mm/dd');
 				$('#departmentAjaxForm input[name="endDate"] ').inputmask('yyyy/mm/dd');
 				$('[data-mask]').inputmask();
+				<#-- 先取得公司資訊 -->
+				var rowidCompany = $('#companyGrid').jqxGrid('getselectedrowindex');
+				var rowdataCompany = $("#companyGrid").jqxGrid('getrowdata', rowidCompany);
+				<#-- 再讀取一次資訊-->
+				var dfsDepartment = [
+			    	{ name: 'id' },
+			        { name: 'name' },
+			        { name: 'nameEng' },			        
+			        { name: 'costCenter' },
+			        { name: 'userByManagerId' },
+			        { name: 'userDetailses' },
+			        { name: 'upperDepartId' },
+			        { name: 'startDate', type: 'date' },
+			        { name: 'endDate', type: 'date' }
+			    ];
+				var daDept = {
+		        		datatype: "json",
+		                datafields: dfsDepartment,
+		                url: "/auth/org/departmentsByCompany/"+rowdataCompany.id,
+		                sortcolumn: 'id',
+		                sortdirection: 'asc'
+		            }
+				var daDepartment = new $.jqx.dataAdapter(daDept);
+			    daDepartment.dataBind();
+				// update department data source.
+		        $("#departmentGrid").jqxGrid({ source: daDepartment });
+		        // Reload company
+				$("#companyGrid").jqxGrid('updatebounddata');
 				
 			},
 			complete: function(jqXHR, textStatus) {
@@ -216,6 +242,7 @@
 			    }
 			}
 	    })
+		
 	});	
 	
 </script>
