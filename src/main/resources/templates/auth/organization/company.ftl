@@ -478,10 +478,17 @@ $(document).ready(function () {
                     });
                     // create new row.
 			        $("#btnAddCompany").bind('click', function () {
+			        	$("#companyDetailForm")[0].reset();
+			        	$("#companyDetailForm").attr("action","/auth/org/company/");
+	              	    $("#companyDetailForm").attr("method","post");
+			        	$('#modal-companyDetail').modal('show');
+			        	
+			        	<#-- 取消 Grid 上直接新增一行的作法
 			        	var rowscount = $("#companyGrid").jqxGrid('getdatainformation').rowscount;
 			        	var commit = $("#companyGrid").jqxGrid('addrow', null, {});			            
 			            $("#companyGrid").jqxGrid('begincelledit', rowscount, "code");
 			            $("#companyGrid").jqxGrid('ensurerowvisible', rowscount);
+			            -->
 			        });
 			        // update row.
 			        $("#btnEditMoreCompany").bind('click', function () {
