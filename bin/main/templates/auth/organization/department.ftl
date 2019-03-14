@@ -74,6 +74,7 @@ $(document).ready(function () {
         sortable: true,        
         //editmode: 'selectedrow',
         altRows: true,
+        pageable: true,
         showtoolbar: true,                
         rendertoolbar: function (toolbar) {
         	var container = $("<div style='margin: 5px;'></div>");
@@ -151,6 +152,7 @@ $(document).ready(function () {
     	if (rowdataCompany){    		
     		$("#companyTitle").html(rowdataCompany.name);
     		$("#departmentAjaxForm")[0].reset();
+    		$('#departmentManagerAvatar').attr('src','');
     		$("#departmentAjaxForm input[name='company_id']").val(rowdataCompany['id']);
     		$('#departmentAjaxForm input[name="opName"] ').val("post");
     		dttableDepartmentList.ajax.url( '/auth/org/departmentsByCompany/'+ rowdataCompany['id']).load();    		
@@ -183,7 +185,7 @@ $(document).ready(function () {
     	
     	$.each( rowdataDept, function( key, value ) {		
 			$('#departmentAjaxForm input[name="'+key+'"] ').val(value);
-			if (key="upperDepartId"){
+			if (key=="upperDepartId"){
 				$('#upperDepartId').val(rowdataDept.upperDepartId);
 				$.each( rowdataAllDept, function( key, value ) {					
 					if (value.id==rowdataDept.upperDepartId){
@@ -192,11 +194,12 @@ $(document).ready(function () {
 				});
 			}
 			
-			if (key="userByManagerId" && value !=null){
-				var User = value;
+			if (key=="userByManagerId" && value !=null){				
+				var User = value;				
 				$('#departmentAjaxForm input[name="manager_id"] ').val(User.id);
 				$('#departmentAjaxForm input[name="managerName"] ').val(User.username);
 				$('#departmentManagerAvatar').attr('src', '/auth/showphoto/AVATAR_FOLDER/'+User.avatar);
+				
 			}
 		});
     	if (rowdataDept.startDate){

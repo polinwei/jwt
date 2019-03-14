@@ -69,6 +69,8 @@
 
 <#-- Bootstrap 3.3.7 -->
 <script src="/AdminLTE2/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<#-- VUE JS -->
+<script src="/webjars/vue/2.5.13/vue.min.js"></script>
 <#-- Select2 -->
 <script src="/AdminLTE2/bower_components/select2/dist/js/select2.full.min.js"></script>
 <#-- FastClick -->

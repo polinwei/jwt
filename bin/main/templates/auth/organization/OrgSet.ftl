@@ -31,6 +31,7 @@
 		      <ul class="nav nav-tabs">
 		        <li class="active"><a href="#tab_department" data-toggle="tab"><@spring.message "program.departmentController.programName" /></a></li>
 		        <li><a href="#tab_userDetails" data-toggle="tab"><@spring.message "program.userDetailsController.programName" /></a></li>
+		        <li><a href="#tab_companyTree" data-toggle="tab"><@spring.message "program.companyController.companyTree" /></a></li>
 		      </ul>
 		      <div class="tab-content">
 		        <div class="tab-pane active" id="tab_department">
@@ -48,6 +49,11 @@
 		        	<#include "/auth/organization/userDetails.ftl">
 		        </div>
 		        <!-- /.tab-pane -->
+		        <!-- /.tab-pane -->
+		        <div class="tab-pane" id="tab_companyTree">
+		        	<#include "/auth/organization/companyTree.ftl">
+		        </div>
+		        <!-- /.tab-pane -->		        
 		      </div>
 		      <!-- /.tab-content -->
 		    </div>

@@ -54,6 +54,7 @@ $(document).ready(function () {
         height: '100%',        
         editmode: 'selectedrow',
         altRows: true,
+        pageable: true,
         columns: [
         	{ text: 'id', datafield: 'id' , hidden: true },
         	{ text: '<@spring.message "program.userDetailsController.empNo" />', datafield: 'empNo' },

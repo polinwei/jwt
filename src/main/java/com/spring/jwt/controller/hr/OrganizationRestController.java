@@ -1,46 +1,36 @@
 package com.spring.jwt.controller.hr;
 
 import java.net.URI;
-import java.security.AccessController;
-import java.security.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.TimeZone;
+
 
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spring.jwt.db.maria.dao.authentication.UserRepository;
 import com.spring.jwt.db.maria.dao.hr.CompanyRepository;
 import com.spring.jwt.db.maria.dao.hr.DepartmentRepository;
 import com.spring.jwt.db.maria.dao.hr.UserDetailsRepository;
@@ -188,10 +178,35 @@ public class OrganizationRestController {
 	 * @return
 	 */
 	@GetMapping("departmentsByCompany/{companyId}")
-	public List<Department> getCompanyAllDepartment(@PathVariable long companyId){	
+	public List<Department> getCompanyAllDepartment(@PathVariable long companyId){
+		List<Department> departmentsByCompany = new ArrayList<>();
 		userService.changeToCurrentUserTimeZone();
 		Company company = companyRepo.findById(companyId).get();
-		return departmentRepo.findAllDepartmentsByCompany(company);		
+		departmentsByCompany = departmentRepo.findAllDepartmentsByCompany(company);
+		return 	departmentsByCompany;
+	}
+	
+	/**
+	 *  查詢公司的所有資料回傳給前端 jqxTree 使用
+	 * @return
+	 */
+	@GetMapping("companyTree/{companyId}")
+	public List<Map<String, Object>> companyTree(@PathVariable long companyId){		
+		
+		userService.changeToCurrentUserTimeZone();
+		Company company = companyRepo.findById(companyId).get();
+		List<Department> departmentsByCompany = departmentRepo.findAllDepartmentsByCompany(company);		
+		
+		List<Map<String, Object>> orgHierarchy = new ArrayList<Map<String,Object>>();
+		for (Department department : departmentsByCompany) {
+			//取得最上階
+			if (department.getUpperDepart()==null) {
+				orgHierarchy.add(getDeptsAndUsersHierarchy(department));
+				
+			}
+		}
+		
+		return 	orgHierarchy;
 	}
 	
 	/**
@@ -302,4 +317,52 @@ public class OrganizationRestController {
 		departmentRepo.deleteById(id);
 	}
 	
+	
+	
+	public Map<String,Object> getDeptsAndUsersHierarchy(Department department){
+		Map<String,Object> depts = new HashMap<String,Object>();
+		String iconPath = "/auth/showphoto/AVATAR_FOLDER/folder.png";
+		// 最上階部門資訊
+		depts.put("id"   , "d"+department.getId().toString());
+		depts.put("upperDepartId", department.getUpperDepart());
+		depts.put("label", department.getName());
+		depts.put("value", "departId:"+department.getId().toString());		
+		depts.put("icon", iconPath);
+		
+		List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
+		//同一階部的裡的員工
+		for (UserDetails user : department.getUserDetailses()) {
+			HashMap<String, Object> param = new HashMap<String,Object>();
+			param.put("id"   , "u"+user.getId().toString());
+			param.put("label", user.getUserByUserId().getUsername());
+			param.put("value", "userId:"+user.getId().toString());
+			
+			iconPath = "/auth/showphoto/AVATAR_FOLDER/avatar.png";
+			if (!StringUtils.isEmpty(user.getUserByUserId().getAvatar())) {				
+				iconPath = "/auth/showphoto/AVATAR_FOLDER/" + user.getUserByUserId().getAvatar();
+			}
+			param.put("icon", iconPath);
+			param.put("iconsize","24");
+			items.add(param);
+		}
+		
+		for (Department dept : department.getDepartments()) {
+			HashMap<String, Object> param = new HashMap<String,Object>();
+			param.put("id"   , "d"+dept.getId().toString());
+			param.put("upperDepartId", dept.getUpperDepart());
+			param.put("label", dept.getName());
+			param.put("value","departId:"+dept.getId().toString());
+			iconPath = "/auth/showphoto/AVATAR_FOLDER/folder.png";
+			param.put("icon", iconPath);
+			items.add(param);
+			// 檢查是否有下階部門
+			if (dept.getDepartments().size()>0) {
+				List<Department> nextDept = new ArrayList<>();
+				nextDept.addAll(dept.getDepartments());
+				items.add( getDeptsAndUsersHierarchy( nextDept.get(0) ));
+			}
+		}		
+		depts.put("items", items);
+		return depts;
+	}
 }
