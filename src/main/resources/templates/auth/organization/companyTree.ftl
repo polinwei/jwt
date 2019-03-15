@@ -7,65 +7,52 @@
 		</div>
 	</div>
 	<div id="ContentPanel">
-		<div  border: none;" id='jtCompany-deptInfo'>
+		<div  style="border: none;" id='jtCompany-deptInfo'>
+		<span id="vueDeptInfo">
 			<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-4">		        
+				  <!-- Profile Image -->
+		          <div class="box box-primary">
+		            <div class="box-body box-profile">		            	
+		              <img class="profile-user-img img-responsive img-circle" 
+		                   v-bind:src="'/auth/showphoto/AVATAR_FOLDER/'+deptDetail.userByManagerId.avatar" alt="User profile picture">
+		
+		              <h3 class="profile-username text-center">{{ deptDetail.userByManagerId.lastname +" "+ deptDetail.userByManagerId.firstname}}</h3>
+		
+		              <p class="text-muted text-center">{{ deptDetail.userByManagerId.jobTitle }}</p>
+		
+		              <ul class="list-group list-group-unbordered">		                
+		                <li class="list-group-item">
+		                  <b>信箱</b> <a class="pull-right">{{ deptDetail.userByManagerId.email }}</a>
+		                </li>
+		              </ul>
+		
+		              <a href="#" class="btn btn-primary btn-block"><b>部門主管</b></a>
+		            </div>
+		            <!-- /.box-body -->
+		          </div><!-- /.box -->
+			</div> <!-- /.col -->
+			
+			<div class="col-md-8">
 				<!-- USERS LIST -->
               <div class="box box-danger">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Latest Members</h3>
+                  <h3 class="box-title">All Members</h3>
 
                   <div class="box-tools pull-right">
-                    <span class="label label-danger">8 New Members</span>
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
-                    </button>
+                    <span class="label label-danger">{{ totalUsers }} New Members</span>                    
                   </div>
                 </div>
                 <!-- /.box-header -->
-                <div class="box-body no-padding">
+                <div class="box-body no-padding"> 
+                	<!-- users-list -->               
                   <ul class="users-list clearfix">
-                    <li>
-                      <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                      <a class="users-list-name" href="#">Alexander Pierce</a>
-                      <span class="users-list-date">Today</span>
-                    </li>
-                    <li>
-                      <img src="dist/img/user8-128x128.jpg" alt="User Image">
-                      <a class="users-list-name" href="#">Norman</a>
-                      <span class="users-list-date">Yesterday</span>
-                    </li>
-                    <li>
-                      <img src="dist/img/user7-128x128.jpg" alt="User Image">
-                      <a class="users-list-name" href="#">Jane</a>
-                      <span class="users-list-date">12 Jan</span>
-                    </li>
-                    <li>
-                      <img src="dist/img/user6-128x128.jpg" alt="User Image">
-                      <a class="users-list-name" href="#">John</a>
-                      <span class="users-list-date">12 Jan</span>
-                    </li>
-                    <li>
-                      <img src="dist/img/user2-160x160.jpg" alt="User Image">
-                      <a class="users-list-name" href="#">Alexander</a>
-                      <span class="users-list-date">13 Jan</span>
-                    </li>
-                    <li>
-                      <img src="dist/img/user5-128x128.jpg" alt="User Image">
-                      <a class="users-list-name" href="#">Sarah</a>
-                      <span class="users-list-date">14 Jan</span>
-                    </li>
-                    <li>
-                      <img src="dist/img/user4-128x128.jpg" alt="User Image">
-                      <a class="users-list-name" href="#">Nora</a>
-                      <span class="users-list-date">15 Jan</span>
-                    </li>
-                    <li>
-                      <img src="dist/img/user3-128x128.jpg" alt="User Image">
-                      <a class="users-list-name" href="#">Nadia</a>
-                      <span class="users-list-date">15 Jan</span>
-                    </li>
+                  	<dept-userlist
+                  		v-for="user in userDetails"
+					    v-bind:userdetail="user"
+					    v-bind:key="user.id"
+                  	></dept-userlist>                   
+                    
                   </ul>
                   <!-- /.users-list -->
                 </div>
@@ -76,10 +63,11 @@
               </div><!--/.box -->
 			</div> <!-- /.col -->
 			</div>
+		</span>
 		</div>
 	
 	
-		<div border: none;" id='jtCompany-userInfo'>
+		<div style="border: none;" id='jtCompany-userInfo'>
 		<span id="vueUserInfo">
 			<div class="row">		
 			<div class="col-md-12">		        
@@ -125,17 +113,28 @@ $(document).ready(function () {
     $('#jtCompany-deptInfo').hide();
     $('#jtCompany-userInfo').hide();
     var userInfo = new Vue({
-  	  el: '#vueUserInfo',
-  	  data: {
-  	    userDetails: {},
-  	    message:"使用者訊息區"
-  	  }
+	  	  el: '#vueUserInfo',
+	  	  data: {
+	  	    userDetails: {},
+	  	    message:"使用者訊息區"
+	  	  }
   	});
-	Vue.filter('formatDate', function(value) {
-		  if (value) {
-		    return moment(String(value)).format('YYYY/MM/DD ZZ')
-		  }
-	});
+    
+    var deptInfo = new Vue({
+    	  el: '#vueDeptInfo',
+    	  data: {
+    	    userDetails: {},
+    	    totalUsers: '',
+    	    deptDetail: {},
+    	    message:"部門訊息區"
+    	  }
+    });
+
+    Vue.component('dept-userlist', {
+    	  props: ['userdetail'],
+    	  template: '<li><img v-bind:src="userdetail.userByUserId.avatar|imgSrc" alt="User Image"><a class="users-list-name" href="#">{{userdetail.userByUserId.firstname}}</a><span class="users-list-date">{{userdetail.hireDate | formatDate}}</span></li>'
+    });
+	
 	$("#companyGrid").on('rowselect', function (event) {
        	var company = event.args.row;
        	var departments = event.args.row.departments;       	
@@ -161,6 +160,7 @@ $(document).ready(function () {
     	var rowidCompany = $('#companyGrid').jqxGrid('getselectedrowindex');
     	var rowdataCompany = $("#companyGrid").jqxGrid('getrowdata', rowidCompany);
     	var companyAllUsers = rowdataCompany.userDetailses;
+    	var departments = rowdataCompany.departments;
     	
     	var args = event.args;
         var item = $('#jtCompany').jqxTree('getItem', args.element);
@@ -172,17 +172,23 @@ $(document).ready(function () {
         
         //$("#ContentPanel").html("<div style='margin: 10px;'>" + item.id +item.value+ "</div>");
         if (itemType[0]=="departId"){
-        	$('#jtCompany-deptInfo').show();
         	$('#jtCompany-userInfo').hide();
+        	$.map( departments, function( val, i ) {
+	        	if(val.id==itemType[1]){
+	        		deptInfo.deptDetail = val;
+	        		deptInfo.userDetails=val.userDetailses;
+	        		deptInfo.totalUsers = deptInfo.userDetails.length;	        			        		
+	        	}
+        	});
+        	$('#jtCompany-deptInfo').show();
+        	
         }
         if (itemType[0]=="userId"){
         	$('#jtCompany-deptInfo').hide();
         	$.map( companyAllUsers, function( val, i ) {
         		if(val.id==itemType[1]){
-        			userInfo.userDetails = val;
-        			console.log(userInfo.userDetails);
-        		}
-        		  
+        			userInfo.userDetails = val;        			
+        		} 
         	});
         	$('#jtCompany-userInfo').show();
         }

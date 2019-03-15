@@ -133,6 +133,17 @@ $(document).ready(function() {
 	            bolditalics: 'kaiu.ttf'
 	        }
 	    };
+	    
+	Vue.filter('formatDate', function(value) {
+		  if (value) {
+		    return moment(String(value)).format('YYYY/MM/DD Z')
+		  }
+	});
+	Vue.filter('imgSrc', function(value) {
+		  if (value) {
+		    return '/auth/showphoto/AVATAR_FOLDER/'+value;
+		  }
+	});
 })
 <#-- serialize Form into an object, data = JSON.stringify( $('#myForm').serializeObject() ); -->  
 $.fn.serializeObject = function(){
