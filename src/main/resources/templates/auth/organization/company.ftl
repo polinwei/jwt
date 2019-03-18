@@ -454,7 +454,9 @@ $(document).ready(function () {
             	width: '100%',
                 height: '280px',
                 source: dataAdapter,
+                <@security.authorize access="hasRole('ADMIN')">
                 editable: true,
+                </@security.authorize>
                 sortable: true,
                 //selectionmode: 'singlerow',
                 //selectionmode: 'singlecell',

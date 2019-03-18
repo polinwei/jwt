@@ -58,7 +58,7 @@ $('#tblUserList').DataTable({
 	       	}
 		  },
 	      { data: "avatar" , render: function(data, type, row, meta) {	    		
-	            return '<img src=/auth/showphoto/AVATAR_FOLDER/'+data+' />';
+	            return '<img height="24" width="24" src=/auth/showphoto/AVATAR_FOLDER/'+data+' />';
 	       	}
 		  },
 

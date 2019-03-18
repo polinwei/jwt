@@ -82,7 +82,7 @@ $(document).ready(function () {
         			// get current row data
 					var datarow = $("#companyUsersGrid").jqxGrid('getrowdata', rowid);
         			var User = datarow.userByUserId;        			
-        			return '<img style="margin: 3px;" src=/auth/showphoto/AVATAR_FOLDER/'+User.avatar+' alt="User Avatar" />';
+        			return '<img height="36" width="36" style="margin: 3px;" src=/auth/showphoto/AVATAR_FOLDER/'+User.avatar+' alt="User Avatar" />';
         		} 
         	},
         ]<#-- ./columns -->

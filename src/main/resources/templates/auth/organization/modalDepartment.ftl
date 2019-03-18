@@ -76,7 +76,7 @@
 				</div>
 				<div class="col-md-6">
 				  <div class="form-group">                
-					<div class="attachment-block clearfix"><img id="departmentManagerAvatar" class="attachment-img" src='' alt="User Avatar" class="margin" /> </div>
+					<div class="attachment-block clearfix"><img height="48" width="48" id="departmentManagerAvatar" class="attachment-img" src='' alt="User Avatar" class="margin" /> </div>
 				  </div>
 				  <!-- /.form-group -->
 				</div><!-- /.col -->				

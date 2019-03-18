@@ -85,9 +85,9 @@ var dt${lovTableId} = $('#${lovTableId}').DataTable({
 				<#if key=='type' && value=='image'>
 					render: function(data, type, row, meta) {
 						if (data){
-							return '<img class="direct-chat-img" src=/auth/showphoto/AVATAR_FOLDER/'+data+' />';
+							return '<img height="48" width="48" class="direct-chat-img" src=/auth/showphoto/AVATAR_FOLDER/'+data+' />';
 						} else {
-							return '<img class="direct-chat-img" src=/auth/showphoto/AVATAR_FOLDER/noImage.jpg />';
+							return '<img height="48" width="48" class="direct-chat-img" src=/auth/showphoto/AVATAR_FOLDER/noImage.jpg />';
 						}
 			            
 			       	},

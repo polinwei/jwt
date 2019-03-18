@@ -133,7 +133,9 @@ $('#${tableId}').DataTable({
 	      </#if>
 
 	],
-	<#-- dom: 'lrBtip',  -->
+	dom:"<'row'<'col-sm-6'B><'col-sm-6'f>>" +
+  		"<'row'<'col-sm-12'tr>>" +
+  		"<'row'<'col-sm-4'l><'col-sm-4'i><'col-sm-4'p>>", 
 	buttons: [
 		{
 		   text: 'Reload',

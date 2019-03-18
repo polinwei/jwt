@@ -36,12 +36,9 @@
 		      <div class="tab-content">
 		        <div class="tab-pane active" id="tab_department">
 		        	<div class="row">
-			        	<div class="col-md-8">
+			        	<div class="col-md-12">
 							<#include "/auth/organization/department.ftl">
-						</div>
-						<div class="col-md-4">
-							<#include "/auth/organization/departmentUsers.ftl">
-						</div>
+						</div>						
 					</div>
 		        </div>
 		        <!-- /.tab-pane -->

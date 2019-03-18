@@ -1,15 +1,15 @@
-<div class="modal fade" id="modalDepartment" tabindex="-1">
+<div class="modal fade" id="modalUsers" tabindex="-1">
   <div class="modal-dialog modal-lg">
 	<div class="modal-content">
 	  <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		  <span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title"><span id="companyTitle"/></h4>
+		<h4 class="modal-title"><span id="userCompanyTitle"/></h4>
 	  </div>
 	  <div class="modal-body">
 		<div id="window0" class="row">
 		<!-- ajax-form id="authorityAjaxForm" -->
-		<form id="departmentAjaxForm" action="/auth/org/department" method="post" autocomplete = "off">
+		<form id="userAjaxForm" action="/auth/org/user" method="post" autocomplete = "off">
 		  <input type="hidden" id="companyId" name="company_id" >
 		  <input type="hidden" id="departId" name="id" >
 		  <input type="hidden" id="departManagerId" name="manager_id" >		  
@@ -44,7 +44,7 @@
 				<div class="col-md-6">
 					<@pw.LOV 
 					  	fileName="tags/lovTag.ftl"				  	
-					  	lovTableId="tableDepartmentList"
+					  	lovTableId="tblDepartmentList"
 					  	dtAjaxUrl="/auth/org/departments"
 					  	paramsStr="{'isSelect':true}"
 					  	columnsStr="[{'th':'id','data':'id','visible': 'false','type':'hidden'},
@@ -61,7 +61,7 @@
 				<div class="col-md-6">
 				  <@pw.LOV 
 				  	fileName="tags/lovTag.ftl"				  	
-				  	lovTableId="tableDepartmentManagerList"
+				  	lovTableId="tblDepartmentManagerList"
 				  	dtAjaxUrl="/auth/security/users"
 				  	paramsStr="{'isSelect':true}"
 				  	columnsStr="[{'th':'id','data':'id','visible': 'false','type':'hidden'},

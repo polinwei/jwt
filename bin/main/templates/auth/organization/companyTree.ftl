@@ -14,7 +14,7 @@
 				  <!-- Profile Image -->
 		          <div class="box box-primary">
 		            <div class="box-body box-profile">		            	
-		              <img class="profile-user-img img-responsive img-circle" 
+		              <img height="96" width="96" class="profile-user-img img-responsive img-circle" 
 		                   v-bind:src="'/auth/showphoto/AVATAR_FOLDER/'+deptDetail.userByManagerId.avatar" alt="User profile picture">
 		
 		              <h3 class="profile-username text-center">{{ deptDetail.userByManagerId.lastname +" "+ deptDetail.userByManagerId.firstname}}</h3>
@@ -74,7 +74,7 @@
 				  <!-- Profile Image -->
 		          <div class="box box-primary">
 		            <div class="box-body box-profile">
-		              <img class="profile-user-img img-responsive img-circle" 
+		              <img height="96" width="96" class="profile-user-img img-responsive img-circle" 
 		                   v-bind:src="'/auth/showphoto/AVATAR_FOLDER/'+userDetails.userByUserId.avatar" alt="User profile picture">
 		
 		              <h3 class="profile-username text-center">{{ userDetails.userByUserId.lastname +" "+ userDetails.userByUserId.firstname}}</h3>
@@ -132,7 +132,7 @@ $(document).ready(function () {
 
     Vue.component('dept-userlist', {
     	  props: ['userdetail'],
-    	  template: '<li><img v-bind:src="userdetail.userByUserId.avatar|imgSrc" alt="User Image"><a class="users-list-name" href="#">{{userdetail.userByUserId.firstname}}</a><span class="users-list-date">{{userdetail.hireDate | formatDate}}</span></li>'
+    	  template: '<li><img height="96" width="96" v-bind:src="userdetail.userByUserId.avatar|imgSrc" alt="User Image"><a class="users-list-name" href="#">{{userdetail.userByUserId.firstname}}</a><span class="users-list-date">{{userdetail.hireDate | formatDate}}</span></li>'
     });
 	
 	$("#companyGrid").on('rowselect', function (event) {

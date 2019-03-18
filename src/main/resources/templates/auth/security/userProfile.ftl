@@ -187,7 +187,9 @@ $('#tblUserProfile').DataTable({
                    '<a href="#" data-url=/auth/security/userProfile/'+data+' data-ajax="true" class="btn btn-xs btn-danger btnDel" ${isDelDisable!""}><i class="fa fa-trash-o"></i>Delete</a>'
        	}  
       }],
-  //dom: 'lrBtip',        
+  dom:  "<'row'<'col-sm-6'B><'col-sm-6'f>>" +
+		"<'row'<'col-sm-12'tr>>" +
+		"<'row'<'col-sm-4'l><'col-sm-4'i><'col-sm-4'p>>",        
   buttons: [     	
      	{
      		extend: 'copy',
@@ -327,7 +329,7 @@ $('#tblUserList').DataTable({
 	       	}
 		  },
 	      { data: "avatar" , render: function(data, type, row, meta) {	    		
-	            return '<img src=/auth/showphoto/AVATAR_FOLDER/'+data+' />';
+	            return '<img  height="48" width="48" src=/auth/showphoto/AVATAR_FOLDER/'+data+' />';
 	       	}
 		  },
 
