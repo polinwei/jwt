@@ -31,6 +31,7 @@
   <link rel="stylesheet" href="/AdminLTE2/bower_components/select2/dist/css/select2.min.css">
   <#-- DataTables -->
   <link rel="stylesheet" href="/AdminLTE2/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+
   <#-- Theme style -->
   <link rel="stylesheet" href="/AdminLTE2/dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins

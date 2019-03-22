@@ -329,7 +329,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="/auth/organization/OrgSet"><i class="fa fa-circle-o"></i> Company/Department/Staff </a></li>
+            <li class="active"><a href="/auth/organization/OrgSet"><i class="fa fa-circle-o"></i> Company/Department </a></li>
+            <li class="active"><a href="/auth/organization/staff"><i class="fa fa-circle-o"></i> Staff </a></li>
           </ul>
         </li>        
         

@@ -59,6 +59,7 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-web")
 	compile("org.springframework.boot:spring-boot-starter-security")
 	compile("org.springframework.boot:spring-boot-starter-data-ldap")
+	compile("org.springframework.boot:spring-boot-starter-mail") // Mail
 	compile("org.springframework.security:spring-security-taglibs")
 	compile("org.springframework.boot:spring-boot-devtools") // Class 程式有更改時, 自動重啟
 	compile("org.hibernate.validator:hibernate-validator") //驗證

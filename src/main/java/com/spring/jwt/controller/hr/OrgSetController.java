@@ -18,4 +18,9 @@ public class OrgSetController {
 		return "/auth/organization/OrgSet";
 	}
 	
+	@RequestMapping("staff")
+	public String crudStaff(Model model) {
+		return "/auth/organization/staff";
+	}
+	
 }

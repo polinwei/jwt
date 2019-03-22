@@ -51,8 +51,9 @@ $(document).ready(function () {
 	
 	$("#companyUsersGrid").jqxGrid({
     	width: '100%',
-        height: '100%',        
-        editmode: 'selectedrow',
+        height: '100%',
+        sortable: true,
+        //editmode: 'selectedrow',
         altRows: true,
         pageable: true,
         columns: [
@@ -87,6 +88,6 @@ $(document).ready(function () {
         	},
         ]<#-- ./columns -->
     });
-
+	
 })
 </script>
