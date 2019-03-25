@@ -41,36 +41,23 @@ table.dataTable tr.selected {
           </div>
           <!-- /.box -->
 
-          <!-- About Me Box -->
+          <!-- Users List Box -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">About Me</h3>
+              <h3 class="box-title">Users List</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
-
-              <p class="text-muted">
-                B.S. in Computer Science from the University of Tennessee at Knoxville
-              </p>
-
-              <hr>
-
-              <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
-
-              <p class="text-muted">Malibu, California</p>
-
-              <hr>
-
-              <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
-
-              <p>
-                <span class="label label-danger">UI Design</span>
-                <span class="label label-success">Coding</span>
-                <span class="label label-info">Javascript</span>
-                <span class="label label-warning">PHP</span>
-                <span class="label label-primary">Node.js</span>
-              </p>
+              <table id="tblCompanyUsers" class="table table-bordered table-striped" style="width:100%">
+		            <thead>
+		            <tr>
+		              <th>company_id</th>
+		              <th>user_id</th>             
+		              <th><@spring.message "program.companyController.companyCode" /></th>
+		              <th><@spring.message "program.companyController.companyName" /></th>
+		            </tr>
+		            </thead>
+	          	</table>
 
               <hr>
 

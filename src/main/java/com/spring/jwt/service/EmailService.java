@@ -27,7 +27,7 @@ public class EmailService {
     @Autowired
     private Configuration freemarkerConfig;
 
-    public void sendSimpleMessage(Mail mail) throws MessagingException, IOException, TemplateException {
+    public void sendSimpleMessage(Mail mail, String templateFileName) throws MessagingException, IOException, TemplateException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
@@ -35,7 +35,7 @@ public class EmailService {
 
         helper.addAttachment("logo.png", new ClassPathResource("templates/demo/yahoo_logo.png"));
 
-        Template t = freemarkerConfig.getTemplate("mail/email-demoTemplate.ftl");
+        Template t = freemarkerConfig.getTemplate(templateFileName);
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, mail.getModel());
 
         helper.setTo(mail.getTo());

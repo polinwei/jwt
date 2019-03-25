@@ -154,6 +154,7 @@ public class TestFunc {
 		Resource imgFile = resourceLoader.getResource("file:/fileUpload/images/noImage.jpg");
 		attachments.put("附件-1.jpg",imgFile);
 		attachments.put("附件-2.jpg",imgFile);
+		String templateFileName = "mail/email-demoTemplate.ftl";
 		
 		Mail mail = new Mail();
         mail.setFrom("username@domain.onmicrosoft.com");
@@ -167,7 +168,7 @@ public class TestFunc {
         model.put("signature", "https://tw.yahoo.com");
         mail.setModel(model);
 
-        emailService.sendSimpleMessage(mail);
+        emailService.sendSimpleMessage(mail,templateFileName);
 		
 	}
 }
