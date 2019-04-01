@@ -10,6 +10,7 @@ buildscript {
 		jspapiVersion = '2.3.3'
 		gsonVersion = '2.8.5'
 		modelMapperVersion = '2.3.2'
+		saucerPdfVersion = '9.1.18'  //版本9.1.5以上 page 才不會有問題
 	}
 	repositories {
 		mavenCentral()
@@ -60,6 +61,7 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-security")
 	compile("org.springframework.boot:spring-boot-starter-data-ldap")
 	compile("org.springframework.boot:spring-boot-starter-mail") // Mail
+	compile("org.xhtmlrenderer:flying-saucer-pdf-itext5:${saucerPdfVersion}") //pdf:flying-saucer
 	compile("org.springframework.security:spring-security-taglibs")
 	compile("org.springframework.boot:spring-boot-devtools") // Class 程式有更改時, 自動重啟
 	compile("org.hibernate.validator:hibernate-validator") //驗證

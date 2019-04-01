@@ -24,6 +24,7 @@ import org.w3c.dom.NodeList;
 
 import com.spring.jwt.model.Mail;
 import com.spring.jwt.service.EmailService;
+import com.spring.jwt.service.PdfService;
 
 import org.w3c.dom.Node;
 
@@ -56,6 +57,8 @@ public class TestFunc {
 	ResourceLoader resourceLoader;
 	@Autowired
     private EmailService emailService;
+	@Autowired
+	PdfService pdfService;
 	
 	@Test
 	public void readMXLFile() throws Exception {
@@ -163,7 +166,7 @@ public class TestFunc {
         mail.setAttachments(attachments);
 
         Map model = new HashMap();
-        model.put("name", "Polin WEI");
+        model.put("name", "王大明");
         model.put("location", "Taiwan");
         model.put("signature", "https://tw.yahoo.com");
         mail.setModel(model);
@@ -171,5 +174,18 @@ public class TestFunc {
         emailService.sendSimpleMessage(mail,templateFileName);
 		
 	}
+	
+	@Test
+	public void createTemplateSaucerPDF() throws Exception {
+		
+		String templateFileName = "pdf/pdf-demoTemplate.ftl";
+		Map model = new HashMap();
+        model.put("name", "王大明");
+        model.put("location", "Taiwan");
+        model.put("signature", "https://tw.yahoo.com");
+		
+        pdfService.generatePdf(model, templateFileName, "test_flying-saucer-pdf.pdf");
+	}	
+
 }
 
