@@ -23,6 +23,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import com.spring.jwt.model.Mail;
+import com.spring.jwt.service.BaseService;
 import com.spring.jwt.service.EmailService;
 import com.spring.jwt.service.PdfService;
 
@@ -59,6 +60,8 @@ public class TestFunc {
     private EmailService emailService;
 	@Autowired
 	PdfService pdfService;
+	@Autowired
+	BaseService baseService;
 	
 	@Test
 	public void readMXLFile() throws Exception {
@@ -179,9 +182,10 @@ public class TestFunc {
 	public void createTemplateSaucerPDF() throws Exception {
 		
 		String templateFileName = "pdf/pdf-demoTemplate.ftl";
+		String imagePath = baseService.getImagePathByType("AVATAR_FOLDER") + "/" + "avatar.png";
 		Map model = new HashMap();
         model.put("name", "王大明");
-        model.put("avatar", "images/avatar/avatar.png");
+        model.put("avatar", imagePath);
         model.put("location", "Taiwan");
         model.put("signature", "https://www.yahoo.com");
 		
@@ -192,9 +196,10 @@ public class TestFunc {
 	public void createTemplateSaucerPDF2() throws Exception {
 		
 		String templateFileName = "pdf/pdf-demoTemplate2.ftl";
+		String imagePath = baseService.getImagePathByType("AVATAR_FOLDER") + "/" + "avatar.png";
 		Map model = new HashMap();
         model.put("name", "王大明");
-        model.put("avatar", "images/avatar/avatar.png");
+        model.put("avatar", imagePath);
         model.put("location", "Taiwan");
         model.put("signature", "https://www.yahoo.com");
 		
