@@ -181,11 +181,25 @@ public class TestFunc {
 		String templateFileName = "pdf/pdf-demoTemplate.ftl";
 		Map model = new HashMap();
         model.put("name", "王大明");
+        model.put("avatar", "images/avatar/avatar.png");
         model.put("location", "Taiwan");
-        model.put("signature", "https://tw.yahoo.com");
+        model.put("signature", "https://www.yahoo.com");
 		
         pdfService.generatePdf(model, templateFileName, "test_flying-saucer-pdf.pdf");
-	}	
+	}
+	
+	@Test
+	public void createTemplateSaucerPDF2() throws Exception {
+		
+		String templateFileName = "pdf/pdf-demoTemplate2.ftl";
+		Map model = new HashMap();
+        model.put("name", "王大明");
+        model.put("avatar", "images/avatar/avatar.png");
+        model.put("location", "Taiwan");
+        model.put("signature", "https://www.yahoo.com");
+		
+        pdfService.createPdf(model, templateFileName, "test_flying-saucer-pdf2.pdf");
+	}
 
 }
 

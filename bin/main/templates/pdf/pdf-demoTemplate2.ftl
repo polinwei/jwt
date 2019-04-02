@@ -42,7 +42,7 @@
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
         <tr>
             <td align="center" bgcolor="#78ab46" style="padding: 40px 0 30px 0;">                
-                <div id="logo" class="media" data-src="${avatar}" style="width: 60px; height: 60px" />        
+                <img height="48" width="48" src='${avatar}' style="display: block;" />       
             </td>
         </tr>
         <tr>

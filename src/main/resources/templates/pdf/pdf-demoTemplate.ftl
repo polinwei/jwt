@@ -6,14 +6,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'/>
-
     <!-- use the font -->
     <style>
 				
 		body {
             font-family: DFKai-SB;
-            font-size: 48px;
+            font-size: 24px;
             margin: 0; padding: 0;
         }
 		
@@ -43,13 +41,13 @@
 
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
         <tr>
-            <td align="center" bgcolor="#78ab46" style="padding: 40px 0 30px 0;">
-                <img src="cid:logo.png" alt="https://tw.yahoo.com" style="display: block;" />
+            <td align="center" bgcolor="#78ab46" style="padding: 40px 0 30px 0;">                
+                <div id="logo" class="media" data-src="${avatar}" style="width: 60px; height: 60px" />        
             </td>
         </tr>
         <tr>
             <td bgcolor="#eaeaea" style="padding: 40px 30px 40px 30px;">
-                <p>Dear ${name},成霖</p>
+                <p>Dear ${name}</p>
                 <p>Generate PDF using Spring Boot with <b>FreeMarker template !!!</b></p>
                 <p>Thanks</p>
             </td>
