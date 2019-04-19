@@ -49,8 +49,14 @@ public class B64ImgReplacedElementFactory implements ReplacedElementFactory {
 
 	protected FSImage buildImage(String srcAttr, UserAgentCallback uac) throws IOException, BadElementException {
 		FSImage fsImage;
-		String imagePath = "/fileUpload/" + srcAttr ;
-		fsImage = uac.getImageResource(imagePath).getImage();
+		if (srcAttr.startsWith("data:image/")) {
+			String b64encoded = srcAttr.substring(srcAttr.indexOf("base64,") + "base64,".length(), srcAttr.length());
+			byte[] decodedBytes = BASE64DecoderStream.decode(b64encoded.getBytes()); //new sun.misc.BASE64Decoder().decodeBuffer(b64encoded);
+			fsImage = new ITextFSImage(Image.getInstance(decodedBytes));
+		} else {
+			String imagePath = "/fileUpload/" + srcAttr ;
+			fsImage = uac.getImageResource(imagePath).getImage();
+		}		
 		return fsImage;
 	}
 	

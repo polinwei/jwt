@@ -62,6 +62,8 @@ public class OrganizationRestController {
 	@Autowired
 	ObjectMapper jsonMapper;
 
+	
+	
 	/**
 	 *  查詢所有公司資料
 	 * @return
@@ -184,6 +186,14 @@ public class OrganizationRestController {
 		Company company = companyRepo.findById(companyId).get();
 		departmentsByCompany = departmentRepo.findAllDepartmentsByCompany(company);
 		return 	departmentsByCompany;
+	}
+	
+	@GetMapping("usersByCompany/{companyId}")
+	public List<UserDetails> getCompanyAllUser(@PathVariable long companyId){
+		List<UserDetails> usersByCompany = new ArrayList<>();		
+		Company company = companyRepo.findById(companyId).get();
+		usersByCompany = userDetailsRepo.findAllUsersByCompany(company);		
+		return 	usersByCompany;
 	}
 	
 	/**

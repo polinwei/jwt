@@ -24,7 +24,10 @@ table.dataTable tr.selected {
           <!-- Companies -->
           <div class="box box-primary">
             <div class="box-body box-profile">
-
+            <div class="box-header with-border">
+              <h3 class="box-title">Compnay List</h3>
+            </div>
+            <!-- /.box-header -->
 	            <table id="tblCompanies" class="table table-bordered table-striped" style="width:100%">
 		            <thead>
 		            <tr>
@@ -50,11 +53,10 @@ table.dataTable tr.selected {
             <div class="box-body">
               <table id="tblCompanyUsers" class="table table-bordered table-striped" style="width:100%">
 		            <thead>
-		            <tr>
-		              <th>company_id</th>
-		              <th>user_id</th>             
-		              <th><@spring.message "program.companyController.companyCode" /></th>
-		              <th><@spring.message "program.companyController.companyName" /></th>
+		            <tr>		              
+		              <th>id</th>             
+		              <th><@spring.message "label.username" /></th>
+		              <th><@spring.message "program.userController.fullName" /></th>
 		            </tr>
 		            </thead>
 	          	</table>
@@ -354,10 +356,11 @@ table.dataTable tr.selected {
 <script type="text/javascript">
 
 $(document).ready( function () {
-
+	//To pre-select the first row
+    $('#tblCompanies tbody tr:eq(0)').click();
 });
 
-var tblCompanies =    $('#tblCompanies').DataTable({
+	var tblCompanies = $('#tblCompanies').DataTable({
 		language: {
         	"url": "/AdminLTE2/bower_components/datatables.net/i18n/${.locale}.json"
 	    },
@@ -367,7 +370,7 @@ var tblCompanies =    $('#tblCompanies').DataTable({
 	 		async: false
 		},	
 	 	columns: [
-			{ data: "id" , visible: false},
+	 		{ data: "id" , visible: false},			
 			{ data: "code" },
 			{ data: "name"},
     	],
@@ -382,11 +385,31 @@ var tblCompanies =    $('#tblCompanies').DataTable({
 			         dt.ajax.reload();
 			     }
 			 }            
-     	]
-    
-    
+     	]    
     });
 
+	var tblCompanyUsers = $('#tblCompanyUsers').DataTable({
+		language: {
+	    	"url": "/AdminLTE2/bower_components/datatables.net/i18n/${.locale}.json"
+	    },
+	    ajax: {
+	 		url:"/auth/org/usersByCompany/1",dataSrc:"",
+	 		headers: jwtClient.setAuthorizationTokenHeader(),
+	 		async: false
+		},
+	 	columns: [
+			{ data: "id"  },
+			{ data: "userByUserId.username" },
+			{ data: "id", render: function(data, type, row, meta) {					
+		            return row.userByUserId.firstname+" "+row.userByUserId.lastname;
+		       	}
+			 },
+		],
+		dom:  "<'row'<'col-sm-12'f>>" +
+			  "<'row'<'col-sm-12'tr>>" +
+			  "<'row'<'col-sm-12'p>>"
+	}); 	
+	
 
 	$('#tblCompanies tbody').on('click', 'tr', function (){
 		   
@@ -394,8 +417,10 @@ var tblCompanies =    $('#tblCompanies').DataTable({
 		var data =  $('#tblCompanies').DataTable().row($row).data();
 		var url = $(this).attr('data-url');
 		
-		console.log('data', data);
-		console.log('Record ID is', data['id']);
+		tblCompanyUsers.ajax.url( '/auth/org/usersByCompany/'+data['id']).load();		
+		
+		//console.log('data', data);
+		//console.log('Record ID is', data['id']);
 		if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
@@ -404,7 +429,9 @@ var tblCompanies =    $('#tblCompanies').DataTable({
             $(this).addClass('selected');
         }	
 	
-	});
+	});	
+	
+
 
 </script>
       
