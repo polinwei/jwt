@@ -134,13 +134,14 @@ $(document).ready(function() {
 	            bolditalics: 'kaiu.ttf'
 	        }
 	    };
-	    
+	
+	<#-- Global filters -->   
 	Vue.filter('formatDate', function(value) {
 		  if (value) {
 		    return moment(String(value)).format('YYYY/MM/DD Z')
 		  }
 	});
-	Vue.filter('imgSrc', function(value) {
+	Vue.filter('imgSrc', function(value) {	
 		  if (value) {
 		    return '/auth/showphoto/AVATAR_FOLDER/'+value;
 		  }

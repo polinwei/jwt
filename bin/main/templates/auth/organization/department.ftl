@@ -211,11 +211,6 @@ $(document).ready(function () {
     	$('#modalDepartment').modal('show');
     	
     	
-    	//var mainContainer = $('.content');
-        //var offset = mainContainer.offset();
-        //$('#window0').jqxWindow({ height: 'auto', width: '100%',  position: { x: offset.left + 50, y: offset.top + 50} });
-        //$('#window0').jqxWindow('open');
-    	
     });
     
 })
