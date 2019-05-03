@@ -19,7 +19,7 @@ table.dataTable tr.selected {
 </style>	
 			
 	<div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
 
           <!-- Companies -->
           <div class="box box-primary">
@@ -67,7 +67,7 @@ table.dataTable tr.selected {
           <!-- /.box -->
         </div>
         <!-- /.col -->
-        <div class="col-md-9">
+        <div class="col-md-8">
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
               <li class="active"><a href="#tab_userDetails" data-toggle="tab"><@spring.message "program.userDetailsController.programName" /></a></li>
@@ -169,9 +169,8 @@ table.dataTable tr.selected {
 						</div>
 						<div class="col-md-6">
 						  <div class="form-group">
-						    <span v-if="userByManagerId.avatar!=null">             
+						    <span v-if="userByManagerId.avatar!=null"> </span>            
 								<div class="attachment-block clearfix"><img height="48" width="48" id="userManagerAvatar" class="attachment-img" v-bind:src="userByManagerId.avatar|imgSrc" alt="User Avatar" class="margin" /> </div>
-						  	</span>
 						  </div>
 						  <!-- /.form-group -->
 						</div><!-- /.col -->				
@@ -496,7 +495,7 @@ $('#tblCompanyUsers tbody').on('click', 'tr', function (){
 	var data =  $('#tblCompanyUsers').DataTable().row($row).data();
 	var url = $(this).attr('data-url');
 	
-	//console.log('data', data);
+	console.log('data', data);
 	//console.log('Record ID is', data['id']);
 	if ( $(this).hasClass('selected') ) {
         $(this).removeClass('selected');

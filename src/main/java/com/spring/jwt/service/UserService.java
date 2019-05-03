@@ -1,11 +1,19 @@
 package com.spring.jwt.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.TimeZone;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.servlet.http.HttpSession;
+
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.internal.NativeQueryImpl;
+import org.hibernate.transform.Transformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +41,9 @@ public class UserService {
 	UserProfileRepository userProfileRepo;
 	@Autowired
 	ObjectMapper jsonMapper;
+	//在 service 層使用 @PersistenceContext 注解注入 EntityManager, 不需要操作完資料庫顯式的用 em.close() 關閉 entityManager
+	@PersistenceContext(unitName = "puMaria") 
+	EntityManager emMaria;
 	
 	private Authentication authentication;
 	
@@ -109,5 +120,23 @@ public class UserService {
 	public void changeToCurrentUserTimeZone() {		
 		String userTZ = getCurrentUserTimeZone();
 		jsonMapper.setTimeZone(TimeZone.getTimeZone(userTZ));		
+	}
+	
+	public List<Map<String, Object>> findAllUsersByCompanyNativeQuery(Long CompanyId){
+		Query q = (Query) emMaria.createNativeQuery("SELECT ud.*,u.username, u.avatar, u.firstname, u.lastname, u.enabled, "
+				+ "c.company_name,c.company_code, d.department_name, m.manager_username, m.manager_avatar "
+				+ "FROM user_details ud "
+				+ "JOIN ( select * from user ) u ON ud.user_id = u.id "
+				+ "JOIN ( select id,name as company_name, code as company_code from company) c ON ud.company_id = c.id "
+				+ "JOIN ( select id,name as department_name from department) d ON ud.department_id = d.id "
+				+ "LEFT JOIN (select id , username as manager_username, avatar as manager_avatar from user ) m ON ud.manager_id = m.id "
+				+ "WHERE 1=1 "
+				+ "AND c.id = :CompanyId ")
+                .setParameter("CompanyId", CompanyId);
+               
+		//q.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+		q.unwrap(NativeQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+		return q.getResultList();
+
 	}
 }
