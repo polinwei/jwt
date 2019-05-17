@@ -309,9 +309,10 @@ $("#authorityAjaxForm").submit(function(event){
     $.ajax({
         url : post_url,
         type: request_method,
-        contentType: "application/json; charset=utf-8",
+        contentType: "application/json; charset=utf-8", // 要送到server的資料型態
+        dataType : 'json', // 預期從server接收的資料型態
         data : form_data,
-        headers:jwtClient.setAuthorizationTokenHeader(),
+        headers:jwtClient.setAuthorizationTokenHeader(), 
 		success:function(data, textStatus, jqXHR){//返回json结果			
 			$('#tblAuthority').DataTable().ajax.reload();
 			$('#modal-authority').modal('toggle');

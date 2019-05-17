@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,6 +41,7 @@ import com.spring.jwt.db.maria.model.hr.Company;
 import com.spring.jwt.db.maria.model.hr.Department;
 import com.spring.jwt.db.maria.model.hr.UserDetails;
 import com.spring.jwt.service.BaseService;
+import com.spring.jwt.service.OrganizationService;
 import com.spring.jwt.service.UserService;
 
 @RestController
@@ -58,10 +61,13 @@ public class OrganizationRestController {
     ModelMapper modelMapper;
 	@Autowired
 	UserDetailsRepository userDetailsRepo;
+	@Autowired
+	OrganizationService orgService;
 	
 	@Autowired
 	ObjectMapper jsonMapper;
-
+	@PersistenceContext(unitName = "puMaria") 
+	EntityManager emMaria;
 	
 	
 	/**
@@ -187,13 +193,27 @@ public class OrganizationRestController {
 		departmentsByCompany = departmentRepo.findAllDepartmentsByCompany(company);
 		return 	departmentsByCompany;
 	}
-	
+	/**
+	 * 查公司的所有人員
+	 * @param companyId
+	 * @return
+	 */
 	@GetMapping("usersByCompany/{companyId}")
 	public List<UserDetails> getCompanyAllUser(@PathVariable long companyId){
 		List<UserDetails> usersByCompany = new ArrayList<>();		
 		Company company = companyRepo.findById(companyId).get();
 		usersByCompany = userDetailsRepo.findAllUsersByCompany(company);		
 		return 	usersByCompany;
+	}
+	/**
+	 * 查公司的所有人員-利用 Native Query
+	 * @param companyId
+	 * @return
+	 */
+	@GetMapping("usersByCompanyNativeQuery/{companyId}")
+	public List<Map<String, Object>> getCompanyAllUserDetails(@PathVariable long companyId){
+				
+		return 	userService.findAllUsersByCompanyNativeQuery(companyId);
 	}
 	
 	/**
@@ -262,10 +282,15 @@ public class OrganizationRestController {
 				upperOrderDepartment = null;
 			}
 			department.setDepartment(upperOrderDepartment);
-			Long managerId = Long.parseLong((String) params.get("manager_id"));
-			User deptManager = userService.getUserByUid(managerId);
-			department.setCompany(company);
 			
+			Long managerId = null;
+			User deptManager = null;
+			if (! StringUtils.isEmpty(params.get("manager_id"))) {
+				managerId = Long.parseLong((String) params.get("manager_id"));
+				deptManager = userService.getUserByUid(managerId);
+			}
+			
+			department.setCompany(company);			
 			department.setUserByManagerId(deptManager);
 			if (opName.equalsIgnoreCase("post")) { // 新增
 				department.setCreateDate(new Date());
@@ -327,7 +352,62 @@ public class OrganizationRestController {
 		departmentRepo.deleteById(id);
 	}
 	
-	
+	/**
+	 * 儲存 UserDetail 資料(新增)
+	 * @param params
+	 * @param br
+	 * @return
+	 */
+	@PostMapping("userDetail")
+	public ResponseEntity<?> saveUserDetail(@RequestBody Map<String,Object> params, BindingResult br){
+		
+		UserDetails userDetail = new UserDetails();
+		
+		if (! StringUtils.isEmpty(params.get("id"))) {
+			userDetail = userDetailsRepo.findById(Long.parseLong((String) params.get("id"))).get();
+		}
+		
+		Company company = orgService.findCompanyById(Long.parseLong((String) params.get("company_id")));		
+		Department department = orgService.findDepartmentById(Long.parseLong((String) params.get("department_id")));
+		User manager = userService.getUserByUid(Long.parseLong((String) params.get("manager_id")));
+		User user = userService.getUserByUid(Long.parseLong((String) params.get("user_id")));
+
+						
+		URI location = null;
+		
+		if ( br.hasErrors()) {
+			return new ResponseEntity(br.getFieldErrors(),HttpStatus.METHOD_NOT_ALLOWED);
+		}
+		
+		try {
+			String opName = (String) params.get("opName");
+			userDetail.setCompany(company);
+			userDetail.setDepartment(department);
+			userDetail.setUserByManagerId(manager);
+			userDetail.setUserByUserId(user);
+			userDetail.setEmpNo((String) params.get("empNo"));
+			userDetail.setJobTitle((String) params.get("jobTitle"));
+			userDetail.setWorkAddress((String) params.get("workAddress"));
+			if (opName.equalsIgnoreCase("post")) { // 新增
+				userDetail.setCreateDate(new Date());
+				userDetail.setCreateUser(userService.getCurrentUser().getId());				
+			}
+			if (opName.equalsIgnoreCase("put")) { // 更新
+				userDetail.setUpdateDate(new Date());
+				userDetail.setUpdateUser(userService.getCurrentUser().getId());				
+			}
+			UserDetails newEntity = userDetailsRepo.save(userDetail);
+			location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newEntity.getId()).toUri();
+			
+		} catch (DataIntegrityViolationException e) {
+			e.printStackTrace();
+			return new ResponseEntity(br.getFieldErrors(),HttpStatus.CONFLICT);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity(br.getAllErrors(), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity(ResponseEntity.created(location).build(),HttpStatus.OK);
+	}
 	
 	public Map<String,Object> getDeptsAndUsersHierarchy(Department department){
 		Map<String,Object> depts = new HashMap<String,Object>();

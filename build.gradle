@@ -5,7 +5,8 @@ buildscript {
 		findbugsVersion='3.0.1'
 		bootstrapVersion = '3.3.7'
 		jqueryVersion = '3.3.1'
-		vueVersion ='2.5.13'
+		vueVersion ='2.6.10'
+		axiosVersion = '0.18.0'
 		fontawesomeVersion = '5.2.0'
 		jspapiVersion = '2.3.3'
 		gsonVersion = '2.8.5'
@@ -75,7 +76,8 @@ dependencies {
 	compile("com.google.code.findbugs:findbugs:${findbugsVersion}")
 	compile("org.webjars:bootstrap:${bootstrapVersion}")
 	compile("org.webjars:jquery:${jqueryVersion}")
-	compile("org.webjars:vue:${vueVersion}")
+	compile("org.webjars.npm:vue:${vueVersion}")
+	compile("org.webjars.bowergithub.axios:axios:${axiosVersion}")
 	compile("org.webjars:font-awesome:${fontawesomeVersion}")
 	compile("com.google.code.gson:gson:${gsonVersion}")
 	compile("org.webjars.bowergithub.lipis:flag-icon-css:3.1.0")

@@ -241,7 +241,7 @@ $("#userProfileAjaxForm").submit(function(event){
     var request_method = $(this).attr("method"); //get form GET/POST method
     noteValue = CKEDITOR.instances['userProfileAjaxNote'].getData();
     $('#userProfileAjaxForm textarea[name="note"] ').val(noteValue);
-    var form_data = JSON.stringify( $(this).serializeObject() ); //$(this).serialize(); //Encode form elements for submission
+    var form_data = JSON.stringify( $(this).serializeObject() ); <#-- Encode form elements for submission, this methos write in html-begin.ftl -->
    
     $.ajax({
         url : post_url,

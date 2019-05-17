@@ -11,6 +11,8 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <#-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="/AdminLTE2/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <#-- vuelidate css -->
+  <link rel="stylesheet" href="/js/vuelidate/docs/vuelidate.css">
   <#-- Font Awesome -->
   <link rel="stylesheet" href="/webjars/font-awesome/5.2.0/css/all.css"> 
   <link rel="stylesheet" href="/AdminLTE2/bower_components/font-awesome/css/font-awesome.min.css">  
@@ -39,8 +41,6 @@
   <link rel="stylesheet" href="/AdminLTE2/dist/css/skins/_all-skins.min.css">
   <#-- jquery-ui style -->
   <link rel="stylesheet" href="/AdminLTE2/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
-
-  
   
   <link rel="stylesheet" href="/js/jquery-confirm/jquery-confirm.min.css">
   <link rel="stylesheet" href="/js/jquery-fancybox/jquery.fancybox.min.css">
@@ -54,6 +54,9 @@
 
 <#-- jQuery 3 -->
 <script src="/AdminLTE2/bower_components/jquery/dist/jquery.min.js"></script>
+<#-- Bootstrap 3.3.7 -->
+<script src="/AdminLTE2/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
 <#-- DataTables -->
 <script src="/AdminLTE2/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="/AdminLTE2/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
@@ -68,10 +71,6 @@
 <#-- use jquery-ui drag function to drag Modal  -->
 <script src="/AdminLTE2/bower_components/jquery-ui/jquery-ui.js"></script>
 
-<#-- Bootstrap 3.3.7 -->
-<script src="/AdminLTE2/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<#-- VUE JS -->
-<script src="/webjars/vue/2.5.13/vue.min.js"></script>
 <#-- Select2 -->
 <script src="/AdminLTE2/bower_components/select2/dist/js/select2.full.min.js"></script>
 <#-- FastClick -->
@@ -115,12 +114,52 @@
 <script src="/js/jquery-confirm/jquery-confirm.min.js"></script>
 <script src="/js/jquery-fancybox/jquery.fancybox.min.js"></script>
 <script src="/js/jquery-redirect/jquery.redirect.js"></script>
+
+<#-- VUE JS -->
+<script src="/webjars/vue/2.6.10/dist/vue.js"></script>
+<#-- AXIOS JS -->
+<script src="/webjars/axios/dist/axios.min.js"></script>
+<#-- validation for VUE JS -->
+<script src="/js/vuelidate/dist/vuelidate.min.js"></script>
+<script src="/js/vuelidate/dist/validators.min.js"></script> 
 <@security.authorize access="isAuthenticated()">
 <script src="/js/jwt-decode/jwt-decode.min.js"></script>
 <script src="/js/jwt-client.js"></script>
 </@security.authorize>
 
 <script>
+
+	<#-- Global filters -->   
+	Vue.filter('formatDate', function(value) {
+		  if (value) {
+		    return moment(String(value)).format('YYYY/MM/DD Z')
+		  }
+	});
+	Vue.filter('imgSrc', function(value) {	
+		  if (value) {
+		    return '/auth/showphoto/AVATAR_FOLDER/'+value;
+		  }
+	});
+	<#-- global validation for Vue -->
+	Vue.use(window.vuelidate.default)
+	const { required, minLength,between } = window.validators
+	<#-- serialize Form into an object, data = JSON.stringify( $('#myForm').serializeObject() ); -->  
+	$.fn.serializeObject = function(){
+	    var o = {};
+	    var a = this.serializeArray();
+	    $.each(a, function() {
+	        if (o[this.name] !== undefined) {
+	            if (!o[this.name].push) {
+	                o[this.name] = [o[this.name]];
+	            }
+	            o[this.name].push(this.value || '');
+	        } else {
+	            o[this.name] = this.value || '';
+	        }
+	    });
+	    return o;
+	};
+
 $(document).ready(function() {
     
 	<#-- use jquery-ui drag function to drag Modal  -->
@@ -134,35 +173,8 @@ $(document).ready(function() {
 	            bolditalics: 'kaiu.ttf'
 	        }
 	    };
-	
-	<#-- Global filters -->   
-	Vue.filter('formatDate', function(value) {
-		  if (value) {
-		    return moment(String(value)).format('YYYY/MM/DD Z')
-		  }
-	});
-	Vue.filter('imgSrc', function(value) {	
-		  if (value) {
-		    return '/auth/showphoto/AVATAR_FOLDER/'+value;
-		  }
-	});
-})
-<#-- serialize Form into an object, data = JSON.stringify( $('#myForm').serializeObject() ); -->  
-$.fn.serializeObject = function(){
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
+		
+});
 
 </script>    
   <!-- Google Font -->

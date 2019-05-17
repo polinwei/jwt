@@ -130,12 +130,16 @@
 <!-- /.modal -->
 
 <script type="text/javascript">
+$(document).ready(function () {
 	$('.date').datepicker({format: 'yyyy/mm/dd',clearBtn: true,todayHighlight: true,});
 	$('.date').datepicker({format: 'yyyy/mm/dd',clearBtn: true,todayHighlight: true,});
 	$('.date').inputmask('yyyy/mm/dd');
 	$('.date').inputmask('yyyy/mm/dd');
 	$('[data-mask]').inputmask();
-
+	
+	var rowdataCompany = $("#companyGrid").jqxGrid('getrowdata', rowidCompany);
+	dt_tableDepartmentManagerList.ajax.url( '/auth/org/departmentsByCompany/'+ rowdataCompany['id']).load();
+})
 	//表單以 Ajax 方式執行 CRUD 
 	$("#departmentAjaxForm").submit(function(event){	
 	    event.preventDefault(); //prevent default action
@@ -154,7 +158,7 @@
 	        $('#departmentAjaxForm input[name="endDate"] ').val(moment(d).format("YYYY-MM-DDTHH:mm:ssZZ"));
 	    }
 
-	    var form_data = JSON.stringify( $(this).serializeObject() ); //$(this).serialize(); //Encode form elements for submission
+	    var form_data = JSON.stringify( $(this).serializeObject() ); <#-- Encode form elements for submission, this methos write in html-begin.ftl -->
 	    
 	    $.ajax({
 	        url : post_url,

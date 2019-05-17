@@ -57,12 +57,20 @@ public class UserService {
 		return jwtUser;
 	}
 	
+	/**
+	 * 取得登入後, session 中目前的帳號資訊
+	 * @return
+	 */
 	public User getCurrentUser() {
 		Optional<User> user = userRepo.findById(getCurrentJwtUser().getId());
 		return user.get();
 		
 	}
-	
+	/**
+	 * 取得登入系統的帳號資訊
+	 * @param id
+	 * @return
+	 */
 	public User getUserByUid(Long id) {
 		Optional<User> user = userRepo.findById(id);
 		return user.get();

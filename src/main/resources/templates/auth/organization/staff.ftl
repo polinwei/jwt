@@ -78,12 +78,15 @@ table.dataTable tr.selected {
               <div class="active tab-pane" id="tab_userDetails">
 
 				<!-- ajax-form id="authorityAjaxForm" -->
-				<form id="userDetailAjaxForm" action="/auth/org/user" method="post" autocomplete = "off">				
+				<form id="userDetailAjaxForm" action="/auth/org/userDetail" method="post" autocomplete = "off" @submit.prevent="submitForm">				
 				  <input type="hidden" id="companyId" name="company_id" >
-				  <input type="hidden" id="departId" name="depart_id" >
-				  <input type="hidden" id="userManagerId" name="userManager_id" v-model="userByManagerId.id" >		  
-				  <input type="hidden" id="uerId" name="user_id" v-model="userByUserId.id">
-				  <input type="hidden" id="opName" name="opName" >
+				  <input type="hidden" id="department_id" name="department_id" v-model="form_data.department_id">
+				  <input type="hidden" id="manager_id" name="manager_id" v-model="form_data.manager_id" >		  
+				  <input type="hidden" id="user_id" name="user_id" v-model="form_data.user_id">
+				  <input type="hidden" id="userDetailId" name="id" v-model="form_data.id">
+				  <div class="row"><div class="col-md-6"><label for="opName"> mode:</label>
+				  	<input type="text" class="form-control" id="opName" name="opName" readonly>
+				  </div></div>
 				  <div class="box box-danger">
 					<!-- /.box-header -->
 					<div class="box-body">
@@ -95,7 +98,7 @@ table.dataTable tr.selected {
 							  	fileName="tags/lovTag.ftl"				  	
 							  	lovTableId="tblUserAccountList"
 							  	dtAjaxUrl="/auth/security/users"
-							  	paramsStr="{'isSelect':true}"
+							  	paramsStr="{'isSelect':true,'isVue':true,'VueElVar':'vueUserDetailAjaxForm','VueDataName':'form_data'}"
 							  	columnsStr="[{'th':'id','data':'id','visible': 'false','type':'hidden'},
 								     {'th':'label.username','data':'username','type':'text'},
 						             {'th':'program.userController.firstName','data':'firstname','type':'text'},
@@ -103,23 +106,23 @@ table.dataTable tr.selected {
 						             {'th':'program.common.avatar','data':'avatar','type':'image'}]"
 							  	inputStr="{'inputName':'username', 'inputLabel':'label.username' }"
 							  	returnStr="[{'jsonKey':'username','targetId':'id_username'},
-							  		        {'jsonKey':'id','targetId':'uerId'},
-							  		        {'jsonKey':'firstname','targetId':'user-firstName'},
-							  		        {'jsonKey':'lastname','targetId':'user-lastName'}]"
+							  		        {'jsonKey':'id','targetId':'user_id'},
+							  		        {'jsonKey':'firstname','targetId':'firstname'},
+							  		        {'jsonKey':'lastname','targetId':'lastname'}]"
 						    />
 
 						</div><!-- /.col -->
 						<div class="col-md-3">
 						  <div class="form-group">
 						    <label for="user-firstName"><@spring.message "program.userController.firstName" /></label>
-						  	<input type="text" class="form-control" id="user-firstName" v-model="userByUserId.firstname" readonly>						  	          
+						  	<input type="text" class="form-control" id="firstname" v-model="form_data.firstname" readonly required>						  	          
 						  </div>
 						  <!-- /.form-group -->
 						</div><!-- /.col -->
 						<div class="col-md-3">
 						  <div class="form-group">
 						    <label for="user-firstName"><@spring.message "program.userController.lastName" /></label>						  	
-						  	<input type="text" class="form-control" id="user-lastName" v-model="userByUserId.lastname" readonly>                 
+						  	<input type="text" class="form-control" id="lastname" v-model="form_data.firstname" readonly>                 
 						  </div>
 						  <!-- /.form-group -->
 						</div><!-- /.col -->
@@ -129,7 +132,7 @@ table.dataTable tr.selected {
 						<div class="col-md-6">
 						  <div class="form-group">                
 							<label for="empNo"><@spring.message "program.userDetailsController.empNo" /></label>
-							<input type="text" class="form-control" id="empNo" placeholder="<@spring.message "program.userDetailsController.empNo" />" name="empNo" required>             
+							<input type="text" class="form-control" id="empNo" placeholder="<@spring.message "program.userDetailsController.empNo" />" name="empNo" v-model="form_data.emp_no" required>             
 						  </div>
 						  <!-- /.form-group -->
 						</div><!-- /.col -->					  
@@ -138,14 +141,14 @@ table.dataTable tr.selected {
 							  	fileName="tags/lovTag.ftl"				  	
 							  	lovTableId="tblDepartmentList"
 							  	dtAjaxUrl="/auth/org/departments"
-							  	paramsStr="{'isSelect':true}"
+							  	paramsStr="{'isSelect':true,'isVue':true,'VueElVar':'vueUserDetailAjaxForm'}"
 							  	columnsStr="[{'th':'id','data':'id','visible': 'false','type':'hidden'},
 								     {'th':'program.departmentController.departmentName','data':'name','type':'text'},
 						             {'th':'program.departmentController.departmentNameEng','data':'nameEng','type':'text'},
 						             {'th':'program.common.costCenter','data':'costCenter','type':'text'}]"
-							  	inputStr="{'inputName':'departmentName', 'inputLabel':'program.departmentController.departmentName' }"
-							  	returnStr="[{'jsonKey':'name','targetId':'id_departmentName'},
-							  		 {'jsonKey':'id','targetId':'departId'}]"
+							  	inputStr="{'inputName':'department_name', 'inputLabel':'program.departmentController.departmentName' }"
+							  	returnStr="[{'jsonKey':'name','targetId':'id_department_name'},
+							  		 {'jsonKey':'id','targetId':'department_id'}]"
 						    />	
 						</div>				
 					  </div><!-- /.row -->						  
@@ -156,24 +159,42 @@ table.dataTable tr.selected {
 						  	fileName="tags/lovTag.ftl"				  	
 						  	lovTableId="tblDepartmentManagerList"
 						  	dtAjaxUrl="/auth/security/users"
-						  	paramsStr="{'isSelect':true}"
+						  	paramsStr="{'isSelect':true,'isVue':true,'VueElVar':'vueUserDetailAjaxForm'}"
 						  	columnsStr="[{'th':'id','data':'id','visible': 'false','type':'hidden'},
 							     {'th':'label.username','data':'username','type':'text'},
 					             {'th':'program.userController.fullName','data':'id','type':'text','render':'row.firstname+row.lastname'},
 					             {'th':'program.common.avatar','data':'avatar','type':'image'}]"
-						  	inputStr="{'inputName':'userManagerName', 'inputLabel':'program.userDetailsController.userManager' }"
-						  	returnStr="[{'jsonKey':'avatar','targetId':'userManagerAvatar', 'type':'image','imageType':'AVATAR_FOLDER' },
-						  		 {'jsonKey':'username','targetId':'id_userManagerName'},
-						  		 {'jsonKey':'id','targetId':'userManagerId'} ]"
+						  	inputStr="{'inputName':'manager_username', 'inputLabel':'program.userDetailsController.userManager' }"
+						  	returnStr="[{'jsonKey':'avatar','targetId':'manager_avatar', 'type':'image','imageType':'AVATAR_FOLDER' },
+						  		 {'jsonKey':'username','targetId':'id_manager_username'},
+						  		 {'jsonKey':'id','targetId':'manager_id'} ]"
 						  />
 						</div>
 						<div class="col-md-6">
-						  <div class="form-group">
-						    <span v-if="userByManagerId.avatar!=null"> </span>            
-								<div class="attachment-block clearfix"><img height="48" width="48" id="userManagerAvatar" class="attachment-img" v-bind:src="userByManagerId.avatar|imgSrc" alt="User Avatar" class="margin" /> </div>
+						  <div class="form-group">						            
+								<div class="attachment-block clearfix"><img height="48" width="48" id="manager_avatar" class="attachment-img" v-bind:src="form_data.manager_avatar|imgSrc" alt="User Avatar" class="margin" /> </div>
 						  </div>
 						  <!-- /.form-group -->
 						</div><!-- /.col -->				
+					  </div><!-- /.row -->
+
+					  <div class="row">
+						<div class="col-md-6">						 
+						  <div class="form-group" :class="{ 'form-group--error': $v.form_data.job_title.$error }">
+						    <label for="jobTitle"><@spring.message "program.userDetailsController.jobTitle" /></label>
+						  	<input type="text" class="form-control form__input" name="jobTitle" v-model.trim="$v.form_data.job_title.$model" >
+						  </div>
+						  <div class="error" v-if="!$v.form_data.job_title.required">Field is required</div>
+			  			  <div class="error" v-if="!$v.form_data.job_title.minLength">Name must have at least {{$v.form_data.job_title.$params.minLength.min}} letters.</div>						  						  	          
+						  <!-- /.form-group -->
+						</div><!-- /.col -->
+						<div class="col-md-6">
+						  <div class="form-group">
+						    <label for="workAddress"><@spring.message "program.userDetailsController.workAddress" /></label>						  	
+						  	<input type="text" class="form-control" name="workAddress" v-model="form_data.work_address" required>                 
+						  </div>
+						  <!-- /.form-group -->
+						</div><!-- /.col -->
 					  </div><!-- /.row -->
 					  
 					  <div class="row">
@@ -184,7 +205,7 @@ table.dataTable tr.selected {
 			                  <div class="input-group-addon">
 			                    <i class="fa fa-calendar"></i>
 			                  </div>
-			              	  <input type="text" class="form-control date" name="hireDate" data-date-format="yyyy/mm/dd" data-mask>
+			              	  <input type="text" class="form-control date" name="hireDate" v-model="form_data.hire_date" data-date-format="yyyy/mm/dd" data-mask required>
 			              	</div>
 			              </div><!-- /.form-group -->
 			            </div><!-- /.col -->
@@ -195,7 +216,7 @@ table.dataTable tr.selected {
 			                  <div class="input-group-addon">
 			                    <i class="fa fa-calendar"></i>
 			                  </div>
-			                  <input type="text" class="form-control date" name="resignationDate" data-date-format="yyyy/mm/dd" data-mask>
+			                  <input type="text" class="form-control date" name="resignationDate" v-model="form_data.resignation_date" data-date-format="yyyy/mm/dd" data-mask>
 			                </div>
 			              </div><!-- /.form-group -->
 			            </div><!-- /.col -->			            
@@ -204,11 +225,15 @@ table.dataTable tr.selected {
 					  <div class="box-footer">
 					  <div class="row">
 						  <div class="col-xs-12">
-							  <button type="submit" class="btn btn-primary btnAdd"><@spring.message "label.submit"/></button>
-							  <button type="reset" class="btn btn-danger"><@spring.message "label.reset"/></button>
-							  <button type="button" class="btn bg-yellow" data-dismiss="modal">Close</button>
+							  <button type="submit" class="btn btn-primary btnAdd" :disabled="submitStatus === 'PENDING'"><@spring.message "label.submit"/></button>
+							  <button type="reset" class="btn btn-danger" @click.prevent="resetForm"><@spring.message "label.reset"/></button>							  
 						  </div>          
 					  </div> <!-- /.row -->
+					  <div class="row">
+						<p class="typo__p" v-if="submitStatus === 'OK'">Thanks for your submission!</p>
+						<p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
+						<p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
+					  </div>
 					  </div>
 					</div><!-- /.box-body -->
 				  </div><!-- /.box -->				  
@@ -374,7 +399,8 @@ table.dataTable tr.selected {
         </div>
         <!-- /.col -->
       </div>
-      <!-- /.row -->
+      <!-- /.row -->      
+     
 <script type="text/javascript">
 
 $(document).ready( function () {
@@ -385,10 +411,59 @@ $(document).ready( function () {
 	$('.date').inputmask('yyyy/mm/dd');
 	$('[data-mask]').inputmask();
 	
+	$('.date').datepicker().on('changeDate', function(e) {
+	    // `e` here contains the extra attributes
+	    console.log(e);
+	    
+	    if (this.name){	    	    	
+	    	vueUserDetailAjaxForm.form_data.hire_date = e.date;	    	
+	    }
+	});
+	
 	//To pre-select the first row
-    //$('#tblCompanies tbody tr:eq(0)').click(); // 速度太快時,這會讓 table顯示兩筆相同資料 
-	$('#tblCompanies tbody tr:eq(0)').addClass('selected');
+    $('#tblCompanies tbody tr:eq(0)').click(); 
+	//$('#tblCompanies tbody tr:eq(0)').addClass('selected');
+
 });
+
+var vueUserDetailAjaxForm = new Vue({
+	el: '#userDetailAjaxForm',
+	data: {
+		form_data:{
+			job_title:'',
+		},		  
+	},
+	validations:{
+		form_data:{
+			job_title:{
+				required,
+		        minLength: minLength(4)
+			}
+		},
+	},
+	methods: {
+		resetForm() {
+			this.form_data = {
+					job_title:'',
+			};
+		},		
+		submitForm: function(e) {
+		    console.log({ form_data: this.form_data });		    
+		    console.log('submit!')
+			this.$v.$touch()
+			if (this.$v.$invalid) {
+			  this.submitStatus = 'ERROR'
+			} else {
+			  // do your submit logic here
+			  this.submitStatus = 'PENDING'
+			  setTimeout(() => {
+			    this.submitStatus = 'OK'
+			  }, 500)
+			}
+		},		  
+	},
+});
+
 
 var tblCompanies = $('#tblCompanies').DataTable({
 	language: {
@@ -423,16 +498,16 @@ var tblCompanyUsers = $('#tblCompanyUsers').DataTable({
     	"url": "/AdminLTE2/bower_components/datatables.net/i18n/${.locale}.json"
     },
     ajax: {
- 		url:"/auth/org/usersByCompany/1",dataSrc:"",
+ 		url:"/auth/org/usersByCompanyNativeQuery/0",dataSrc:"",
  		headers: jwtClient.setAuthorizationTokenHeader(),
  		async: false
 	},
  	columns: [
 		{ data: "id", visible: false },
-		{ data: "empNo"  },
-		{ data: "userByUserId.username" },
+		{ data: "emp_no"  },
+		{ data: "username" },
 		{ data: "id", render: function(data, type, row, meta) {					
-	            return row.userByUserId.firstname+" "+row.userByUserId.lastname;
+	            return row.firstname+" "+row.lastname;
 	       	}
 		 },
 	],
@@ -444,27 +519,14 @@ var tblCompanyUsers = $('#tblCompanyUsers').DataTable({
 		     text: 'Add User',
 		     className: "btn btn-xs btn-primary",
 		     action: function ( e, dt, node, config ) {            	   
-		    	 $("#userDetailAjaxForm")[0].reset();
-		    	 vueUserDetailAjaxForm ={};
-		    	 vueUserDetailAjaxForm.userByUserId = {};
-		    	 vueUserDetailAjaxForm.userByManagerId = {};
+		    	 //$("#userDetailAjaxForm")[0].reset();
+		    	 $("#opName").val('post');
+		    	 <#-- reset form 內的資料 -->	
+		    	 vueUserDetailAjaxForm.resetForm();
 		     }
 		 }            
  	]
 }); 	
-
-var vueUserDetailAjaxForm = new Vue({
-	  el: '#userDetailAjaxForm',
-	  data: {
-		  username:'',
-		  firstName:'',
-		  lastName:'',
-		  departmentName:'',
-		  userManagerName:'',
-		  userByUserId:{},
-		  userByManagerId:{}
-	  }
-});
 
 $('#tblCompanies tbody').on('click', 'tr', function (){
 	   
@@ -472,10 +534,13 @@ $('#tblCompanies tbody').on('click', 'tr', function (){
 	var data =  $('#tblCompanies').DataTable().row($row).data();
 	var url = $(this).attr('data-url');	
 	
+	<#-- reset form 內的資料 -->	
+	vueUserDetailAjaxForm.resetForm();
 	<#-- refresh datatable 內的資料 -->	
-	tblCompanyUsers.ajax.url( '/auth/org/usersByCompany/'+data['id']).load();
-	//公司id
+	tblCompanyUsers.ajax.url( '/auth/org/usersByCompanyNativeQuery/'+data['id']).load();
+	//公司id	
 	$("#companyId").val(data['id']);
+	$("#opName").val('put');
 	
 	//console.log('data', data);
 	//console.log('Record ID is', data['id']);
@@ -495,8 +560,6 @@ $('#tblCompanyUsers tbody').on('click', 'tr', function (){
 	var data =  $('#tblCompanyUsers').DataTable().row($row).data();
 	var url = $(this).attr('data-url');
 	
-	console.log('data', data);
-	//console.log('Record ID is', data['id']);
 	if ( $(this).hasClass('selected') ) {
         $(this).removeClass('selected');
     }
@@ -505,24 +568,40 @@ $('#tblCompanyUsers tbody').on('click', 'tr', function (){
         $(this).addClass('selected');
     }
 	
-	if (data.userByUserId) {
-		vueUserDetailAjaxForm.userByUserId = data.userByUserId;
-		vueUserDetailAjaxForm.username = vueUserDetailAjaxForm.userByUserId.username;
-	} else {
-		vueUserDetailAjaxForm.userByUserId = {};
-		vueUserDetailAjaxForm.username = "";
-	}		
-	if (data.userByManagerId) {
-		vueUserDetailAjaxForm.userByManagerId = data.userByManagerId;
-	} else {
-		vueUserDetailAjaxForm.userByManagerId = {};
-	}
+	vueUserDetailAjaxForm.form_data = data;
+
+	$("#opName").val('put');
 	
-	$.each( data, function( key, value ) {			
-		$('#userDetailAjaxForm input[name="'+key+'"] ').val(value);			
-	});
+	//console.log('data', data);	
+	//console.log('Record ID is', data['id']);
+	//$.each( data, function( key, value ) {			
+	//	$('#userDetailAjaxForm input[name="'+key+'"] ').val(value);			
+	//});
 
 });
+
+
+//表單以 Ajax 方式執行 CRUD 
+$("#userDetailAjaxForm").submit(function(event){
+	event.preventDefault(); //prevent default action
+	var post_url = $(this).attr("action"); //get form action url
+	var request_method = $(this).attr("method"); //get form GET/POST method
+	var form_data = JSON.stringify( $(this).serializeObject() ); <#-- Encode form elements for submission, this methos write in html-begin.ftl -->
+	
+	$.ajax({
+		url : post_url,
+        type: request_method,
+        contentType: "application/json; charset=utf-8",
+        data : form_data,
+        headers:jwtClient.setAuthorizationTokenHeader(),
+		success:function(data, textStatus, jqXHR){//返回json结果
+			
+		}
+	});
+	
+});
+
+
 </script>
       
                   

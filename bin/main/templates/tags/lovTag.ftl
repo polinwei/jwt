@@ -8,7 +8,15 @@
 	<label for="id_${inputName}">${springMacroRequestContext.getMessage(inputLabel)}</label>
 	<div class="input-group">
 	<#-- 欄位不作提示 placeholder="${springMacroRequestContext.getMessage(inputLabel)}"-->
-    <input type="text" class="form-control" id="id_${inputName}"  name="${inputName}" v-model="${inputName}" required readonly>
+	<#if isVue!false>
+		<#if VueDataName?has_content >
+    		<input type="text" class="form-control" id="id_${inputName}" name="${inputName}" v-model="${VueDataName}.${inputName}" required readonly>
+    	<#else>
+    	    <input type="text" class="form-control" id="id_${inputName}" name="${inputName}" v-model="form_data.${inputName}" required readonly> 
+    	</#if> 
+    <#else>
+    	<input type="text" class="form-control" id="id_${inputName}"  name="${inputName}" required readonly>
+    </#if>
         <span class="input-group-addon"><i class="fa fa-list" id="id_${inputName}_img" style="cursor: pointer;"></i></span>
     </div>
 </div><!-- /.form-group -->
@@ -61,7 +69,7 @@ $(document).ready( function () {
 	});
 	
 	
-	var dt${lovTableId} = $('#${lovTableId}').DataTable({
+	var dt_${lovTableId} = $('#${lovTableId}').DataTable({
 		language: {
 	        "url": "/AdminLTE2/bower_components/datatables.net/i18n/${.locale}.json"
 	    },
@@ -126,6 +134,13 @@ $(document).ready( function () {
 		<#list returnValues as returnValue>	
 			<#list returnValue as key , value>
 				$('#${returnValue.targetId}').val(data['${returnValue.jsonKey}']);
+				<#if VueElVar?has_content>
+					<#if VueDataName?has_content >
+				    	${VueElVar}.${VueDataName}.${returnValue.targetId} = data['${returnValue.jsonKey}'];
+				    <#else>
+						${VueElVar}.form_data.${returnValue.targetId} = data['${returnValue.jsonKey}'];
+					</#if>
+				</#if>
 				<#if key=='type' && value=='image'>
 					if (data['${returnValue.jsonKey}']){
 						$('#${returnValue.targetId}').attr('src', '/auth/showphoto/${returnValue.imageType}/'+data['${returnValue.jsonKey}']);	

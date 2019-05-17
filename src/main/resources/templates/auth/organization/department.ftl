@@ -18,7 +18,7 @@
 <script type="text/javascript">
 
 $(document).ready(function () {
-	
+
 	// prepare the data 
 	var dfsDepartment = [
     	{ name: 'id' },
@@ -154,8 +154,7 @@ $(document).ready(function () {
     		$("#departmentAjaxForm")[0].reset();
     		$('#departmentManagerAvatar').attr('src','');
     		$("#departmentAjaxForm input[name='company_id']").val(rowdataCompany['id']);
-    		$('#departmentAjaxForm input[name="opName"] ').val("post");
-    		dttableDepartmentList.ajax.url( '/auth/org/departmentsByCompany/'+ rowdataCompany['id']).load();    		
+    		$('#departmentAjaxForm input[name="opName"] ').val("post");    				
     		$('#modalDepartment').modal('show');    		
     	} else {
     		$.alert({
@@ -179,8 +178,7 @@ $(document).ready(function () {
     	var rowdataAllDept =  $("#departmentGrid").jqxGrid('getrows');
     	
     	$("#departmentAjaxForm")[0].reset();
-    	$("#departmentAjaxForm input[name='company_id']").val(rowdataCompany['id']);    	
-    	dttableDepartmentList.ajax.url( '/auth/org/departmentsByCompany/'+ rowdataCompany['id']).load();
+    	$("#departmentAjaxForm input[name='company_id']").val(rowdataCompany['id']);
     	$('#departmentAjaxForm input[name="opName"] ').val("put");    	
     	
     	$.each( rowdataDept, function( key, value ) {		
@@ -213,5 +211,5 @@ $(document).ready(function () {
     	
     });
     
-})
+})	
 </script>

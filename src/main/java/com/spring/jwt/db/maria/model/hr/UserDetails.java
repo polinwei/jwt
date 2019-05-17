@@ -15,7 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.jwt.db.maria.model.authentication.User;
 
 /**
@@ -80,7 +80,7 @@ public class UserDetails implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "company_id")
-	@JsonBackReference
+	@JsonIgnore
 	public Company getCompany() {
 		return this.company;
 	}
@@ -91,7 +91,7 @@ public class UserDetails implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "department_id")
-	@JsonBackReference
+	@JsonIgnore
 	public Department getDepartment() {
 		return this.department;
 	}
