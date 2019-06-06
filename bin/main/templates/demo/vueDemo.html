@@ -21,7 +21,6 @@
 	<!-- validation for VUE JS -->
 	<script src="/js/vuelidate/dist/vuelidate.min.js"></script>
 	<script src="/js/vuelidate/dist/validators.min.js"></script>
-
 </head>
 <body>
    <div class="container">
@@ -80,10 +79,19 @@
       </div><!-- /.container-fluid -->
     </nav>
 
+		<h3>This is Using Webjars in Spring Boot application</h3>
+        <div class="alert alert-success" role="alert"><b>Server Time is</b> <span th:text="${dateTime}"></span></div>
 
       <div class="jumbotron">
       	<div id="app">
-			<p>{{ message }}</p>			
+      	<form autocomplete = "off" @submit.prevent="submitForm">
+			<div class="col-md-6">{{ message }}</div>
+			<div class="col-md-6">
+				<label for="opName"> Status:</label>
+				<p class="typo__p" v-if="submitStatus === 'OK'">Thanks for your submission!</p>
+				<p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
+				<p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>						  
+			</div>		
 
 			<div>
 			  <div class="form-group" :class="{ 'form-group--error': $v.name.$error }">
@@ -91,14 +99,13 @@
 			    <input class="form__input" v-model.trim="$v.name.$model"/>
 			  </div>
 			  <div class="error" v-if="!$v.name.required">Field is required</div>
-			  <div class="error" v-if="!$v.name.minLength">Name must have at least {{$v.name.$params.minLength.min}} letters.</div>
-			  <tree-view :data="$v.name" :options="{rootObjectKey: '$v.name', maxDepth: 2}"></tree-view>
+			  <div class="error" v-if="!$v.name.minLength">Name must have at least {{$v.name.$params.minLength.min}} letters.</div>			  
 			  <div class="form-group" :class="{ 'form-group--error': $v.age.$error }">
 			    <label class="form__label">Age</label>
-			    <input class="form__input" v-model.trim.lazy="$v.age.$model"/>
+			    <input class="form__input" :value="age" @change="setAge($event.target.value)"/>
 			  </div>
 			  <div class="error" v-if="!$v.age.between">Must be between {{$v.age.$params.between.min}} and {{$v.age.$params.between.max}}</div><span tabindex="0">Blur to see changes</span>
-			  <tree-view :data="$v.age" :options="{rootObjectKey: '$v.age', maxDepth: 2}"></tree-view>
+			  
 			</div>
 			
 			<div class="form-group" :class="{ 'form-group--error': $v.form_data.job_title.$error }">
@@ -107,10 +114,11 @@
 			</div>			
 			<div class="error" v-if="!$v.form_data.job_title.required">Field is required</div>
 	 		<div class="error" v-if="!$v.form_data.job_title.minLength">Name must have at least {{$v.form_data.job_title.$params.minLength.min}} letters.</div>						  						  	          
-			
+			<button type="submit" class="btn btn-primary btnAdd" :disabled="submitStatus === 'PENDING'">submit</button>
+			<button type="reset" class="btn btn-danger" @click.prevent="resetForm">reset</button>
+		</form>	
 		</div>
-         <h1>This is Using Webjars in Spring Boot application</h1>
-         <div class="alert alert-success" role="alert"><b>Server Time is</b> <span th:text="${dateTime}"></span></div>
+         
       </div>
    </div>
    
@@ -122,13 +130,13 @@ const { required, minLength,between } = window.validators
 var app = new Vue({
 		el: '#app',
 		data: {
-		  message: 'Hello Vue! This is first program',
+		  message: 'Hello Vue! This is first program of Vue.js + vuelidate ',
 		  form_data:{
 			  job_title:'',
-		  },
-		  model: '',
+		  },		 
 		  name: '',
-	      age: 0
+	      age: 0,
+	      submitStatus: null
 		},
 		validations: {
 			form_data:{
@@ -137,10 +145,6 @@ var app = new Vue({
 			        minLength: minLength(4)
 				}
 			},
-			model: {
-		        required,
-		        minLength: minLength(4)
-		    },
 		    name: {
 		        required,
 		        minLength: minLength(4)
@@ -148,7 +152,33 @@ var app = new Vue({
 		    age: {
 		        between: between(20, 30)
 		    }
-		  }
+		  },
+		  methods: {
+			  resetForm() {					
+					this.form_data = {
+							job_title:''
+					};					
+					this.name='';
+					this.age=0;
+				},
+			setAge(value) {
+			      this.age = value
+			      this.$v.age.$touch()
+			    },
+			  submitForm() {
+			      console.log('submit!')
+			      this.$v.$touch()
+			      if (this.$v.$invalid) {
+			        this.submitStatus = 'ERROR'
+			      } else {
+			        // do your submit logic here
+			        this.submitStatus = 'PENDING'
+			        setTimeout(() => {
+			          this.submitStatus = 'OK'
+			        }, 500)
+			      }
+			    }
+			  }
 	})
 </script>   
 </body>

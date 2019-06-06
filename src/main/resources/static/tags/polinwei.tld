@@ -107,6 +107,24 @@
 		</attribute>
 	
 	</tag>
-
+	<tag>
+		<description>Input with autocomplete and LOV use Element UI</description>
+		<name>vueComboInput</name>
+		<tag-class>com.spring.jwt.tablibs.FtlLovTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description> Freemarker Template 的檔案  </description>
+			<name>fileName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description> Name of Input </description>
+			<name>inputName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	
+	</tag>
 
 </taglib>

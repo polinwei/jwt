@@ -19,4 +19,10 @@ public class VueController {
     	model.addAttribute("dateTime", LocalDateTime.now());
     	return "/demo/vueDemo";
     }
+	
+	@GetMapping("/element-ui")
+    public String formValidation(Model model) {
+    	
+    	return "/demo/vueElement";
+    }
 }

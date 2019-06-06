@@ -28,4 +28,36 @@ public interface UserDetailsRepository extends JpaRepository<UserDetails, Long> 
 			nativeQuery = true)
 	List<Map<String, Object>> findAllUsersByCompanyNativeQuery(@Param("CompanyId") Long CompanyId);
 	
+	
+	@Query(value = "SELECT u.id as uid, u.username, u.password, u.avatar, u.firstname, u.lastname, u.email, u.enabled, "
+			+ "u.active_date as activeDate, u.inactive_date as inactiveDate, "
+			+ "ud.id as userDetailId, ud.emp_no as empNo, ud.company_id as companyId, ud.department_id as departmentId, "
+			+ "ud.manager_id as userManagerId, ud.hire_date as hireDate, "
+			+ "ud.resignation_date as resignationDate, ud.job_title as jobTitle, ud.work_address as workAddress, "
+			+ "c.code as companyCode, c.name as companyName, d.name as departmentName, d.manager_id as deptManagerId "
+			+ "FROM user u , user_details ud, company c, department d "
+			+ "WHERE 1=1 "
+			+ "AND u.id = ud.user_id "
+			+ "AND ud.company_id = c.id "
+			+ "AND ud.department_id =d.id "
+			+ "AND u.id = :userId "
+			+ "AND ud.id = :userDetailId", 
+			nativeQuery = true)
+	Map<String, Object> findUserInfoByUserIdAndUserDetailId(@Param("userId") Long userId, @Param("userDetailId") Long userDetailId);
+	
+	@Query(value = "SELECT u.id as uid, u.username, u.password, u.avatar, u.firstname, u.lastname, u.email, u.enabled, "
+			+ "u.active_date as activeDate, u.inactive_date as inactiveDate, "
+			+ "ud.id as userDetailId, ud.emp_no as empNo, ud.company_id as companyId, ud.department_id as departmentId, "
+			+ "ud.manager_id as userManagerId, ud.hire_date as hireDate, "
+			+ "ud.resignation_date as resignationDate, ud.job_title as jobTitle, ud.work_address as workAddress, "
+			+ "c.code as companyCode, c.name as companyName, d.name as departmentName, d.manager_id as deptManagerId "
+			+ "FROM user u , user_details ud, company c, department d "
+			+ "WHERE 1=1 "
+			+ "AND u.id = ud.user_id "
+			+ "AND ud.company_id = c.id "
+			+ "AND ud.department_id =d.id ", 
+			nativeQuery = true)
+	List<Map<String, Object>> findAllUserInfo();
+	
+	
 }

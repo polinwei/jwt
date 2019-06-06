@@ -95,6 +95,76 @@ public class OrganizationRestController {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	/**
+	 *  查詢所有部門資料
+	 * @return
+	 */
+	@GetMapping("departments")
+	public List<Department> getAllDepartment(){	
+		userService.changeToCurrentUserTimeZone();
+		return departmentRepo.findAll();
+	}	
+	
+	/**
+	 *  查詢公司的所有部門資料
+	 * @return
+	 */
+	@GetMapping("departmentsByCompany/{companyId}")
+	public List<Department> getCompanyAllDepartment(@PathVariable long companyId){
+		List<Department> departmentsByCompany = new ArrayList<>();
+		userService.changeToCurrentUserTimeZone();
+		Company company = companyRepo.findById(companyId).get();
+		departmentsByCompany = departmentRepo.findAllDepartmentsByCompany(company);
+		return 	departmentsByCompany;
+	}
+
+
+	/**
+	 * 查公司的所有人員-利用 Native Query
+	 * @param companyId
+	 * @return
+	 */
+	@GetMapping("usersByCompanyNativeQuery/{companyId}")
+	public List<Map<String, Object>> getCompanyAllUserDetails(@PathVariable long companyId){
+				
+		return 	userService.findAllUsersByCompanyNativeQuery(companyId);
+	}
+	
+	/**
+	 * 查公司的所有人員
+	 * @param companyId
+	 * @return
+	 */
+	@GetMapping("usersByCompany/{companyId}")
+	public List<UserDetails> getCompanyAllUser(@PathVariable long companyId){
+		List<UserDetails> usersByCompany = new ArrayList<>();		
+		Company company = companyRepo.findById(companyId).get();
+		usersByCompany = userDetailsRepo.findAllUsersByCompany(company);		
+		return 	usersByCompany;
+	}	
+	
+	/**
+	 * 取得一筆部門資料
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("department/{id}")
+	public ResponseEntity<?> getDepartment(@PathVariable Long id){
+		userService.changeToCurrentUserTimeZone();
+		Optional<Department> department = departmentRepo.findById(id);
+		if (department.isPresent()) {
+			return new ResponseEntity<Department>(department.get(),HttpStatus.OK);
+		} else {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+	}	
+	
+	@GetMapping("allUserInfo")
+	public List<Map<String, Object>> findAllUserInfo(){
+		return userService.findAllUserInfo();
+	}
+	
 	/**
 	 * 新增公司
 	 * @param company
@@ -171,50 +241,6 @@ public class OrganizationRestController {
 		companyRepo.deleteById(id);
 	}
 	
-	/**
-	 *  查詢所有部門資料
-	 * @return
-	 */
-	@GetMapping("departments")
-	public List<Department> getAllDepartment(){	
-		userService.changeToCurrentUserTimeZone();
-		return departmentRepo.findAll();
-	}
-	
-	/**
-	 *  查詢公司的所有部門資料
-	 * @return
-	 */
-	@GetMapping("departmentsByCompany/{companyId}")
-	public List<Department> getCompanyAllDepartment(@PathVariable long companyId){
-		List<Department> departmentsByCompany = new ArrayList<>();
-		userService.changeToCurrentUserTimeZone();
-		Company company = companyRepo.findById(companyId).get();
-		departmentsByCompany = departmentRepo.findAllDepartmentsByCompany(company);
-		return 	departmentsByCompany;
-	}
-	/**
-	 * 查公司的所有人員
-	 * @param companyId
-	 * @return
-	 */
-	@GetMapping("usersByCompany/{companyId}")
-	public List<UserDetails> getCompanyAllUser(@PathVariable long companyId){
-		List<UserDetails> usersByCompany = new ArrayList<>();		
-		Company company = companyRepo.findById(companyId).get();
-		usersByCompany = userDetailsRepo.findAllUsersByCompany(company);		
-		return 	usersByCompany;
-	}
-	/**
-	 * 查公司的所有人員-利用 Native Query
-	 * @param companyId
-	 * @return
-	 */
-	@GetMapping("usersByCompanyNativeQuery/{companyId}")
-	public List<Map<String, Object>> getCompanyAllUserDetails(@PathVariable long companyId){
-				
-		return 	userService.findAllUsersByCompanyNativeQuery(companyId);
-	}
 	
 	/**
 	 *  查詢公司的所有資料回傳給前端 jqxTree 使用
@@ -239,21 +265,7 @@ public class OrganizationRestController {
 		return 	orgHierarchy;
 	}
 	
-	/**
-	 * 取得一筆部門資料
-	 * @param id
-	 * @return
-	 */
-	@GetMapping("department/{id}")
-	public ResponseEntity<?> getDepartment(@PathVariable Long id){
-		userService.changeToCurrentUserTimeZone();
-		Optional<Department> department = departmentRepo.findById(id);
-		if (department.isPresent()) {
-			return new ResponseEntity<Department>(department.get(),HttpStatus.OK);
-		} else {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
-		}
-	}
+
 	
 	/**
 	 * 新增/更新部門
@@ -388,6 +400,8 @@ public class OrganizationRestController {
 			userDetail.setEmpNo((String) params.get("empNo"));
 			userDetail.setJobTitle((String) params.get("jobTitle"));
 			userDetail.setWorkAddress((String) params.get("workAddress"));
+			userDetail.setHireDate( (Date) params.get("hireDate"));
+			userDetail.setResignationDate((Date) params.get("resignationDate"));
 			if (opName.equalsIgnoreCase("post")) { // 新增
 				userDetail.setCreateDate(new Date());
 				userDetail.setCreateUser(userService.getCurrentUser().getId());				

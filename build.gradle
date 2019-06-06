@@ -66,6 +66,7 @@ dependencies {
 	compile("org.springframework.security:spring-security-taglibs")
 	compile("org.springframework.boot:spring-boot-devtools") // Class 程式有更改時, 自動重啟
 	compile("org.hibernate.validator:hibernate-validator") //驗證
+	compile("org.webjars.npm:element-ui:2.8.2")
 	compile("javax.servlet.jsp:javax.servlet.jsp-api:${jspapiVersion}")
 	compile("org.springframework.session:spring-session-data-redis")
 	compile("org.springframework.boot:spring-boot-starter-data-redis")

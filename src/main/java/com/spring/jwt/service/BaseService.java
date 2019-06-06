@@ -107,5 +107,16 @@ public class BaseService {
 		}		
 		return date;		
 	}
+	/**
+	 * 將 BigInteger 的 Object 類型轉換成 Long
+	 * @param o
+	 * @return
+	 */
+	public Long ObjectConvertToLong(Object o){
+        String stringToConvert = String.valueOf(o);
+        Long convertedLong = Long.parseLong(stringToConvert);
+        return convertedLong;
+
+    }
 	
 }

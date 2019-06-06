@@ -1,0 +1,23 @@
+.el-form-item__label {
+    text-align: left;
+    float: none;
+    font-size: 14px;
+    color: #606266;
+    line-height: 0px;
+    padding: 0 ;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+table.dataTable tbody tr:hover {
+  background-color: #ffa;
+}
+table.dataTable tbody tr:hover > .sorting_1 {
+  background-color: #ffa;
+}
+table.dataTable thead:hover {
+  background-color: #ffa;
+}
+table.dataTable tr.selected {
+    background-color: #B0BED9; !important; /* Add !important to make sure override datables base styles */
+ }

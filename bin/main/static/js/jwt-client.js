@@ -243,26 +243,9 @@ $(function () {
         doJWTLogin(formData);        
     });
 
-    $("#logoutButton").click(doLogout);
-
-    $("#adminServiceBtn").click(function () {
-        $.ajax({
-            url: "/protected",
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            headers: createAuthorizationTokenHeader(),
-            success: function (data, textStatus, jqXHR) {
-                showResponse(jqXHR.status, data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                showResponse(jqXHR.status, errorThrown);
-            }
-        });
-    });
+    $("#logoutButton").click(doLogout);    
+    $("#tokenInfo").click(showTokenInformation);    
     
-    $("#tokenInfo").click(showTokenInformation);
-
-
     // INITIAL CALLS =============================================================
     if (!getJwtToken()) {        
     	doGetAuthToken();

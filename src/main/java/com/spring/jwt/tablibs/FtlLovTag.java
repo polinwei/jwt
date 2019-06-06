@@ -109,9 +109,15 @@ public class FtlLovTag extends TagSupport {
 			
 			Map<String , Object> dataModel = new HashMap<String, Object>();
 			dataModel.put("progPermits", progPermits);
-			dataModel.put("lovTableId", lovTableId);
-			dataModel.put("dtAjaxUrl", dtAjaxUrl);
-			dataModel.put("columns", this.setColumns());
+			if (!lovTableId.isEmpty()) {
+				dataModel.put("lovTableId", lovTableId);
+			}
+			if (!dtAjaxUrl.isEmpty()) {
+				dataModel.put("dtAjaxUrl", dtAjaxUrl);
+			}
+			if (!columnsStr.isEmpty()) {
+				dataModel.put("columns", this.setColumns());
+			}			
 			if (!paramsStr.isEmpty()) {
 				dataModel.putAll(this.setParams());
 			}

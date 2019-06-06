@@ -1,5 +1,7 @@
 package com.spring.jwt.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -25,8 +27,10 @@ import org.springframework.util.StringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.jwt.authentication.security.JwtUser;
 import com.spring.jwt.db.maria.dao.authentication.UserRepository;
+import com.spring.jwt.db.maria.dao.hr.UserDetailsRepository;
 import com.spring.jwt.db.maria.dao.security.UserProfileRepository;
 import com.spring.jwt.db.maria.model.authentication.User;
+import com.spring.jwt.db.maria.model.hr.UserDetails;
 import com.spring.jwt.db.maria.model.security.UserProfile;
 
 @Service
@@ -37,6 +41,10 @@ public class UserService {
 	HttpSession session;
 	@Autowired
 	UserRepository userRepo;
+	@Autowired
+	UserDetailsRepository udRepo;
+	@Autowired
+	BaseService baseService;
 	@Autowired
 	UserProfileRepository userProfileRepo;
 	@Autowired
@@ -130,6 +138,37 @@ public class UserService {
 		jsonMapper.setTimeZone(TimeZone.getTimeZone(userTZ));		
 	}
 	
+	public Map<String, Object> findUserInfo(Long Uid, Long userDetailId){
+		Map<String, Object> userInfo = new HashMap<String, Object>();
+		userInfo.putAll(udRepo.findUserInfoByUserIdAndUserDetailId(Uid, userDetailId));
+		if (!StringUtils.isEmpty(userInfo.get("userManagerId"))) {
+			userInfo.put("userManagerName", getUserByUid( baseService.ObjectConvertToLong( userInfo.get("userManagerId"))).getUsername() );
+		}
+		
+		if (!StringUtils.isEmpty(userInfo.get("deptManagerId"))) {
+			userInfo.put("deptManagerName", getUserByUid( baseService.ObjectConvertToLong( userInfo.get("deptManagerId"))).getUsername() );
+		}	
+		
+		return userInfo;
+	}
+	
+	public List<Map<String, Object>> findAllUserInfo() {
+		List<Map<String, Object>> allUserInfo = new ArrayList<Map<String, Object>>();
+		List<UserDetails> allUD = udRepo.findAll();
+		for (UserDetails ud : allUD) {
+			Map<String, Object> userInfo = findUserInfo( ud.getUserByUserId().getId(), ud.getId());
+			userInfo.put("value", userInfo.get("username")); // for Element UI - Autocomplete
+			allUserInfo.add(userInfo);
+		}
+		
+		return allUserInfo;
+	}
+	
+	/**
+	 * 示範使用 entity manager 來執行 SQL 取值
+	 * @param CompanyId
+	 * @return
+	 */
 	public List<Map<String, Object>> findAllUsersByCompanyNativeQuery(Long CompanyId){
 		Query q = (Query) emMaria.createNativeQuery("SELECT ud.*,u.username, u.avatar, u.firstname, u.lastname, u.enabled, "
 				+ "c.company_name,c.company_code, d.department_name, m.manager_username, m.manager_avatar "

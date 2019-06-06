@@ -9,10 +9,9 @@
   <title>AdminLTE 2 | Top Navigation</title>
   <#-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
   <#-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="/AdminLTE2/bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <#-- vuelidate css -->
-  <link rel="stylesheet" href="/js/vuelidate/docs/vuelidate.css">
   <#-- Font Awesome -->
   <link rel="stylesheet" href="/webjars/font-awesome/5.2.0/css/all.css"> 
   <link rel="stylesheet" href="/AdminLTE2/bower_components/font-awesome/css/font-awesome.min.css">  
@@ -45,6 +44,8 @@
   <link rel="stylesheet" href="/js/jquery-confirm/jquery-confirm.min.css">
   <link rel="stylesheet" href="/js/jquery-fancybox/jquery.fancybox.min.css">
 
+  
+  
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -119,9 +120,9 @@
 <script src="/webjars/vue/2.6.10/dist/vue.js"></script>
 <#-- AXIOS JS -->
 <script src="/webjars/axios/dist/axios.min.js"></script>
-<#-- validation for VUE JS -->
-<script src="/js/vuelidate/dist/vuelidate.min.js"></script>
-<script src="/js/vuelidate/dist/validators.min.js"></script> 
+<script src="/webjars/element-ui/2.8.2/lib/index.js"></script>
+<link rel="stylesheet" href="/webjars/element-ui/2.8.2/lib/theme-chalk/index.css">
+  
 <@security.authorize access="isAuthenticated()">
 <script src="/js/jwt-decode/jwt-decode.min.js"></script>
 <script src="/js/jwt-client.js"></script>
@@ -140,9 +141,6 @@
 		    return '/auth/showphoto/AVATAR_FOLDER/'+value;
 		  }
 	});
-	<#-- global validation for Vue -->
-	Vue.use(window.vuelidate.default)
-	const { required, minLength,between } = window.validators
 	<#-- serialize Form into an object, data = JSON.stringify( $('#myForm').serializeObject() ); -->  
 	$.fn.serializeObject = function(){
 	    var o = {};
@@ -178,5 +176,5 @@ $(document).ready(function() {
 
 </script>    
   <!-- Google Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <link rel="stylesheet" href="/fonts/SourceSansPro.css">
 </head>

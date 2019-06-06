@@ -12,7 +12,7 @@
 		<#if VueDataName?has_content >
     		<input type="text" class="form-control" id="id_${inputName}" name="${inputName}" v-model="${VueDataName}.${inputName}" required readonly>
     	<#else>
-    	    <input type="text" class="form-control" id="id_${inputName}" name="${inputName}" v-model="form_data.${inputName}" required readonly> 
+    	    <input type="text" class="form-control" id="id_${inputName}" name="${inputName}" v-model="formData.${inputName}" required readonly> 
     	</#if> 
     <#else>
     	<input type="text" class="form-control" id="id_${inputName}"  name="${inputName}" required readonly>
@@ -138,7 +138,7 @@ $(document).ready( function () {
 					<#if VueDataName?has_content >
 				    	${VueElVar}.${VueDataName}.${returnValue.targetId} = data['${returnValue.jsonKey}'];
 				    <#else>
-						${VueElVar}.form_data.${returnValue.targetId} = data['${returnValue.jsonKey}'];
+						${VueElVar}.formData.${returnValue.targetId} = data['${returnValue.jsonKey}'];						
 					</#if>
 				</#if>
 				<#if key=='type' && value=='image'>
