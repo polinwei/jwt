@@ -1,5 +1,5 @@
 <#include "/layout/AdminLTE2/vueHtml-begin.ftl">
-<#include "/layout/AdminLTE2/content-auth-begin.ftl">
+<#include "/layout/AdminLTE2/content-begin.ftl">
 
 <link rel="stylesheet" href="/css/elementUI.css">
 
@@ -120,6 +120,7 @@
 				      placeholder="List suggestions on input"
 				      :trigger-on-focus="true"
 				      @select="handleSelect"
+				      @blur="handleBlur"
 				      style="width: 100%;"
 				    >
 				    <el-button slot="append" icon="el-icon-search"></el-button>
@@ -136,6 +137,7 @@
 	  <el-form-item>
 	    <el-button type="primary" @click="submitForm('ruleForm')">Create</el-button>
 	    <el-button @click="resetForm('ruleForm')">Reset</el-button>
+	    <el-button type="primary" @click="openMsg">Message Box</el-button>
 	  </el-form-item>
 	</el-form>
 </div> <!-- ./box-body -->
@@ -171,9 +173,6 @@ var tagAInput = {
         var results = queryString ? links.filter(this.inputFilter(queryString)) : links;
         // call callback function to return suggestions
         cb(results);
-    },
-    handleSelect(item) {
-        console.log(item);
     }
   }
 };
@@ -194,8 +193,7 @@ var tagBInput = {
 		  })
 		  .catch(function (error) {
 		    /* 失敗，發生錯誤，然後...*/
-		  });
-		//this.tagBInputDatas = [{"departmentName":"總部","companyCode":"DB","firstname":"管理員","hireDate":"1900-01-01T00:00:00+0000","departmentId":1,"companyName":"資料庫公司","jobTitle":"Administrator","userDetailId":1,"userManagerId":null,"avatar":"avatar2.png","empNo":"1","workAddress":null,"resignationDate":"1900-01-01T00:00:00+0000","enabled":true,"lastname":"admin","uid":1,"companyId":1,"password":"$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi","deptManagerId":null,"inactiveDate":null,"activeDate":null,"value":"admin","email":"admin@admin.com","username":"admin"},{"firstname":"Polin","departmentId":100,"companyName":"範例公司","jobTitle":"CEO","userDetailId":100,"userManagerId":null,"enabled":true,"uid":5,"password":"$2a$10$mCjJJgf1e8UFEGvxcUr9SOdA6A5YbhXOj2HZz3l7zZwG34xIcUm1e","deptManagerName":"admin","inactiveDate":null,"activeDate":null,"value":"polin.wei","email":"polin.wei@gmail.com","companyCode":"Demo","departmentName":"總經理室","hireDate":"1996-03-01T00:00:00+0000","avatar":"avatar4.png","empNo":"100","resignationDate":null,"workAddress":null,"lastname":"WEI","companyId":100,"deptManagerId":1,"username":"polin.wei"},{"firstname":"Polin","departmentId":101,"companyName":"範例公司","jobTitle":"CFO","userDetailId":101,"userManagerId":null,"enabled":true,"uid":5,"password":"$2a$10$mCjJJgf1e8UFEGvxcUr9SOdA6A5YbhXOj2HZz3l7zZwG34xIcUm1e","deptManagerName":"polin.wei","inactiveDate":null,"activeDate":null,"value":"polin.wei","email":"polin.wei@gmail.com","departmentName":"管理室","companyCode":"Demo","hireDate":"1996-03-01T00:00:00+0000","avatar":"avatar4.png","empNo":"101","resignationDate":null,"workAddress":null,"lastname":"WEI","companyId":100,"deptManagerId":5,"username":"polin.wei"},{"firstname":"Polin","departmentId":102,"companyName":"範例公司","jobTitle":"Dircetor","userDetailId":102,"userManagerId":3,"enabled":true,"uid":5,"password":"$2a$10$mCjJJgf1e8UFEGvxcUr9SOdA6A5YbhXOj2HZz3l7zZwG34xIcUm1e","deptManagerName":"polin.wei","inactiveDate":null,"activeDate":null,"value":"polin.wei","email":"polin.wei@gmail.com","companyCode":"Demo","departmentName":"IT","hireDate":"1996-03-01T00:00:00+0000","avatar":"avatar4.png","empNo":"102","resignationDate":null,"workAddress":"","lastname":"WEI","companyId":100,"deptManagerId":5,"userManagerName":"disabled","username":"polin.wei"},{"firstname":"user","departmentId":102,"companyName":"範例公司","jobTitle":"Engineer","userDetailId":103,"userManagerId":5,"enabled":true,"uid":2,"password":"$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC","deptManagerName":"polin.wei","inactiveDate":null,"activeDate":null,"value":"user","email":"enabled@user.com","companyCode":"Demo","departmentName":"IT","hireDate":"2019-03-01T00:00:00+0000","avatar":"avatar3.png","empNo":"103","resignationDate":null,"workAddress":"TW","lastname":"user","companyId":100,"deptManagerId":5,"userManagerName":"polin.wei","username":"user"},{"firstname":"Polin","companyName":"範例公司","jobTitle":"Manager","departmentId":104,"userDetailId":104,"userManagerId":1,"enabled":true,"uid":5,"password":"$2a$10$mCjJJgf1e8UFEGvxcUr9SOdA6A5YbhXOj2HZz3l7zZwG34xIcUm1e","deptManagerName":"polin.wei","inactiveDate":null,"activeDate":null,"value":"polin.wei","email":"polin.wei@gmail.com","departmentName":"ERP","companyCode":"Demo","hireDate":null,"avatar":"avatar4.png","empNo":"104","resignationDate":null,"workAddress":"Taiwan","lastname":"WEI","companyId":100,"deptManagerId":5,"userManagerName":"admin","username":"polin.wei"}];
+		  });		
 	},
 	methods: {
 		bSearch(queryString, cb){
@@ -214,6 +212,12 @@ var tagBase = {
 		        return (code) => {
 		          return (code.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
 		        };
+		    },
+		    handleBlur(item){
+		    	console.log(item);
+		    },
+		    handleSelect(item) {
+		        console.log(item);
 		    }
 		}
 }
@@ -280,8 +284,17 @@ var Main = {
 	          var results = queryString ? links.filter(this.createFilter(queryString)) : links;
 	          // call callback function to return suggestions
 	          cb(results);
-	        }
-	    }
+	        },
+		  openMsg(){
+		  	console.log('openMsg');
+		  	//$alert(message, title, options);
+		  	this.$alert('This is a message', 'Title');
+		  	this.$message({
+              type: 'info',
+              message: 'Hi !!'
+            });
+		  }
+	    },
 };
 var Ctor = Vue.extend(Main)
 var vueCtor = new Ctor().$mount('#app')
@@ -311,5 +324,5 @@ var vueCtor = new Ctor().$mount('#app')
 </style>
 
 <#include "/layout/AdminLTE2/controlSidebar.ftl">
-<#include "/layout/AdminLTE2/content-auth-end.ftl">
+<#include "/layout/AdminLTE2/content-end.ftl">
 <#include "/layout/AdminLTE2/html-end.ftl"> 

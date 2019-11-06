@@ -133,6 +133,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                     "/**/*.html",
                     "/**/*.css",
                     "/**/*.js",
+                    "/fonts/**",
                     "/AdminLTE2/**",
                     "/webjars/**"
             )
