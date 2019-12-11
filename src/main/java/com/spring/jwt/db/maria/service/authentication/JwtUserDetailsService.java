@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
-@Transactional
 public class JwtUserDetailsService implements UserDetailsService {
 
     private final static Logger logger = LoggerFactory.getLogger(JwtUserDetailsService.class);
